@@ -1,5 +1,5 @@
-import 'package:childrensdiary/Veiws/ChildInfo.dart';
-import 'package:childrensdiary/Veiws/Home.dart';
+import 'package:childrensdiary/views/ChildInfo.dart';
+import 'package:childrensdiary/views/Home.dart';
 import 'package:childrensdiary/controllers/childController.dart';
 import 'package:childrensdiary/controllers/healthController.dart';
 import 'package:childrensdiary/models/child.dart';
@@ -33,7 +33,7 @@ void main() async{
 ////    Health x = Health.map(list1[i]);
 //  print('id: ${Health.map(list1[i]).id}');
   runApp(new MaterialApp(
-    home:new ChildInfo(),
+    home:new Home(),
   ));
 }
 

@@ -44,6 +44,10 @@ flutter:
     - assets/images/background.png
     - assets/images/222.png
     - assets/images/111.png
+    - assets/images/developments.png
+    - assets/images/events.png
+    - assets/images/habits.png
+    - assets/images/helth.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

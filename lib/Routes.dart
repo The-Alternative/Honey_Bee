@@ -1,7 +1,7 @@
 import 'package:childrensdiary/models/child.dart';
 import 'package:flutter/material.dart';
-import 'package:childrensdiary/Veiws/Home.dart';
-import 'package:childrensdiary/Veiws/AddChild.dart';
+import 'package:childrensdiary/views/Home.dart';
+import 'package:childrensdiary/views/AddChild.dart';
 
 class Navigation extends StatelessWidget{
   @override

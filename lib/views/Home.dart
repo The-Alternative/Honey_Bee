@@ -1,6 +1,7 @@
-import 'package:childrensdiary/Veiws/AddChild.dart';
+import 'package:childrensdiary/views/AddChild.dart';
 import 'package:childrensdiary/controllers/childController.dart';
 import 'package:childrensdiary/models/child.dart';
+import 'package:childrensdiary/views/ChildInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -125,6 +126,9 @@ class HomeState extends State<Home>{
                           hoverColor: Colors.amberAccent,
                           focusColor: Colors.amberAccent,
                         ),
+                       onSubmitted: (value) =>  Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ChildInfo())) ,
                       ),
                     )
                 ),
