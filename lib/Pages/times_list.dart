@@ -15,15 +15,18 @@ class Time_listState extends State<Time_list> {
   String _ndate = DateFormat.yMMMd().format(DateTime.now());
   String _clock = DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString();
   DatabaseHelper databaseHelper = DatabaseHelper();
-  List<Medicine> medicineList;
+  List<Card_info> cardList;
   int count = 0;
   @override
   Widget build(BuildContext context) {
-    if (medicineList == null) {
-      medicineList = List<Medicine>();
-      updateListView();
+    if (cardList == null ) {
+      cardList= List<Card_info>();
+      addCardListView();
+
+
+
     }
-    update2ListView();
+   updateCardInfo();
     print(Timesupdate.res);
     return Scaffold(
       body: getTimesListView(),
@@ -57,9 +60,9 @@ class Time_listState extends State<Time_list> {
               ),
               ListTile(
                 leading: CircleAvatar(),
-                title: Text(this.medicineList[position].medTitle,),
-                subtitle: Text(this.medicineList[position].medform),
-                trailing: Text('الجرعة'),
+                title: Text(this.cardList[position].medicine,),
+                subtitle: Text(this.cardList[position].person_name),
+                trailing: Text(""),
                 onTap: () {
                   debugPrint("ListTile Tapped");
                   // navigateToDetail(this.noteList[position],'Edit ');
@@ -78,59 +81,56 @@ class Time_listState extends State<Time_list> {
                       padding: EdgeInsets.only(
                           left: 35, right: 35, top: 15, bottom: 0),
                       child: Text("تم", style: TextStyle(color: Colors.white, fontSize: 15),),
-                      onPressed: () {}),
+                      onPressed: () {
+                       // cardList=List<Card_info>();
+                     //   print(cardList.length);
+                    // if(cardList!=null)
+                  // print(cardList.elementAt(0).medicine);
+
+
+                      }),
                 ),
                 Divider(thickness: 2, height: 5,),
                 IconButton(
                     icon: Icon(Icons.delete, size: 30, color: Colors.blue,), onPressed: () {
-                      _delete(context, medicineList[position]);}),
+                      _delete(context, cardList[position].diagId);
+                    }),
               ])
             ]));
       },
     );
   }
 
-  void updateListView() {
+  addCardListView(){
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Medicine>> medicineListFuture = databaseHelper.getMedicineList();
-      medicineListFuture.then((medicineList) {
-        setState(() {
-          debugPrint("list has change");
-          this.medicineList = medicineList;
-          this.count = medicineList.length;
-          this.medicineList = medicineList;
-          this.count = medicineList.length;
-        });
+    Future<List<Card_info>> cardListFuture = databaseHelper.getAllIds();
+    cardListFuture.then((cardList) {
+      setState(() {
+        debugPrint("list has change");
+        this.cardList = cardList;
+        this.count = cardList.length;
+         print(cardList.length);
+
       });
-    });
-    for (int i = 0; i < medicineList.length; i++) print(i);
+  });
   }
 
-  void update2ListView() {
+  void updateCardInfo() {
     if (Timesupdate.res)
     {
+      print("add");
+      addCardListView();
       Timesupdate.res = false;
-      final Future<Database> dbFuture = databaseHelper.initializeDatabase();
-       dbFuture.then((database) {
-        Future<List<Medicine>> medicineListFuture = databaseHelper.getMedicineList();
-        medicineListFuture.then((medicineList) {
-          setState(()
-          {
-            debugPrint("list has change");
-            this.medicineList = medicineList;
-            this.count = medicineList.length;
-          });
-        });
-      });
+
     }
+
   }
 
-  void _delete(BuildContext context, Medicine medicine) async {
-    int result = await databaseHelper.deleteMedicine(medicine.medId);
+  void _delete(BuildContext context, int id) async {
+    int result = await databaseHelper.deleteDiagon(id);
     if (result != 0) {
-      _showSnackBar(context, 'medicine Deleted Successfully');
-      updateListView();
+      _showSnackBar(context, ' Deleted Successfully');
+      addCardListView();
     }
   }
 

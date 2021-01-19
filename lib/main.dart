@@ -118,7 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (result == true) {
       Timesupdate.res = true;
-      if (Timesupdate.res) debugPrint("fff");
+      if (Timesupdate.res)
+        debugPrint("fff");
       Time_listState();
       // debugPrint(new update("hhh").s );
       main();

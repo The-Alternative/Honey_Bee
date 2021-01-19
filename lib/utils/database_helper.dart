@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
@@ -24,7 +25,7 @@ class DatabaseHelper {
   String dayes = 'dayes';
   String first_date = 'fdate';
   String first_clock = 'fclock';
-  String notice = 'notice';
+  String notice = 'notic';
 
   //////////////////////////////////////////////////
   String patentTable = 'patent_table';
@@ -182,18 +183,14 @@ class DatabaseHelper {
   }
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'Note List' [ List<Note> ]
-  Future<List<Medicine>> getDiagonList() async {
-    var diagonMapList =
-        await getMedicineMapList(); // Get 'Map List' from database
-    int count =
-        diagonMapList.length; // Count the number of map entries in db table
-
-    List<Medicine> diagonList = List<Medicine>();
+  Future<List<Diagon>> getDiagonList() async {
+    var diagonMapList = await getDiagonMapList(); // Get 'Map List' from database
+    int count = diagonMapList.length; // Count the number of map entries in db table
+    List<Diagon> diagonList = List<Diagon>();
     // For loop to create a 'Note List' from a 'Map List'
     for (int i = 0; i < count; i++) {
-      diagonList.add(Medicine.fromMapObject(diagonMapList[i]));
+      diagonList.add(Diagon.fromMapObject(diagonMapList[i]));
     }
-
     return diagonList;
   }
 
@@ -337,24 +334,45 @@ class DatabaseHelper {
 
 //		var result = await db.rawQuery('SELECT * FROM $noteTable order by $colPriority ASC');
     var result = await db.query(
-        'select $patname ,$medTitle,$medAmount from $diagonTable,$patentTable,$medicinTable'
-        'where $patentTable.$patId = $diagonTable.$patId and $medicinTable.$medId =$diagonTable.$medId'
-        'and $diagonTable.$diagid =$id ');
+        'SELECT ( $patentTable.$patname ,$medicinTable.$medTitle,$medicinTable.$medAmount )FROM'' $diagonTable,$patentTable,$medicinTable'
+        ' WHERE $patentTable.$patId = $diagonTable.$patId and $medicinTable.$medId =$diagonTable.$medId'
+        ' AND $diagonTable.$diagid =$id ');
     return result;
   }
+  Future<List<Map<String, dynamic>>> getptname(int id) async {
 
-  Future<List<Card_info>> getCardInfoList(int id) async {
-    var cardMapList =
-        await getCardInfoMapList(id); // Get 'Map List' from database
-    int count =
-        cardMapList.length; // Count the number of map entries in db table
+    Database db = await this.database;
+    List<Map> result = await db.rawQuery('SELECT $patname,$medTitle ,$diagid FROM $diagonTable,$patentTable,$medicinTable WHERE '
+        '$diagonTable.$patId = $patentTable.$patId AND $diagonTable.$medId = $medicinTable.$medId'
+        ' AND $diagid=$id');
+    String s ="";
 
-    List<Card_info> cardList = List<Card_info>();
-    // For loop to create a 'Note List' from a 'Map List'
-    for (int i = 0; i < count; i++) {
-      cardList.add(Card_info.fromMapObject(cardMapList[i]));
-    }
-
+    result.forEach((row) {
+       s =row['p_name'];
+    });
+    return result;
+  }
+  Future<List<Card_info>> getAllIds( ) async {
+    List<Card_info> cardList=List<Card_info>();
+    cardList.clear();
+    Database db = await this.database;
+    List<Map> result = await db.rawQuery('SELECT $diagid FROM $diagonTable' );
+    List<int> ids=List<int>();
+    // get each row in the result list and print it
+    result.forEach((row) {
+      int a =row['$diagid'];
+      ids.add(a);
+    });
+    for(var i=0;i<ids.length;i++)
+      {
+      //print(ids.elementAt(i));
+      var cardMapList = await getptname(ids.elementAt(i)); // Get 'Map List' from database
+     // int count = cardMapList.length; // Count the number of map entries in db table
+      Card_info cardObject = Card_info('','','');
+      cardObject=Card_info.fromMapObject(cardMapList[0]);
+      cardList.add(cardObject);
+      }
     return cardList;
   }
+
 }

@@ -1,17 +1,5 @@
-final List<String> dayes_list = [
-  'السبت',
-  'الأحد',
-  'الأثنين',
-  'الثلاثاء',
-  'الأربعاء',
-  'الخميس',
-  'الجمعة'
-];
-final List<String> types_list = [
-  'يوم',
-  'أسبوع',
-  'شهر'
-];
+final List<String> dayes_list = ['السبت', 'الأحد', 'الأثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+final List<String> types_list = ['يوم', 'أسبوع', 'شهر'];
 class Entry{
   static String pat_name;
   static String doct_name;
@@ -24,5 +12,4 @@ class Entry{
   static String pain;
   static bool Req =false;
   static bool Res =true;
-
 }

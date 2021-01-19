@@ -90,7 +90,6 @@ class Diagon {
   String _img_direct;
   String _notice;
   String get notice => _notice;
-
   set notice(String value) {
     _notice = value;
   }
@@ -133,7 +132,7 @@ class Diagon {
     map['dayes'] = _dayes;
     map['times'] = _times;
     map['img_direct'] = _img_direct;
-    map['notice'] = _notice;
+    map['notic'] = _notice;
     map['id'] = _medId;
     return map;
   }
@@ -151,7 +150,7 @@ class Diagon {
     this._dayes = map['dayes'];
     this._times = map['times'];
     this._img_direct = map['img_direct'];
-    this._notice = map['notice'];
+    this._notice = map['notic'];
     this._medId = map['id'];
   }
 
@@ -284,11 +283,19 @@ class Times {
 }
 
 class Card_info {
+  int _diagId;
+
+  int get diagId => _diagId;
+
+  set diagId(int value) {
+    _diagId = value;
+  }
+
   String _person_name;
   String _medicine;
   String _amount;
 
-  Card_info(this._person_name, this._medicine, this._amount);
+  Card_info(this._person_name, this._medicine, this._amount,[this._diagId]);
 
   String get amount => _amount;
 
@@ -312,5 +319,6 @@ class Card_info {
     this._person_name = map['p_name'];
     this._medicine = map['title'];
     this._amount = map['amount'];
+    this._diagId = map["d_id"];
   }
 }

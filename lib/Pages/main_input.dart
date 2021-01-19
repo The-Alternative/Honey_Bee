@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ssd/Pages/times_list.dart';
 import 'package:ssd/Pages/times_radioButton.dart';
 import 'package:ssd/Pages/process time.dart';
 import 'package:ssd/models/const_data.dart';
@@ -348,7 +349,6 @@ class _Main_inputState extends State<Main_input> {
 
 ////////////////////////////////////////////////////////////////////////////
   void _save() async {
-    moveToLastScreen();
     int result, result2, res3, res4;
     _medicin.medTitle = _medTitleController.text;
     _medicin.medform = "كبسولة";
@@ -358,20 +358,22 @@ class _Main_inputState extends State<Main_input> {
     _diagonObject.patId = await _helper.insertPatient(_patient); //id
     result2 = await _helper.insertDiagon(_diagonObject);
     debugPrint("insert_diagon$result2");
-
+    //Timesupdate.res=true;
     int z = _diagonObject.patId;
+    moveToLastScreen();
     debugPrint("insert_patent  $z");
+    //print(_diagonObject.medId+_diagonObject.patId);
     //int w = diagon_object.medId;
 
     // debugPrint('med$result');
     ///////////////////////////////////////////////////////////////////////////////
-    // if (z != 0) {
-    //   // Success
-    //   _showAlertDialog('Status', 'medicin Saved Successfully');
-    // } else {
-    //   // Failure
-    //   _showAlertDialog('Status', 'Problem Saving Note');
-    // }
+     if (result2 != 0) {
+      // Success
+      _showAlertDialog('Status', 'diagon:$result2 Saved Successfully');
+    } else {
+      // Failure
+      _showAlertDialog('Status', 'daiagon Saving Note');
+    }
   }
 
 /////////////////////////////////////////////////////////////////////////////////
