@@ -1,33 +1,44 @@
+import 'package:childrensdiary/models/event.dart';
+import 'package:childrensdiary/views/AddEvent.dart';
+import 'package:childrensdiary/views/AddHealthNote.dart';
+import 'package:childrensdiary/views/ChildDevelopment.dart';
+import 'package:childrensdiary/views/ChildEvents.dart';
+import 'package:childrensdiary/views/ChildHabits.dart';
+import 'package:childrensdiary/views/ChildHealth.dart';
 import 'package:childrensdiary/views/ChildInfo.dart';
+import 'package:childrensdiary/views/Habits.dart';
 import 'package:childrensdiary/views/Home.dart';
 import 'package:childrensdiary/controllers/childController.dart';
 import 'package:childrensdiary/controllers/healthController.dart';
 import 'package:childrensdiary/models/child.dart';
 import 'package:childrensdiary/models/health.dart';
+import 'package:childrensdiary/views/Search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:childrensdiary/Routes.dart';
 
+import 'controllers/eventController.dart';
+
 //List list1;
 void main() async{
-//  var db = new ChildController();
-//  WidgetsFlutterBinding.ensureInitialized();
+  var db = new ChildController();
+  WidgetsFlutterBinding.ensureInitialized();
 ////  int childSaved = await db.saveChild(
 ////    new Child('Ali', 'male',1, 'glfdmklghd', 0)
 ////  );
 ////  print("saved child : $childSaved");
-//  Child list=await db.getChild(5);
-//  print(list.name);
+  Child list=await db.getChild(5);
+  print(list.name);
 //
 //  print('----------------------');
-//  var db2 = new HealthController();
+  var db2 = new EventController();
 //  WidgetsFlutterBinding.ensureInitialized();
 //  int healthSaved = await db2.saveHealth(
 //      new Health('ssssssss', 'ssssss', 143, 54, 37, 15, 15, 453)
 //  );
 //  print("saved health : $healthSaved");
-//  Health list1=await db2.getHealth(1);
-//  print(list1.childId);
+  Event list1=await db2.getEvent(3);
+  print(list1.childId);
 //   list1=await db2.getAllHealth();
 //  for(int i=5; i <list1.length; i++)
 ////    Health x = Health.map(list1[i]);

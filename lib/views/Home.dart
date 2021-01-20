@@ -24,20 +24,17 @@ class HomeState extends State<Home>{
   Child list ;
   ChildController db = new ChildController();
 
+
   @override
   void initState() {
   //  TODO: implement initState
     super.initState();
-      db.getChild(3).then((child) {
-        setState(() {
-          list = child;
-        });
-      });
     db.getAllChild().then((allChildren) {
       setState(() {
         allChildren.forEach((child) {
           children.add(Child.fromeMap(child));
         });
+
       });
 
     });
@@ -84,57 +81,33 @@ class HomeState extends State<Home>{
               ),
             ),
 //            color: Colors.white12,
-            child: new Column(
-              children: [
-                new Padding(padding: EdgeInsets.only(bottom: 50.0)),
-                new Center(
-                    child: new Container(
-                      width: MediaQuery.of(context).size.width *0.7,
-                      child: new TextField(
-                        textAlign: TextAlign.right,
+            child: new ListView.builder(
+                itemCount: children.length,
+                padding: const EdgeInsets.all(15.0),
+                itemBuilder: (context,posision){
+                return Column(
+                children: [
 
-                        style: TextStyle(fontSize: 18.0 , color: Colors.amberAccent,),cursorColor: Colors.amberAccent,
-                        decoration: InputDecoration(
-                          labelStyle: new TextStyle(
-                            color: Colors.amberAccent,
+                Divider(height: 5.0,),
+                ListTile(
+                title: Text('${children[posision].name}'),
+                  leading: Column(
+                    children: [
 
-                          ),
-                          focusedBorder:UnderlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.amberAccent, width: 1.0),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.amberAccent),
-                          ),
-                          prefixIcon: new DropdownButton<String>(
-                            underline: Container(
-                              decoration: const BoxDecoration(
-                                  border: Border(bottom: BorderSide(color: Colors.transparent))
-                              ),
-                            ),
-                            icon: new Icon(Icons.keyboard_arrow_down),
-                            items: <String>['${children[3].name}', '${children[1].name}','${children[2].name}'].map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: Text('$value'),
-                              );
-                            }).toList(),
-                            onChanged: (_) {},
-                          ),
-                          hintText: 'الاسم',
-                          hintStyle: TextStyle(color: Colors.black,fontSize: 20.0,fontWeight: FontWeight.bold),
-                          hoverColor: Colors.amberAccent,
-                          focusColor: Colors.amberAccent,
-                        ),
-                       onSubmitted: (value) =>  Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ChildInfo())) ,
-                      ),
-                    )
-                ),
+                      CircleAvatar(
+                        backgroundColor: Colors.amberAccent,
+                        child: Text('${children[posision].id}',
+                            style:TextStyle(fontSize: 22.0,color: Colors.white), ),
+                      )
+                    ],
+                  ),
+                  onTap: () => _navigatToChildInfo(context,children[posision]),
+                         ),
+                        ],
 
-              ],
-            ),
+                           );
+                       }
+                )
           ),
           floatingActionButton: new FloatingActionButton(
             onPressed:() => _creatNewChild(context),
@@ -158,41 +131,83 @@ class HomeState extends State<Home>{
         MaterialPageRoute(builder: (context) => AddChild(
           Child('', '', 0, '', 1)
         )));
+    db.getAllChild().then((allChildren) {
+      setState(() {
+        children.clear();
+        allChildren.forEach((child) {
+          children.add(Child.fromeMap(child));
+        });
+      });
+    });
+  }
+
+  void _childInfo(BuildContext context) async{
+    String result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChildInfo(children[0])));
+  }
+
+  void _navigatToChildInfo(BuildContext context,Child child) async{
+    await Navigator.push(
+        context,
+        MaterialPageRoute(builder:(context) => ChildInfo(child)));
   }
 
 }
 
-//new DropdownButton<String>(
-//                  items: <String>['A', 'B', 'C', 'D'].map((String value) {
-//                    return new DropdownMenuItem<String>(
-//                      value: value,
-//                      child: new Text(value),
-//                    );
-//                  }).toList(),
-//                  onChanged: (_) {},
-//                )
-//new ListView.builder(
-//itemCount: children.length,
-//padding: const EdgeInsets.all(15.0) ,
-//itemBuilder: (context , postion){
-//return Column (
+
+//Column(
 //children: [
-//Divider(height: 5.0,),
-//ListTile(
-//title: Text('${children[postion].name}',
-//style: TextStyle(
-//fontSize: 22.0,
-//color: Colors.yellowAccent),
+//new Padding(padding: EdgeInsets.only(bottom: 50.0)),
+//new Center(
+//child: new Container(
+//width: MediaQuery.of(context).size.width *0.7,
+//child: new TextField(
+//textAlign: TextAlign.right,
+//
+//style: TextStyle(fontSize: 18.0 , color: Colors.amberAccent,),cursorColor: Colors.amberAccent,
+//decoration: InputDecoration(
+//labelStyle: new TextStyle(
+//color: Colors.amberAccent,
+//
 //),
-//leading: Column(
-//children: [
-//CircleAvatar(
-//backgroundColor: Colors.yellowAccent,
-//child: Text ('${children[postion].image}'),
-//)
-//],
+//focusedBorder:UnderlineInputBorder(
+//borderSide: const BorderSide(color: Colors.amberAccent, width: 1.0),
+//),
+//enabledBorder: UnderlineInputBorder(
+//borderSide: BorderSide(
+//color: Colors.amberAccent),
+//),
+//prefixIcon: new DropdownButton<String>(
+//underline: Container(
+//decoration: const BoxDecoration(
+//border: Border(bottom: BorderSide(color: Colors.transparent))
 //),
 //),
-//],
+//icon: new Icon(Icons.keyboard_arrow_down),
+//items: <String>['${children[3].name}', '${children[1].name}','${children[2].name}'].map((String value) {
+//return new DropdownMenuItem<String>(
+//value: value,
+//child: FlatButton(
+//child: Text('$value'),
+//onPressed:() => _childInfo(context) ,
+//),
 //);
-//}),
+//}).toList(),
+//onChanged: (_) {},
+//),
+//hintText: 'الاسم',
+//hintStyle: TextStyle(color: Colors.black,fontSize: 20.0,fontWeight: FontWeight.bold),
+//hoverColor: Colors.amberAccent,
+//focusColor: Colors.amberAccent,
+//),
+//onSubmitted: (value) =>  Navigator.push(
+//context,
+//MaterialPageRoute(builder: (context) => ChildInfo(children[0]))) ,
+//),
+//)
+//),
+//
+//
+//],
+//),

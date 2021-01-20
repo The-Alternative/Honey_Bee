@@ -1,11 +1,23 @@
 import 'package:childrensdiary/views/AddChild.dart';
 import 'package:childrensdiary/controllers/childController.dart';
 import 'package:childrensdiary/models/child.dart';
+import 'package:childrensdiary/views/ChildDevelopment.dart';
+import 'package:childrensdiary/views/ChildEvents.dart';
+import 'package:childrensdiary/views/ChildHabits.dart';
+import 'package:childrensdiary/views/ChildHealth.dart';
+import 'package:childrensdiary/views/Search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'AddDevelopment.dart';
+import 'AddEvent.dart';
+import 'AddHealthNote.dart';
+import 'Habits.dart';
+
 
 class ChildInfo extends StatefulWidget{
+  final Child child;
+  ChildInfo(this.child);
   @override
   State<StatefulWidget> createState() {
     return new ChildInfoState();
@@ -13,6 +25,24 @@ class ChildInfo extends StatefulWidget{
 
 }
 class ChildInfoState extends State<ChildInfo>{
+  ChildController db = new ChildController();
+  String name = '';
+  String sex = '';
+  String birthDate = '';
+  String image = '';
+  String isActive = '';
+
+  @override
+  void initState(){
+    // TODO: implement initState
+    super.initState();
+    name = widget.child.name;
+    sex = widget.child.sex;
+    birthDate = '';
+    image = '';
+    isActive = '';
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -97,9 +127,10 @@ class ChildInfoState extends State<ChildInfo>{
                     child: Row(
                       children: [
                         Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width *0.4,)),
-                        new Text('ahmad'),
+                        new Text('$name'),
                         Padding(padding: EdgeInsets.only(left: 10.0)),
-                        new Icon(Icons.face,color: Colors.blueAccent,)
+                        (sex == 'girl') ? new Icon(Icons.face,color: Colors.pinkAccent,) :new Icon(Icons.face,color: Colors.blueAccent,),
+
                       ],
                     ),
                   ),
@@ -132,11 +163,21 @@ class ChildInfoState extends State<ChildInfo>{
                   ),
                   new Row(
                     children: [
+                      new Expanded(child: Text("")),
                       new Container(
-                          padding: EdgeInsets.only(left:30.0,right: 30.0,top: 30.0,bottom: 25.0),
+                          padding: EdgeInsets.only(top: 30.0,bottom: 25.0),
                           child: new Column(
                             children: [
-                              Image.asset("assets/images/habits.png",width: 50,height: 50,),
+                              new MaterialButton(
+                                onPressed:() => _childHabits(context) ,
+                                color: Colors.white,
+                                child: Image.asset("assets/images/habits.png",width: 50,height: 50),
+                                shape: CircleBorder(side: BorderSide(
+                                    color: Colors.white
+                                )),
+
+                              ),
+
                               new Text('سلوك و عادات')
                             ],
                           )
@@ -145,16 +186,34 @@ class ChildInfoState extends State<ChildInfo>{
                           padding: EdgeInsets.only(top: 30.0,bottom: 25.0),
                           child: new Column(
                             children: [
-                              Image.asset("assets/images/events.png",width: 50,height: 50,),
+                              new MaterialButton(
+                                onPressed:() => _childEvents(context),
+                                color: Colors.white,
+                                child: Image.asset("assets/images/events.png",width: 50,height: 50,),
+                                shape: CircleBorder(side: BorderSide(
+                                    color: Colors.white
+                                )),
+                              ),
+
+
                               new Text('احداث هامة')
                             ],
                           )
                       ),
                       new Container(
-                          padding: EdgeInsets.only(left:30.0,right: 30.0,top: 30.0,bottom: 25.0),
+                          padding: EdgeInsets.only(top: 30.0,bottom: 25.0),
                           child: new Column(
                             children: [
-                              Image.asset("assets/images/developments.png",width: 50,height: 50,),
+                              new MaterialButton(
+                                onPressed: () => _childDevelopments(context),
+                                color: Colors.white,
+                                child: Image.asset("assets/images/developments.png",width: 50,height: 50,),
+                                shape: CircleBorder(side: BorderSide(
+                                    color: Colors.white
+                                )),
+
+                              ),
+
                               new Text('تطورات')
                             ],
                           )
@@ -163,17 +222,29 @@ class ChildInfoState extends State<ChildInfo>{
                           padding: EdgeInsets.only(top: 30.0,bottom: 25.0),
                           child: new Column(
                             children: [
-                              Image.asset("assets/images/helth.png",width: 50,height: 50,),
+                              new MaterialButton(
+                                onPressed: () => _childHealths(context),
+                                color: Colors.white,
+                                child: Image.asset("assets/images/helth.png",width: 50,height: 50,),
+                                shape: CircleBorder(side: BorderSide(
+                                    color: Colors.white
+                                )),
+
+                              ),
+
                               new Text('الصحة')
                             ],
                           )
                       ),
+                      new Expanded(child: Text("")),
                     ],
                   ),
                   Padding(padding: EdgeInsets.only(bottom: 15.0)),
                   new Container(
                     child: Center(
-                      child: Text('استعراض',style: TextStyle(color: Colors.black54,fontSize: 22.0),),
+                      child: FlatButton(
+                          onPressed: () => _navigatToSearch(context),
+                          child: Text('استعراض',style: TextStyle(color: Colors.black54,fontSize: 22.0),)),
                     ),
                   ),
 
@@ -187,6 +258,32 @@ class ChildInfoState extends State<ChildInfo>{
                   ),
       ),
     );
+  }
+  void _childHealths(BuildContext context) async{
+    String result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => AddHealthNote(widget.child)));
+  }
+  void _childDevelopments(BuildContext context) async{
+    String result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => AddDevelopment(widget.child)));
+  }
+  void _childEvents(BuildContext context) async{
+    String result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => AddEvent(widget.child)));
+  }
+  void _childHabits(BuildContext context) async{
+    String result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Habits()));
+  }
+
+  void _navigatToSearch(BuildContext context) async{
+    String result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Search(widget.child)));
   }
 
 }
