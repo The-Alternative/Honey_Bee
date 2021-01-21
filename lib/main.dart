@@ -13,6 +13,7 @@ import 'package:childrensdiary/controllers/healthController.dart';
 import 'package:childrensdiary/models/child.dart';
 import 'package:childrensdiary/models/health.dart';
 import 'package:childrensdiary/views/Search.dart';
+import 'package:childrensdiary/views/Test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:childrensdiary/Routes.dart';
@@ -37,8 +38,8 @@ void main() async{
 //      new Health('ssssssss', 'ssssss', 143, 54, 37, 15, 15, 453)
 //  );
 //  print("saved health : $healthSaved");
-  Event list1=await db2.getEvent(3);
-  print(list1.childId);
+  List list1=await db2.getChildEvents(5);
+  print(list1[3]);
 //   list1=await db2.getAllHealth();
 //  for(int i=5; i <list1.length; i++)
 ////    Health x = Health.map(list1[i]);

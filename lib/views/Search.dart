@@ -1,9 +1,13 @@
 import 'package:childrensdiary/views/AddChild.dart';
 import 'package:childrensdiary/controllers/childController.dart';
 import 'package:childrensdiary/models/child.dart';
+import 'package:childrensdiary/views/ChildDevelopment.dart';
+import 'package:childrensdiary/views/ChildEvents.dart';
+import 'package:childrensdiary/views/ChildHealth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'ChildHabits.dart';
 import 'Habits.dart';
 
 
@@ -83,7 +87,7 @@ class SearchState extends State<Search>{
                           child: new Column(
                             children: [
                               new MaterialButton(
-                                onPressed: null,
+                                onPressed: () => _childEvents(context),
                                 color: Colors.white,
                                 child: Image.asset("assets/images/events.png",width: 50,height: 50,),
                                 shape: CircleBorder(side: BorderSide(
@@ -104,7 +108,7 @@ class SearchState extends State<Search>{
                           child: new Column(
                             children: [
                               new MaterialButton(
-                                onPressed: null,
+                                onPressed: () => _childDevelopments(context),
                                 color: Colors.white,
                                 child: Image.asset("assets/images/developments.png",width: 50,height: 50,),
                                 shape: CircleBorder(side: BorderSide(
@@ -124,7 +128,7 @@ class SearchState extends State<Search>{
                           child: new Column(
                             children: [
                               new MaterialButton(
-                                onPressed: null ,
+                                onPressed: () => _childHealths(context,widget.child) ,
                                 color: Colors.white,
                                 child: Image.asset("assets/images/helth.png",width: 50,height: 50,),
                                 shape: CircleBorder(side: BorderSide(
@@ -205,7 +209,7 @@ class SearchState extends State<Search>{
                       child: new Row(
                         children: [
                           new FlatButton(
-                            child:new Text('اسنعراض',style: new TextStyle(fontSize: 19.0,color: Colors.black45)),
+                            child:new Text('استعراض',style: new TextStyle(fontSize: 19.0,color: Colors.black45)),
                           ),
                           new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                           new FlatButton(
@@ -229,6 +233,24 @@ class SearchState extends State<Search>{
   void _childHabits(BuildContext context) async{
     String result = await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Habits()));
+        MaterialPageRoute(builder: (context) => ChildHabits(widget.child)));
+  }
+
+  void _childEvents(BuildContext context) async{
+    String result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChildEvents(widget.child)));
+  }
+
+  void _childHealths(BuildContext context,Child child) async{
+    String result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChildHealth(child)));
+  }
+
+  void _childDevelopments(BuildContext context) async{
+    String result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChildDevelopments(widget.child)));
   }
 }

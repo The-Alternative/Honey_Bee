@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 
 
 class ChildHabits extends StatefulWidget {
+  final Child child;
+  ChildHabits(this.child);
   @override
   State<StatefulWidget> createState() {
     return new ChildHabitsState();

@@ -1,3 +1,5 @@
+import 'package:childrensdiary/controllers/eventController.dart';
+import 'package:childrensdiary/models/event.dart';
 import 'package:childrensdiary/views/AddChild.dart';
 import 'package:childrensdiary/controllers/childController.dart';
 import 'package:childrensdiary/models/child.dart';
@@ -11,6 +13,8 @@ import 'package:flutter/material.dart';
 
 
 class ChildEvents extends StatefulWidget {
+  final Child child;
+  ChildEvents(this.child);
   @override
   State<StatefulWidget> createState() {
     return new ChildEventsState();
@@ -19,6 +23,26 @@ class ChildEvents extends StatefulWidget {
 }
 
 class ChildEventsState extends State<ChildEvents>{
+
+  List<Event> childEvents =new List();
+  Event list ;
+  EventController db = new EventController();
+
+  @override
+  void initState() {
+    //  TODO: implement initState
+    super.initState();
+    db.getChildEvents(widget.child.id).then((allChildren) {
+      setState(() {
+        allChildren.forEach((event) {
+          childEvents.add(Event.fromeMap(event));
+        });
+
+      });
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,172 +66,134 @@ class ChildEventsState extends State<ChildEvents>{
             ],
           ),
           backgroundColor: Colors.white,
-          body: Center(
-            child: Container(
-              child: new ListView(
-                children: [
-                  Padding(padding: EdgeInsets.only(bottom: 20)),
-                  Center (
-                    child: Text("أحمد"),
-                  ),
-                  Stack(
-                    children: <Widget>[
+          body:new Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image:AssetImage("assets/images/background.png"), fit: BoxFit.contain,
+                ),
+              ),
+//            color: Colors.white12,
+              child: (childEvents.length > 0)? new ListView.builder(
+                  itemCount: childEvents.length,
+                  padding: const EdgeInsets.all(15.0),
+                  itemBuilder: (context,posision){
+                    return Column(
+                      children: [
 
-                      Container(
-                        width: double.infinity,
-                        height: 350,
-                        margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                        padding: EdgeInsets.only(bottom: 10),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.redAccent, width: 1),
-                          borderRadius: BorderRadius.circular(5),
-                          shape: BoxShape.rectangle,
-                        ),
-                        child: ListView(
-                          children: [
+
+                        Stack(
+                          children: <Widget>[
+
                             Container(
-                              margin: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.5,top: 5,left: 5),
-                              child: Text("05/12/2020"),
+                              width: double.infinity,
+                              height: 350,
+                              margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                              padding: EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.redAccent, width: 1),
+                                borderRadius: BorderRadius.circular(5),
+                                shape: BoxShape.rectangle,
+                              ),
+                              child: ListView(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.5,top: 5,left: 5),
+                                    child: Text("05/12/2020"),
+                                  ),
+                                  Padding(padding: EdgeInsets.only(bottom: 15)),
+                                  Row(
+                                    children: [
+                                      Expanded(child: Text("")),
+                                      Text("${childEvents[posision].name}",textDirection: TextDirection.rtl),
+                                      Padding(padding: EdgeInsets.only(left: 10)),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(child: Text("")),
+                                      Text("${childEvents[posision].note}",textDirection: TextDirection.rtl),
+                                      Padding(padding: EdgeInsets.only(left: 10)),
+                                    ],
+                                  ),
+                                  Padding(padding: EdgeInsets.only(bottom: 15)),
+                                  Row(
+                                    children: [
+                                      Expanded(child: Text("")),
+                                      Image.asset("assets/images/111.png",width: 100,),
+                                      Padding(padding: EdgeInsets.only(left: 10)),
+                                      Image.asset("assets/images/helth.png",width: 100,),
+                                      Expanded(child: Text("")),
+                                    ],
+                                  ),
+
+                                  Padding(padding: EdgeInsets.only(bottom: 15.0)),
+                                  Row(
+                                    children: [
+                                      new Expanded(child: Text("")),
+                                      Text('يوم',style: TextStyle(color: Colors.black,fontSize: 18.0)),
+                                      Padding(padding: EdgeInsets.only(left: 10.0)),
+                                      Text('20',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                      Padding(padding: EdgeInsets.only(left:15.0)),
+                                      Text('أشهر',style: TextStyle(color: Colors.black,fontSize: 18.0)),
+                                      Padding(padding: EdgeInsets.only(left: 10.0)),
+                                      Text('6',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                      Padding(padding: EdgeInsets.only(left:15.0)),
+                                      Text('سنوات',style: TextStyle(color: Colors.black,fontSize: 18.0)),
+                                      Padding(padding: EdgeInsets.only(left: 10.0)),
+                                      Text('5',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                      new Expanded(child: Text("")),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                            Padding(padding: EdgeInsets.only(bottom: 15)),
-                            Row(
-                              children: [
-                                Expanded(child: Text("")),
-                                Text("ssn aaa sdsf",textDirection: TextDirection.rtl),
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: Text("")),
-                                Text("ssn aaa sdsf",textDirection: TextDirection.rtl),
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 15)),
-                            Row(
-                              children: [
-                                Expanded(child: Text("")),
-                                Image.asset("assets/images/111.png",width: 100,),
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                                Image.asset("assets/images/events.png",width: 100,),
-                                Expanded(child: Text("")),
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 15.0)),
-                            Row(
-                              children: [
-                                new Expanded(child: Text("")),
-                                Text('يوم',style: TextStyle(color: Colors.black,fontSize: 18.0)),
-                                Padding(padding: EdgeInsets.only(left: 10.0)),
-                                Text('20',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
-                                Padding(padding: EdgeInsets.only(left:15.0)),
-                                Text('أشهر',style: TextStyle(color: Colors.black,fontSize: 18.0)),
-                                Padding(padding: EdgeInsets.only(left: 10.0)),
-                                Text('6',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
-                                Padding(padding: EdgeInsets.only(left:15.0)),
-                                Text('سنوات',style: TextStyle(color: Colors.black,fontSize: 18.0)),
-                                Padding(padding: EdgeInsets.only(left: 10.0)),
-                                Text('5',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
-                                new Expanded(child: Text("")),
-                              ],
-                            ),
+                            Positioned(
+                                right:20 ,
+                                top: -5,
+                                child: Container(
+                                    margin: EdgeInsets.only(right: 5),
+                                    color: Colors.white,
+                                    child: Image.asset("assets/images/events.png",width: 50,)
+                                )),
                           ],
                         ),
-                      ),
-                      Positioned(
-                          right:20 ,
-                          top: -5,
-                          child: Container(
-                              margin: EdgeInsets.only(right: 5),
-                              color: Colors.white,
-                              child: Image.asset("assets/images/events.png",width: 50,)
-                          )),
-                    ],
-                  ),
-                  Stack(
-                    children: <Widget>[
+                        
+                        (posision == childEvents.length-1) ?  new Center(
+                          child: new Container(
+                            width: MediaQuery.of(context).size.width *0.7,
+                            child: new Row(
+                              children: [
+                                new FlatButton(
+                                    child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
+                                    onPressed: null
+                                ),
+                                new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
+                                new FlatButton(
+                                    onPressed: () {Navigator.of(context).pushNamed('/Home');},
+                                    child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
+                              ],
+                            ),
+                          ),
+                        ) :  Text(""),
+                        
+                      ],
 
-                      Container(
-                        width: double.infinity,
-                        height: 350,
-                        margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                        padding: EdgeInsets.only(bottom: 10),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.redAccent, width: 1),
-                          borderRadius: BorderRadius.circular(5),
-                          shape: BoxShape.rectangle,
-                        ),
-                        child: ListView(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.5,top: 5,left: 5),
-                              child: Text("05/12/2020"),
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 15)),
-                            Row(
-                              children: [
-                                Expanded(child: Text("")),
-                                Text("ssn aaa sdsf",textDirection: TextDirection.rtl),
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(child: Text("")),
-                                Text("ssn aaa sdsf",textDirection: TextDirection.rtl),
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 15)),
-                            Row(
-                              children: [
-                                Expanded(child: Text("")),
-                                Image.asset("assets/images/111.png",width: 100,),
-                                Padding(padding: EdgeInsets.only(left: 10)),
-                                Image.asset("assets/images/helth.png",width: 100,),
-                                Expanded(child: Text("")),
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 15.0)),
-                            Row(
-                              children: [
-                                new Expanded(child: Text("")),
-                                Text('يوم',style: TextStyle(color: Colors.black,fontSize: 18.0)),
-                                Padding(padding: EdgeInsets.only(left: 10.0)),
-                                Text('20',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
-                                Padding(padding: EdgeInsets.only(left:15.0)),
-                                Text('أشهر',style: TextStyle(color: Colors.black,fontSize: 18.0)),
-                                Padding(padding: EdgeInsets.only(left: 10.0)),
-                                Text('6',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
-                                Padding(padding: EdgeInsets.only(left:15.0)),
-                                Text('سنوات',style: TextStyle(color: Colors.black,fontSize: 18.0)),
-                                Padding(padding: EdgeInsets.only(left: 10.0)),
-                                Text('5',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
-                                new Expanded(child: Text("")),
-                              ],
-                            ),
-                          ],
-                        ),
+                    );
+                  }
+              ) : new Center(
+                child: new Container(
+                  width: MediaQuery.of(context).size.width *0.7,
+                  child:new Column(
+                    children: [
+                      Padding(padding: EdgeInsets.only(bottom: 30),),
+                      new Center(
+                        child: Text("No Events For this child"),
                       ),
-                      Positioned(
-                          right:20 ,
-                          top: -5,
-                          child: Container(
-                              margin: EdgeInsets.only(right: 5),
-                              color: Colors.white,
-                              child: Image.asset("assets/images/events.png",width: 50,)
-                          )),
-                    ],
-                  ),
-                  new Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height *0.05)),
-                  new Center(
-                    child: new Container(
-                      width: MediaQuery.of(context).size.width *0.7,
-                      child: new Row(
+                      Padding(padding: EdgeInsets.only(bottom: 30),),
+                      new Row(
                         children: [
+
                           new FlatButton(
                               child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
                               onPressed: null
@@ -218,12 +204,11 @@ class ChildEventsState extends State<ChildEvents>{
                               child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
                         ],
                       ),
-                    ),
-                  )
-
-                ],
+                    ],
+                  ),
+                ),
               ),
-            ),
+                 
           ),
           bottomNavigationBar:  new Icon(Icons.home,color: Colors.black12,size: 50.2),
 

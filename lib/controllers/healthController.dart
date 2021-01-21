@@ -55,6 +55,13 @@ class HealthController {
     return result.toList();
   }
 
+  Future<List> getChildHealths(int id) async{
+    var dbClient = await db.honeyBee;
+    var sql ="SELECT * FROM $healthTable Where $cloumnChildId = $id";
+    List result = await dbClient.rawQuery(sql);
+    return result.toList();
+  }
+
   Future<int> getHealthCount () async{
     var dbClient = await db.honeyBee;
     var sql ="SELECT COUNT(*) FROM $healthTable";

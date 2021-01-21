@@ -30,6 +30,13 @@ class EventController {
     return result.toList();
   }
 
+  Future<List> getChildEvents(int id) async{
+    var dbClient = await db.honeyBee;
+    var sql ="SELECT * FROM $eventTable WHERE $cloumnChildId = $id";
+    List result = await dbClient.rawQuery(sql);
+    return result.toList();
+  }
+
   Future<int> getEventsCount () async{
     var dbClient = await db.honeyBee;
     var sql ="SELECT COUNT(*) FROM $eventTable";

@@ -14,17 +14,17 @@ import 'package:flutter/material.dart';
 
 
 
-class ChildDevelopments extends StatefulWidget {
+class ChildDevelopment extends StatefulWidget {
   final Child child;
-  ChildDevelopments(this.child);
+  ChildDevelopment(this.child);
   @override
   State<StatefulWidget> createState() {
-    return new ChildDevelopmentsState();
+    return new ChildDevelopmentState();
   }
 
 }
 
-class ChildDevelopmentsState extends State<ChildDevelopments>{
+class ChildDevelopmentState extends State<ChildDevelopment>{
 
   List<Development> childDevelopments =new List();
   Development list ;
@@ -93,7 +93,7 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                             padding: EdgeInsets.only(bottom: 10),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Colors.greenAccent, width: 1),
+                                  color: Colors.redAccent, width: 1),
                               borderRadius: BorderRadius.circular(5),
                               shape: BoxShape.rectangle,
                             ),
@@ -156,7 +156,7 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                               child: Container(
                                   margin: EdgeInsets.only(right: 5),
                                   color: Colors.white,
-                                  child: Image.asset("assets/images/developments.png",width: 50,)
+                                  child: Image.asset("assets/images/events.png",width: 50,)
                               )),
                         ],
                       ),
@@ -190,7 +190,7 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                   children: [
                     Padding(padding: EdgeInsets.only(bottom: 30),),
                     new Center(
-                      child: Text("No Developments For this child"),
+                      child: Text("No Events For this child"),
                     ),
                     Padding(padding: EdgeInsets.only(bottom: 30),),
                     new Row(

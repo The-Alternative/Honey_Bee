@@ -126,7 +126,7 @@ class HomeState extends State<Home>{
   }
 
   void _creatNewChild(BuildContext context) async{
-    String result = await Navigator.push(
+     await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => AddChild(
           Child('', '', 0, '', 1)
@@ -141,11 +141,11 @@ class HomeState extends State<Home>{
     });
   }
 
-  void _childInfo(BuildContext context) async{
-    String result = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ChildInfo(children[0])));
-  }
+//  void _childInfo(BuildContext context) async{
+//     await Navigator.push(
+//        context,
+//        MaterialPageRoute(builder: (context) => ChildInfo(children[0])));
+//  }
 
   void _navigatToChildInfo(BuildContext context,Child child) async{
     await Navigator.push(
