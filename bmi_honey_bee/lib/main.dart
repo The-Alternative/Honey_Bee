@@ -4,7 +4,7 @@ import 'package:bmi_honey_bee/pages/bmi2.dart';
 import 'package:bmi_honey_bee/pages/bmi3.dart';
 import 'package:bmi_honey_bee/pages/bmi4.dart';
 import 'package:bmi_honey_bee/pages/bmi5.dart';
-import 'package:bmi_honey_bee/size_config.dart';
+// import 'package:bmi_honey_bee/size_config.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       builder: DevicePreview.appBuilder,
-      home: Home(),
+      home: Bmi1(),
       routes: {
       'Bmi1' :(context){
         return Bmi1();
@@ -48,7 +48,8 @@ class MyApp extends StatelessWidget {
         },
         'Bmi5':(context){
         return Bmi5();
-        }
+        },
+
       },
     );
 
