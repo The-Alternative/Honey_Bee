@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     package="com.example.ssd">
+=======
+    package="com.childrensdiary">
+>>>>>>> 22712bb269e3af37d3dd509b94b8b0688d8c551f
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->

@@ -1,5 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     package="com.example.ssd">
+=======
+    package="com.childrensdiary">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+>>>>>>> 22712bb269e3af37d3dd509b94b8b0688d8c551f
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -7,7 +13,11 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
+<<<<<<< HEAD
         android:label="ssd"
+=======
+        android:label="childrensdiary"
+>>>>>>> 22712bb269e3af37d3dd509b94b8b0688d8c551f
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -210,3 +211,57 @@ class ChoisePage extends StatelessWidget {
     ;
   }
 }
+=======
+import 'package:childrensdiary/models/event.dart';
+import 'package:childrensdiary/views/AddEvent.dart';
+import 'package:childrensdiary/views/AddHealthNote.dart';
+import 'package:childrensdiary/views/ChildDevelopment.dart';
+import 'package:childrensdiary/views/ChildEvents.dart';
+import 'package:childrensdiary/views/ChildHabits.dart';
+import 'package:childrensdiary/views/ChildHealth.dart';
+import 'package:childrensdiary/views/ChildInfo.dart';
+import 'package:childrensdiary/views/Habits.dart';
+import 'package:childrensdiary/views/Home.dart';
+import 'package:childrensdiary/controllers/childController.dart';
+import 'package:childrensdiary/controllers/healthController.dart';
+import 'package:childrensdiary/models/child.dart';
+import 'package:childrensdiary/models/health.dart';
+import 'package:childrensdiary/views/Search.dart';
+import 'package:childrensdiary/views/Test.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:childrensdiary/Routes.dart';
+
+import 'controllers/eventController.dart';
+
+//List list1;
+void main() async{
+  var db = new ChildController();
+  WidgetsFlutterBinding.ensureInitialized();
+////  int childSaved = await db.saveChild(
+////    new Child('Ali', 'male',1, 'glfdmklghd', 0)
+////  );
+////  print("saved child : $childSaved");
+  Child list=await db.getChild(5);
+  print(list.name);
+//
+//  print('----------------------');
+  var db2 = new EventController();
+//  WidgetsFlutterBinding.ensureInitialized();
+//  int healthSaved = await db2.saveHealth(
+//      new Health('ssssssss', 'ssssss', 143, 54, 37, 15, 15, 453)
+//  );
+//  print("saved health : $healthSaved");
+  List list1=await db2.getChildEvents(5);
+  print(list1[3]);
+//   list1=await db2.getAllHealth();
+//  for(int i=5; i <list1.length; i++)
+////    Health x = Health.map(list1[i]);
+//  print('id: ${Health.map(list1[i]).id}');
+  runApp(new MaterialApp(
+    home:new Home(),
+  ));
+}
+
+
+>>>>>>> 22712bb269e3af37d3dd509b94b8b0688d8c551f
