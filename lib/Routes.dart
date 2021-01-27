@@ -10,7 +10,7 @@ class Navigation extends StatelessWidget{
       title: 'Navigation',
       routes: <String , WidgetBuilder>{
         '/Home': (BuildContext context) => new Home(),
-        '/AddChild': (BuildContext context) => new AddChild(Child('', '', 0, '', 1)),
+        '/AddChild': (BuildContext context) => new AddChild(Child('', '', '', '', 1)),
       },
       home: new Home(),
     );

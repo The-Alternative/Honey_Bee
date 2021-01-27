@@ -6,7 +6,7 @@ class Development {
   int tempreture;
   int isActive;
   int childId;
-  int createdDate;
+  String createdDate;
   int id;
 
   Development(this.name, this.note, this.tall, this.weight, this.tempreture, this.isActive, this.childId, this.createdDate);
@@ -31,7 +31,7 @@ class Development {
   int get _tempreture => tempreture;
   int get _isActive => isActive;
   int get _childId => childId;
-  int get _createdDate => createdDate;
+  String get _createdDate => createdDate;
   int get _id => id;
 
   Map<String , dynamic> toMap(){

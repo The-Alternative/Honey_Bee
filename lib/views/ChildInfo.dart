@@ -8,7 +8,7 @@ import 'package:childrensdiary/views/ChildHealth.dart';
 import 'package:childrensdiary/views/Search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import 'AddDevelopment.dart';
 import 'AddEvent.dart';
 import 'AddHealthNote.dart';
@@ -31,6 +31,13 @@ class ChildInfoState extends State<ChildInfo>{
   String birthDate = '';
   String image = '';
   String isActive = '';
+  DateTime now = DateTime.now();
+  String formattedDate ;
+  int age;
+  int month;
+  int dayes;
+  DateTime birth;
+
 
   @override
   void initState(){
@@ -38,9 +45,15 @@ class ChildInfoState extends State<ChildInfo>{
     super.initState();
     name = widget.child.name;
     sex = widget.child.sex;
-    birthDate = '';
+    birthDate = widget.child.birthDate;
     image = '';
     isActive = '';
+    formattedDate = DateFormat("dd/MM/yyyy").format(now);
+    birth = DateTime.parse(birthDate);
+    age = calculateAge(birth);
+    month = calculateAgeMonth(birth);
+    dayes = calculateAgedays(birth);
+
   }
 
   @override
@@ -50,7 +63,7 @@ class ChildInfoState extends State<ChildInfo>{
       title: "Child Information",
       home: Container(
         child: Scaffold(
-          appBar:new AppBar(title: new Text('',textDirection: TextDirection.rtl,
+          appBar:new AppBar(title: new Text('',
               style: new TextStyle(color: Colors.black)),
             backgroundColor: Colors.amberAccent,
             actions: [
@@ -101,9 +114,9 @@ class ChildInfoState extends State<ChildInfo>{
                       new Text('م',style: TextStyle(color: Colors.grey,fontSize: 18.0),) ,
                       Padding(padding: EdgeInsets.only(left: 10.0)),
                       Expanded(
-                        child:new Text('08:30',style: TextStyle(color: Colors.grey,fontSize: 18.0),) ,
+                        child:new Text('${now.hour}:${now.minute}',style: TextStyle(color: Colors.grey,fontSize: 18.0),) ,
                       ),
-                      new Text('05/01/2021',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                      new Text('$formattedDate',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                       Padding(padding: EdgeInsets.only(left: 20.0)),
                     ],
                   ),
@@ -140,15 +153,15 @@ class ChildInfoState extends State<ChildInfo>{
                       Padding(padding: EdgeInsets.only(left:30.0)),
                       Text('يوم',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                       Padding(padding: EdgeInsets.only(left: 10.0)),
-                      Text('20',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                      Text('$dayes',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                       Padding(padding: EdgeInsets.only(left:15.0)),
                       Text('أشهر',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                       Padding(padding: EdgeInsets.only(left: 10.0)),
-                      Text('6',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                      Text('$month',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                       Padding(padding: EdgeInsets.only(left:15.0)),
                       Text('سنوات',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                       Padding(padding: EdgeInsets.only(left: 10.0)),
-                      Text('5',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                      Text('$age',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                       Padding(padding: EdgeInsets.only(left:30.0)),
                       Text(':',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                       Padding(padding: EdgeInsets.only(left: 1.0)),
@@ -277,13 +290,83 @@ class ChildInfoState extends State<ChildInfo>{
   void _childHabits(BuildContext context) async{
     String result = await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Habits()));
+        MaterialPageRoute(builder: (context) => Habits(widget.child)));
   }
 
   void _navigatToSearch(BuildContext context) async{
     String result = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Search(widget.child)));
+  }
+  calculateAge(DateTime birthDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age;
+  }
+  calculateAgeMonth(DateTime birthDate) {
+    if (birthDate != '') {
+
+
+        final now = new DateTime.now();
+
+        int years = now.year - birthDate.year;
+        int months = now.month - birthDate.month;
+        int days = now.day - birthDate.day;
+
+        if (months < 0 || (months == 0 && days < 0)) {
+          years--;
+          months += (days < 0 ? 11 : 12);
+        }
+
+        if (days < 0) {
+          final monthAgo = new DateTime(now.year, now.month - 1, birthDate.day);
+          days = now.difference(monthAgo).inDays + 1;
+        }
+
+
+       return months;
+    } else {
+      print('getTheKidsAge: date is empty');
+    }
+    return 0;
+  }
+  calculateAgedays(DateTime birthDate) {
+    if (birthDate != '') {
+
+
+      final now = new DateTime.now();
+
+      int years = now.year - birthDate.year;
+      int months = now.month - birthDate.month;
+      int days = now.day - birthDate.day;
+
+      if (months < 0 || (months == 0 && days < 0)) {
+        years--;
+        months += (days < 0 ? 11 : 12);
+      }
+
+      if (days < 0) {
+        final monthAgo = new DateTime(now.year, now.month - 1, birthDate.day);
+        days = now.difference(monthAgo).inDays + 1;
+      }
+
+
+      return days;
+    } else {
+      print('getTheKidsAge: date is empty');
+    }
+    return 0;
   }
 
 }

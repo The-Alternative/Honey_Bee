@@ -27,7 +27,12 @@ class ChildHealthState extends State<ChildHealth>{
   List<Health> childHealths =new List();
   Health list ;
   HealthController db = new HealthController();
-
+  String birthDate = '';
+  DateTime now = DateTime.now();
+  int age;
+  int month;
+  int dayes;
+  DateTime birth;
 
   @override
   void initState() {
@@ -42,6 +47,11 @@ class ChildHealthState extends State<ChildHealth>{
       });
 
     });
+    birthDate= widget.child.birthDate;
+    birth = DateTime.parse(birthDate);
+    age = calculateAge(birth);
+    month = calculateAgeMonth(birth);
+    dayes = calculateAgedays(birth);
   }
 
 
@@ -111,7 +121,7 @@ class ChildHealthState extends State<ChildHealth>{
                                 children: [
                                   Container(
                                     margin: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.5,top: 5,left: 5),
-                                    child: Text("05/12/2020"),
+                                    child: Text("${childHealths[posision].createdDate}"),
                                   ),
                                   Padding(padding: EdgeInsets.only(bottom: 15)),
                                   Row(
@@ -176,15 +186,15 @@ class ChildHealthState extends State<ChildHealth>{
                                       new Expanded(child: Text("")),
                                       Text('يوم',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                                       Padding(padding: EdgeInsets.only(left: 10.0)),
-                                      Text('20',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                      Text('$dayes',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                                       Padding(padding: EdgeInsets.only(left:15.0)),
                                       Text('أشهر',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                                       Padding(padding: EdgeInsets.only(left: 10.0)),
-                                      Text('6',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                      Text('$month',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                                       Padding(padding: EdgeInsets.only(left:15.0)),
                                       Text('سنوات',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                                       Padding(padding: EdgeInsets.only(left: 10.0)),
-                                      Text('5',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                      Text('$age',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                                       new Expanded(child: Text("")),
                                     ],
                                   ),
@@ -272,6 +282,76 @@ class ChildHealthState extends State<ChildHealth>{
     await Navigator.push(
         context,
         MaterialPageRoute(builder:(context) => ChildInfo(child)));
+  }
+  calculateAge(DateTime birthDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age;
+  }
+  calculateAgeMonth(DateTime birthDate) {
+    if (birthDate != '') {
+
+
+      final now = new DateTime.now();
+
+      int years = now.year - birthDate.year;
+      int months = now.month - birthDate.month;
+      int days = now.day - birthDate.day;
+
+      if (months < 0 || (months == 0 && days < 0)) {
+        years--;
+        months += (days < 0 ? 11 : 12);
+      }
+
+      if (days < 0) {
+        final monthAgo = new DateTime(now.year, now.month - 1, birthDate.day);
+        days = now.difference(monthAgo).inDays + 1;
+      }
+
+
+      return months;
+    } else {
+      print('getTheKidsAge: date is empty');
+    }
+    return 0;
+  }
+  calculateAgedays(DateTime birthDate) {
+    if (birthDate != '') {
+
+
+      final now = new DateTime.now();
+
+      int years = now.year - birthDate.year;
+      int months = now.month - birthDate.month;
+      int days = now.day - birthDate.day;
+
+      if (months < 0 || (months == 0 && days < 0)) {
+        years--;
+        months += (days < 0 ? 11 : 12);
+      }
+
+      if (days < 0) {
+        final monthAgo = new DateTime(now.year, now.month - 1, birthDate.day);
+        days = now.difference(monthAgo).inDays + 1;
+      }
+
+
+      return days;
+    } else {
+      print('getTheKidsAge: date is empty');
+    }
+    return 0;
   }
 
 }

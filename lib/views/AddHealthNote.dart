@@ -3,7 +3,7 @@ import 'package:childrensdiary/models/child.dart';
 import 'package:childrensdiary/models/health.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 
 
 class AddHealthNote extends StatefulWidget {
@@ -25,6 +25,8 @@ class AddHealthNoteState extends State<AddHealthNote>{
   TextEditingController _tallController;
   TextEditingController _weightController;
   TextEditingController _tempretureController;
+  DateTime now = DateTime. now();
+  String formattedDate ;
 
   @override
   void initState(){
@@ -35,6 +37,7 @@ class AddHealthNoteState extends State<AddHealthNote>{
     _tallController = new TextEditingController(text:"" );
     _weightController = new TextEditingController(text:"");
     _tempretureController = new TextEditingController(text:"" );
+    formattedDate = DateFormat("dd/MM/yyyy").format(now);
   }
 
 
@@ -45,7 +48,7 @@ class AddHealthNoteState extends State<AddHealthNote>{
       title: 'Welcome to Flutter',
       home: Container(
         child: Scaffold(
-          appBar:new AppBar(title: new Text('',textDirection: TextDirection.rtl,
+          appBar:new AppBar(title: new Text('',
               style: new TextStyle(color: Colors.black)),
             backgroundColor: Colors.amberAccent,
             actions: [
@@ -278,7 +281,7 @@ class AddHealthNoteState extends State<AddHealthNote>{
                                   int.parse(_tempretureController.text),
                                   1,
                                   widget.child.id,
-                                  1)).then((_) {
+                                  formattedDate)).then((_) {
                                 Navigator.pop(context,'save');
                               });
 

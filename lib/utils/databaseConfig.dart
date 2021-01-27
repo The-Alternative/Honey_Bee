@@ -52,32 +52,32 @@ class DatabaseConfig {
 
   void _oncreate(Database db, int newVersion) async {
     var childSql = "CREATE TABLE $childTable ($cloumnId INTEGER PRIMARY KEY ,"
-        "$cloumnName TEXT,$cloumnSex TEXT,$cloumnBirthDate INTEGER,$cloumnImage TEXT,$cloumnIsActive INTEGER)";
+        "$cloumnName TEXT,$cloumnSex TEXT,$cloumnBirthDate TEXT,$cloumnImage TEXT,$cloumnIsActive INTEGER)";
     await db.execute(childSql);
     var healthSql = "CREATE TABLE $healthTable ($cloumnId INTEGER PRIMARY KEY ,"
         "$cloumnName TEXT , $cloumnNote TEXT , $cloumnTall INTEGER , $cloumnWeight INTEGER ,"
-        "$cloumnTempreture INTEGER , $cloumnIsActive INTEGER , $cloumnCreatedDate INTEGER , $cloumnChildId INTEGER ,"
+        "$cloumnTempreture INTEGER , $cloumnIsActive INTEGER , $cloumnCreatedDate TEXT , $cloumnChildId INTEGER ,"
         "FOREIGN KEY ($cloumnChildId) REFERENCES $childTable ($cloumnId))";
     await db.execute(healthSql);
     var eventSql = "CREATE TABLE $eventTable ($cloumnId INTEGER PRIMARY KEY ,"
         "$cloumnName TEXT , $cloumnNote TEXT , $cloumnTall INTEGER , $cloumnWeight INTEGER ,"
-        "$cloumnTempreture INTEGER , $cloumnIsActive INTEGER , $cloumnCreatedDate INTEGER , $cloumnChildId INTEGER ,"
+        "$cloumnTempreture INTEGER , $cloumnIsActive INTEGER , $cloumnCreatedDate TEXT , $cloumnChildId INTEGER ,"
         "FOREIGN KEY ($cloumnChildId) REFERENCES $childTable ($cloumnId))";
     await db.execute(eventSql);
     var developmentSql = "CREATE TABLE $developmentTable ($cloumnId INTEGER PRIMARY KEY ,"
         "$cloumnName TEXT , $cloumnNote TEXT , $cloumnTall INTEGER , $cloumnWeight INTEGER ,"
-        "$cloumnTempreture INTEGER , $cloumnIsActive INTEGER , $cloumnCreatedDate INTEGER , $cloumnChildId INTEGER ,"
+        "$cloumnTempreture INTEGER , $cloumnIsActive INTEGER , $cloumnCreatedDate TEXT , $cloumnChildId INTEGER ,"
         "FOREIGN KEY ($cloumnChildId) REFERENCES $childTable ($cloumnId))";
     await db.execute(developmentSql);
     var habitSql = "CREATE TABLE $habitTable ($cloumnId INTEGER PRIMARY KEY ,"
         "$cloumnName TEXT ,"
-        " $cloumnIsActive INTEGER , $cloumnCreatedDate INTEGER , $cloumnTypeId INTEGER ,"
+        " $cloumnIsActive INTEGER , $cloumnCreatedDate TEXT , $cloumnTypeId INTEGER ,"
         "FOREIGN KEY ($cloumnTypeId) REFERENCES $habitTypeTable ($cloumnId))";
     await db.execute(habitSql);
     var habitTypeSql = "CREATE TABLE $habitTypeTable ($cloumnId INTEGER PRIMARY KEY ,$cloumnName TEXT )";
     await db.execute(habitTypeSql);
     var childHabitSql = "CREATE TABLE $childHabitTable ($cloumnId INTEGER PRIMARY KEY ,"
-        " $cloumnIsActive INTEGER , $cloumnCreatedDate INTEGER , $cloumnHabitId INTEGER ,$cloumnChildId INTEGER )";
+        " $cloumnIsActive INTEGER , $cloumnCreatedDate TEXT , $cloumnHabitId INTEGER ,$cloumnChildId INTEGER )";
     await db.execute(childHabitSql);
 //    var mediaSql = "CREATE TABLE $mediaTable ($cloumnId INTEGER PRIMARY KEY ,"
 //        "$cloumnMediaUrl TEXT ,"

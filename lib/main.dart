@@ -22,24 +22,24 @@ import 'controllers/eventController.dart';
 
 //List list1;
 void main() async{
-  var db = new ChildController();
-  WidgetsFlutterBinding.ensureInitialized();
+//  var db = new ChildController();
+//  WidgetsFlutterBinding.ensureInitialized();
 ////  int childSaved = await db.saveChild(
 ////    new Child('Ali', 'male',1, 'glfdmklghd', 0)
 ////  );
 ////  print("saved child : $childSaved");
-  Child list=await db.getChild(5);
-  print(list.name);
+//  Child list=await db.getChild(5);
+//  print(list.name);
 //
 //  print('----------------------');
-  var db2 = new EventController();
+//  var db2 = new EventController();
 //  WidgetsFlutterBinding.ensureInitialized();
 //  int healthSaved = await db2.saveHealth(
 //      new Health('ssssssss', 'ssssss', 143, 54, 37, 15, 15, 453)
 //  );
 //  print("saved health : $healthSaved");
-  List list1=await db2.getChildEvents(5);
-  print(list1[3]);
+//  List list1=await db2.getChildEvents(5);
+//  print(list1[3]);
 //   list1=await db2.getAllHealth();
 //  for(int i=5; i <list1.length; i++)
 ////    Health x = Health.map(list1[i]);

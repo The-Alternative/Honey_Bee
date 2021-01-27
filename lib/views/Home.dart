@@ -129,7 +129,7 @@ class HomeState extends State<Home>{
      await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => AddChild(
-          Child('', '', 0, '', 1)
+          Child('', '', '', '', 1)
         )));
     db.getAllChild().then((allChildren) {
       setState(() {

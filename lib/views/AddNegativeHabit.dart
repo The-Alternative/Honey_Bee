@@ -1,9 +1,9 @@
-import 'package:childrensdiary/controllers/developmentController.dart';
 import 'package:childrensdiary/controllers/eventController.dart';
+import 'package:childrensdiary/controllers/habitController.dart';
 import 'package:childrensdiary/controllers/healthController.dart';
 import 'package:childrensdiary/models/child.dart';
-import 'package:childrensdiary/models/development.dart';
 import 'package:childrensdiary/models/event.dart';
+import 'package:childrensdiary/models/habit.dart';
 import 'package:childrensdiary/models/health.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,21 +11,19 @@ import 'package:intl/intl.dart';
 
 
 
-class AddDevelopment extends StatefulWidget {
+class AddNegativeHabit extends StatefulWidget {
 //  final Health health;
-  final Child child;
-  AddDevelopment(this.child);
+
   @override
   State<StatefulWidget> createState() {
-    return new AddDevelopmentState();
+    return new AddNegativeHabitState();
   }
 
 }
 
-class AddDevelopmentState extends State<AddDevelopment>{
+class AddNegativeHabitState extends State<AddNegativeHabit>{
 
-  DevelopmentController db = new DevelopmentController();
-  TextEditingController _nameController;
+  HabitController db = new HabitController();
   TextEditingController _noteController;
   DateTime now = DateTime. now();
   String formattedDate ;
@@ -34,9 +32,7 @@ class AddDevelopmentState extends State<AddDevelopment>{
   void initState(){
     // TODO: implement initState
     super.initState();
-    _nameController = new TextEditingController(text: "");
     _noteController = new TextEditingController(text: "");
-
     formattedDate = DateFormat("dd/MM/yyyy").format(now);
   }
 
@@ -81,27 +77,27 @@ class AddDevelopmentState extends State<AddDevelopment>{
                       child: new TextField(
                         controller: _noteController,
                         textAlign: TextAlign.right,
-                        style: TextStyle(fontSize: 16.0 , color: Colors.amberAccent,),cursorColor: Colors.amberAccent,
+                        style: TextStyle(fontSize: 16.0 , color: Colors.redAccent,),cursorColor: Colors.redAccent,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(5)),
-                              borderSide: BorderSide(width: 1,color: Colors.amberAccent),
+                              borderSide: BorderSide(width: 1,color: Colors.redAccent),
                             ),
-                            hintText: 'إضافة ملاحظة',
+                            hintText: 'إضافة عادة سلبية',
                             hintStyle: TextStyle(fontSize: 16),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(5)),
-                              borderSide: BorderSide(width: 1,color: Colors.amberAccent),
+                              borderSide: BorderSide(width: 1,color: Colors.redAccent),
                             ),
                             labelStyle: TextStyle(
-                                color: Colors.amberAccent
+                                color: Colors.redAccent
                             ),
 
                             contentPadding: EdgeInsets.only(top: 30,bottom: 30,right: 20,left: 10),
                             fillColor: Colors.white70,
 
-                            prefixIcon: Icon(Icons.attach_file,color: Colors.black,)
+
                         ),
                       ),
                     )
@@ -129,14 +125,10 @@ class AddDevelopmentState extends State<AddDevelopment>{
 //                                Navigator.pop(context,'update');
 //                              });
 //                            }else{
-                            db.saveDevelopment(Development(
-                                "sss",
+                            db.savehabit(Habit(
                                 _noteController.text,
                                 1,
                                 1,
-                                1,
-                                1,
-                                widget.child.id,
                                 formattedDate)).then((_) {
                               Navigator.pop(context,'save');
                             });

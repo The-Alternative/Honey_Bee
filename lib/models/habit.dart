@@ -2,7 +2,7 @@ class Habit {
   String name;
   int isActive;
   int typeId;
-  int createdDate;
+  String createdDate;
   int id;
 
   Habit(this.name, this.isActive, this.typeId, this.createdDate);
@@ -19,7 +19,7 @@ class Habit {
   String get _name => name;
   int get _isActive => isActive;
   int get _typeId => typeId;
-  int get _createdDate => createdDate;
+  String get _createdDate => createdDate;
   int get _id => id;
 
   Map<String , dynamic> toMap(){

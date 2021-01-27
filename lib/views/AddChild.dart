@@ -2,6 +2,7 @@ import 'package:childrensdiary/controllers/childController.dart';
 import 'package:childrensdiary/models/child.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 
 
@@ -16,13 +17,14 @@ class AddChild extends StatefulWidget {
 }
 
 class AddChildState extends State<AddChild>{
-
+  DateTime _selectedDate;
   ChildController db = new ChildController();
   TextEditingController _nameController;
   TextEditingController _sexController;
   TextEditingController _birthDateController;
   TextEditingController _imageController;
   TextEditingController _isActiveController;
+
 
 @override
 void initState(){
@@ -33,6 +35,7 @@ void initState(){
   _birthDateController = new TextEditingController(text:"${widget.child.birthDate}" );
   _imageController = new TextEditingController(text: widget.child.image);
   _isActiveController = new TextEditingController(text:"${widget.child.isActive}" );
+//  birth = 0;
 }
 
 
@@ -43,7 +46,7 @@ void initState(){
       title: 'Welcome to Flutter',
       home: Container(
         child: Scaffold(
-          appBar:new AppBar(title: new Text('',textDirection: TextDirection.rtl,
+          appBar:new AppBar(title: new Text('',
               style: new TextStyle(color: Colors.black)),
             backgroundColor: Colors.amberAccent,
             actions: [
@@ -151,7 +154,11 @@ void initState(){
                     child: new Container(
                       width: MediaQuery.of(context).size.width *0.9,
                       child: new TextField(
+                        focusNode: AlwaysDisabledFocusNode(),
                         controller: _birthDateController,
+                        onTap: () {
+                          _selectDate(context);
+                        },
                         textAlign: TextAlign.right,
                         keyboardType: TextInputType.datetime ,
                         style: TextStyle(fontSize: 18.0 , color: Colors.amberAccent,),cursorColor: Colors.amberAccent,
@@ -196,7 +203,7 @@ void initState(){
                               db.saveChild(Child(
                                   _nameController.text,
                                   _sexController.text,
-                                  int.parse(_birthDateController.text),
+                                  _birthDateController.text,
                                   'sssssssss',
                                   1)).then((_) {
                                     Navigator.pop(context,'save');
@@ -221,4 +228,39 @@ void initState(){
       ),
     );
   }
+  _selectDate(BuildContext context) async {
+    DateTime newSelectedDate = await showDatePicker(
+        context: context,
+        initialDate: _selectedDate != null ? _selectedDate : DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2040),
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+            data: ThemeData.dark().copyWith(
+              colorScheme: ColorScheme.dark(
+                primary: Colors.white,
+                onPrimary: Colors.deepOrange,
+                surface: Colors.grey,
+                onSurface: Colors.white,
+              ),
+              dialogBackgroundColor: Colors.amberAccent,
+            ),
+            child: child,
+          );
+        });
+
+    if (newSelectedDate != null) {
+      _selectedDate = newSelectedDate;
+      _birthDateController
+        ..text = DateFormat("yyyy-MM-dd hh:mm:ss").format(_selectedDate)
+        ..selection = TextSelection.fromPosition(TextPosition(
+            offset: _birthDateController.text.length,
+            affinity: TextAffinity.upstream));
+
+    }
+  }
+}
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }

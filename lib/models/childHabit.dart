@@ -2,7 +2,7 @@ class ChildHabit {
   int isActive;
   int habitId;
   int childId;
-  int createdDate;
+  String createdDate;
   int id;
 
   ChildHabit( this.isActive, this.habitId,this.childId, this.createdDate);
@@ -20,7 +20,7 @@ class ChildHabit {
   int get _isActive => isActive;
   int get _habitId => habitId;
   int get _childId => childId;
-  int get _createdDate => createdDate;
+  String get _createdDate => createdDate;
   int get _id => id;
 
   Map<String , dynamic> toMap(){

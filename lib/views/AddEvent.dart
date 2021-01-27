@@ -5,6 +5,7 @@ import 'package:childrensdiary/models/event.dart';
 import 'package:childrensdiary/models/health.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 
 
@@ -24,6 +25,8 @@ class AddEventState extends State<AddEvent>{
   EventController db = new EventController();
   TextEditingController _nameController;
   TextEditingController _noteController;
+  DateTime now = DateTime. now();
+  String formattedDate ;
 
   @override
   void initState(){
@@ -31,6 +34,7 @@ class AddEventState extends State<AddEvent>{
     super.initState();
     _nameController = new TextEditingController(text: "");
     _noteController = new TextEditingController(text: "");
+    formattedDate = DateFormat("dd/MM/yyyy").format(now);
   }
 
 
@@ -41,7 +45,7 @@ class AddEventState extends State<AddEvent>{
       title: 'Welcome to Flutter',
       home: Container(
         child: Scaffold(
-          appBar:new AppBar(title: new Text('',textDirection: TextDirection.rtl,
+          appBar:new AppBar(title: new Text('',
               style: new TextStyle(color: Colors.black)),
             backgroundColor: Colors.amberAccent,
             actions: [
@@ -130,7 +134,7 @@ class AddEventState extends State<AddEvent>{
                                 1,
                                 1,
                                 widget.child.id,
-                                1)).then((_) {
+                                formattedDate)).then((_) {
                               Navigator.pop(context,'save');
                             });
 

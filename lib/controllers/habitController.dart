@@ -26,6 +26,20 @@ class HabitController {
     return result.toList();
   }
 
+  Future<List> getNegaiveHabits() async{
+    var dbClient = await db.honeyBee;
+    var sql ="SELECT * FROM $habitTable WHERE $cloumnTypeId = 1";
+    List result = await dbClient.rawQuery(sql);
+    return result.toList();
+  }
+
+  Future<List> getPositiveHabits() async{
+    var dbClient = await db.honeyBee;
+    var sql ="SELECT * FROM $habitTable WHERE $cloumnTypeId = 2";
+    List result = await dbClient.rawQuery(sql);
+    return result.toList();
+  }
+
   Future<int> getHabitsCount () async{
     var dbClient = await db.honeyBee;
     var sql ="SELECT COUNT(*) FROM $habitTable";

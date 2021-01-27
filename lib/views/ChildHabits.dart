@@ -21,12 +21,7 @@ class ChildHabits extends StatefulWidget {
 }
 
 class ChildHabitsState extends State<ChildHabits>{
-  bool _value =false;
-  bool _value1 =false;
-  bool _value2 =false;
-  bool _value3 =false;
-  bool _value4 =false;
-  bool _value5 =false;
+
 
   @override
   Widget build(BuildContext context) {

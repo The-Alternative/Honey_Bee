@@ -1,7 +1,7 @@
 class Child {
   String name;
   String sex;
-  int birthDate;
+  String birthDate;
   String image;
   int isActive;
   int id;
@@ -20,7 +20,7 @@ class Child {
 
   String get _name => name;
   String get _sex => sex;
-  int get _birthDate => birthDate;
+  String get _birthDate => birthDate;
   String get _image => image;
   int get _isActive => isActive;
   int get _id => id;
