@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 
-
-
-
 class Manual_entry extends StatefulWidget {
   @override
   _Manual_entryState createState() => _Manual_entryState();
 }
 
 class _Manual_entryState extends State<Manual_entry> {
-  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Amiri');
-  var style2 = TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Amiri');
+  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Times');
+  var style2 = TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Times');
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -27,10 +24,11 @@ class _Manual_entryState extends State<Manual_entry> {
     return ListView(
       children: <Widget>[
         Padding(
-            padding: EdgeInsets.only(bottom: 50.0),
+            padding: EdgeInsets.only(bottom: 25.0,top: 25),
             child: ListTile(
               title: Text('المواعيد', style: style1),
-              trailing: Icon(Icons.date_range, size: 100, color: Colors.blue[500],),)),
+              trailing: Image.asset("assets/calendar2.png" ,
+    width: 75, height: 75,))),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
@@ -41,12 +39,13 @@ class _Manual_entryState extends State<Manual_entry> {
                 child: TextFormField(style: style2, expands: false,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: Colors.amber),)),
                 ), flex: 2,),
               Expanded(
                 child:
-                Icon(Icons.date_range, size: 75, color: Colors.teal[300]), flex: 1,)
+                Image.asset("assets/calendar3.png" ,
+                  width: 60, height: 60,), flex: 1,)
             ],
           ),
         ),
@@ -59,20 +58,23 @@ class _Manual_entryState extends State<Manual_entry> {
               Expanded(
                 child: TextFormField(style: style2, expands: false, keyboardType: TextInputType.number,
                   decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.amber),)),
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.amber),),),
                 ), flex: 2,
               ),
               Expanded(
-                child: Icon(Icons.access_time_sharp,
-                    size: 75, color: Colors.teal[300]),
+                child:  Image.asset("assets/clock.png" ,
+                  width: 60, height: 60,),
                 flex: 1,)
             ],
           ),
         ),
-        Divider(
-          color: Colors.amber,
-          thickness: 2,
+        Padding(
+          padding: const EdgeInsets.only(left: 15,right: 15),
+          child: Divider(
+            color: Colors.amber,
+            thickness: 1,
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
@@ -86,11 +88,12 @@ class _Manual_entryState extends State<Manual_entry> {
                 child: TextFormField(
                   style: style2, expands: false, keyboardType: TextInputType.number,
                   decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: Colors.amber),)),
                 ), flex: 2,),
               Expanded(
-                child: Icon(Icons.date_range, size: 75, color: Colors.teal[300]), flex: 1,)
+                child: Image.asset("assets/calendar3.png" ,
+                  width: 60, height: 60,), flex: 1,)
             ],
           ),
         ),
@@ -103,27 +106,43 @@ class _Manual_entryState extends State<Manual_entry> {
               Expanded(child: Text("الساعة", style: style2,), flex: 1,),
               Expanded(child: TextFormField(style: style2, expands: false, keyboardType: TextInputType.number,
                   decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: Colors.amber),)),), flex: 2,),
               Expanded(
-                child: Icon(Icons.access_time_sharp, size: 75, color: Colors.teal[300]), flex: 1,)
+                child: Image.asset("assets/clock.png" ,
+                  width: 60, height: 60,), flex: 1,)
             ],
+          ),
+        ), Padding(
+          padding: const EdgeInsets.only(left: 15,right: 15),
+          child: Divider(
+            color: Colors.amber,
+            thickness: 1,
           ),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>
           [
-            Expanded(
-              child: FlatButton(child: Text('حفظ', style: style2,),
-                  onPressed: () {}), flex: 1,),
-            Expanded(
-              child: FlatButton(
-                padding: EdgeInsets.only(),
-                child: Text('الغاء الأمر', style: style2,),
-                onPressed: () {},
-              ), flex: 0,),
-          ],
+          Image.asset("assets/add_alarm.png" ,
+           width: 25, height: 25,color: Colors.teal,)],),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>
+            [
+              Expanded(
+                child: FlatButton(child: Text('حفظ', style: style2,),
+                    onPressed: () {}), flex: 1,),
+              Expanded(
+                child: FlatButton(
+                  padding: EdgeInsets.only(),
+                  child: Text('الغاء الأمر', style: style2,),
+                  onPressed: () {},
+                ), flex:1,),
+            ],
+          ),
         )
       ],
     );

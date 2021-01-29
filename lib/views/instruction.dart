@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ssd/models/const_data.dart';
+import '../models/const_data.dart';
 
 class IM {
   String name;
@@ -30,8 +30,8 @@ class _InstructionState extends State<Instruction> {
   ];
   int _radioValue = 0;
   String instTitle = "";
-  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Amiri');
-  var style2 = TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Amiri');
+  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Times');
+  var style2 = TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Times');
   TextEditingController instructionController = TextEditingController();
 
   @override
@@ -57,14 +57,11 @@ class _InstructionState extends State<Instruction> {
     return ListView(
       children: <Widget>[
         Padding(
-            padding: EdgeInsets.only(bottom: 50.0),
+            padding: EdgeInsets.only(bottom: 25.0,top:25),
             child: ListTile(
               title: Text('التعليمات', style: style1),
-              trailing: Icon(
-                Icons.date_range,
-                size: 100,
-                color: Colors.blue[500],
-              ),
+              trailing: Image.asset("assets/medical-book.png" ,
+                  width: 120, height: 120),
             )),
         Column(
           children: IList.map((data) => RadioListTile(

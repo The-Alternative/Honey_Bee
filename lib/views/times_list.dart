@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:ssd/models/db_models.dart';
-import 'package:ssd/utils/database_helper.dart';
+import '../models/db_models.dart';
+import '../utils/database_helper.dart';
 
 class Time_list extends StatefulWidget {
   @override
@@ -12,10 +12,27 @@ class Time_list extends StatefulWidget {
 }
 
 class Time_listState extends State<Time_list> {
+  DateTime selectedDate = DateTime.now();
 
-  var style1 = TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Amiri');
-  var style2 = TextStyle(fontSize: 14, fontWeight: FontWeight.normal, fontFamily: 'Amiri');
-  var style4 = TextStyle(fontSize: 14, fontWeight: FontWeight.normal, fontFamily: 'Amiri', color: Colors.white);
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        print('$selectedDate');
+
+      });
+  }
+  DateTime _alarmTime;
+  String _alarmTimeString;
+
+  var style1 = TextStyle(fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Times');
+  var style2 = TextStyle(fontSize: 16, fontWeight: FontWeight.normal, fontFamily: 'Times');
+  var style4 = TextStyle(fontSize: 16, fontWeight: FontWeight.normal, fontFamily: 'Times', color: Colors.white);
   String _ndate = DateFormat.yMMMd().format(DateTime.now());
   String _clock = DateTime.now().hour.toString() + ":" + DateTime.now().minute.toString();
   DatabaseHelper databaseHelper = DatabaseHelper();
@@ -33,19 +50,24 @@ class Time_listState extends State<Time_list> {
   void _onLoading() {
     setState(() {
       _loading = true;
+
       new Future.delayed(new Duration(seconds: 1), _login);
     });}
   Future _login() async{
     setState((){
       addCardListView();
+      databaseHelper.testDay();
 
-        print('lengthcard;ist:${cardList.length}');
+
+      //  print('lengthcard;ist:${cardList.length}');
       cardList.clear();
         _loading = false;
     });
   }
+
   @override
   Widget build(BuildContext context) {
+
     if (daysList == null ) {
       daysList= List<MedicineDays>();
       addDaysListView();
@@ -54,88 +76,7 @@ class Time_listState extends State<Time_list> {
       cardList= List<Card_info>();
      addCardListView();
     }
-    // if(Timesupdate.res2 ){
-    //   addTimesListView();
-    //   debugPrint("Timesupdate");
-    //   //Time_listState();
-    //   Timesupdate.res2=false;
-    // }
-  //  addTimesListView();
-    //updateCardInfo();
-    // return Scaffold(
-    //   body: getTimesListView(),
-    // );
     return build2(context);
-  }
-
-  ListView getTimesListView() {
-    debugPrint("note");
-    return ListView.builder(
-        itemCount: count2,shrinkWrap:true,
-        itemBuilder: (BuildContext context, int position) {
-          return ListView(children: <Widget>[ListView.builder(
-      itemCount: count,shrinkWrap:true,physics: ClampingScrollPhysics(),
-
-            itemBuilder: (BuildContext context, int position) {
-        return Card(color: Colors.white, elevation: 5.0, shadowColor: Colors.amber,
-            child: Column(children: <Widget>[
-              Row(children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(left: 10.0, right: 15),
-                  child: Image.asset("images/med.png",
-                      width: 40, height: 40, filterQuality: FilterQuality.low),
-                ),
-                Text("الأدوية ", style: TextStyle(color: Colors.black, fontSize: 15),),
-                Padding(
-                  padding: const EdgeInsets.only(right: 100.0, left: 15),
-                  child: Icon(Icons.alarm, size: 20, color: Colors.amber,),
-                ),
-                Text(_clock)
-              ]),
-              Divider(color: Colors.amber, thickness: 2,
-              ),
-              ListTile(
-                leading: CircleAvatar(),
-                title: Text(this.cardList[position].medicine,),
-                subtitle: Text(this.cardList[position].person_name),
-                trailing: Text(""),
-                onTap: () {
-                  debugPrint("ListTile Tapped");
-                  // navigateToDetail(this.noteList[position],'Edit ');
-                },
-              ),
-              Padding(padding: const EdgeInsets.only(right: 75.0), child: Text("1ساعة 35 دقيقة"),),
-              Divider(color: Colors.amber, thickness: 1,
-              ),
-              Row(children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0, right: 75, left: 75),
-                  child: MaterialButton(
-                      clipBehavior: Clip.hardEdge,
-                      animationDuration: Duration(milliseconds: 5),
-                      color: Colors.green,
-                      padding: EdgeInsets.only(
-                          left: 35, right: 35, top: 15, bottom: 0),
-                      child: Text("تم", style: TextStyle(color: Colors.white, fontSize: 15),),
-                      onPressed: () {
-                        getDayName("");
-                       // cardList=List<Card_info>();
-                     //   print(cardList.length);
-                    // if(cardList!=null)
-                  // print(cardList.elementAt(0).medicine);
-
-
-                      }),
-                ),
-                Divider(thickness: 2, height: 5,),
-                IconButton(
-                    icon: Icon(Icons.delete, size: 30, color: Colors.blue,), onPressed: () {
-                      _delete(context, cardList[position].diagId);
-                    }),
-              ])
-            ]));
-      },
-    )]); });
   }
   Widget build2(BuildContext context) {
     //if (!loaded) _loadZones();
@@ -282,6 +223,7 @@ class Time_listState extends State<Time_list> {
       {
         if(cardList[i].dayesId== id)
           selecttimesList.add(cardList[i]);
+       //print ('${ cardList[i].medicine}');
       }
    return ListView(physics: ClampingScrollPhysics(),
        shrinkWrap: true, children:<Widget> [
@@ -295,13 +237,13 @@ class Time_listState extends State<Time_list> {
                Container(color: Colors.amber,
                  child: Row(children: <Widget>[
                    Padding(
-                     padding: EdgeInsets.only(left: 15.0, right: 15,top: 5,bottom: 5), child:Image.asset("images/med.png" ,
+                     padding: EdgeInsets.only(left: 15.0, right: 15,top: 5,bottom: 5), child:Image.asset("assets/med.png" ,
                          width: 40, height: 40),
                    ) ,
                    Text("الأدوية ", style: style1),
                    Padding(
                      padding: const EdgeInsets.only(right: 100.0, left: 15),
-                     child: Icon(Icons.alarm, size: 20, color: Colors.amber,),
+                     child: Icon(Icons.alarm, size: 20, color: Colors.green,),
                    ),
                    Text('${selecttimesList[ii].day_time}')
                  ]),
@@ -331,14 +273,15 @@ class Time_listState extends State<Time_list> {
                        splashColor: Colors.white10,
                        color: Colors.green,
                        onPressed: () {
-                         getDayName(daysList.elementAt(0).dayDate);
-                         /* ... */
+
+                         getAccept(selecttimesList[ii].person_name);/* ... */
                        })
                  ),
                  Divider(thickness: 2, height: 5,),
                  IconButton(
                      icon: Icon(Icons.delete, size: 30, color: Colors.blue,), onPressed: () {
-                  // _delete(context, cardList[position].diagId);
+                 _delete(context, cardList[ii].timesId,cardList[ii].dayesId);
+                // print('${cardList[ii].timesId}');
                  }),
                ])
              ]));
@@ -348,27 +291,152 @@ class Time_listState extends State<Time_list> {
     //   textAlign: TextAlign.start,
     // );
   }
+     getAccept(String pername){
+
+       _alarmTimeString = DateFormat('HH:mm').format(DateTime.now());
+       showModalBottomSheet(
+           useRootNavigator: true,
+           context: context,
+           clipBehavior: Clip.antiAlias,
+           shape: RoundedRectangleBorder(
+             borderRadius: BorderRadius.vertical(
+               top: Radius.circular(0),
+             ),
+           ),
+           builder: (context) {
+             return StatefulBuilder(
+               builder: (context, setModalState) {
+                 return
+                   Container(height: 2000,
+                     child: Column(mainAxisAlignment: MainAxisAlignment.start,
+
+                       children: [
+                         ListTile(
+                             title: Padding(
+                               padding: const EdgeInsets.only(right: 75),
+                               child: Text('تناول عدد 1 كبسولة',textAlign: TextAlign.right,),
+                             ),
+                             subtitle:Padding(
+                               padding: EdgeInsets.only(right: 85),
+                               child: Text(pername,textAlign: TextAlign.right),
+                             )
+                         ),
+                         ListTile(
+                           title: Divider(color: Colors.amber,thickness: 2,),
+                         )
+                         , Row(mainAxisAlignment: MainAxisAlignment.center,
+                           children: <Widget>[
+                             Padding(
+                               padding: const EdgeInsets.only(right: 120),
+                               child: IconButton(icon:Image.asset("assets/clock.png" ,
+                                   width: 75, height: 75) ,onPressed: () async {
+                                 var selectedTime =
+                                 await showTimePicker(
+                                   context: context,
+                                   initialTime:
+                                   TimeOfDay.now(),
+                                 ); if (selectedTime != null) {
+                                   final now = DateTime.now();
+                                   var selectedDateTime =
+                                   DateTime(
+                                       now.year,
+                                       now.month,
+                                       now.day,
+                                       selectedTime.hour,
+                                       selectedTime
+                                           .minute);
+                                   _alarmTime =
+                                       selectedDateTime;
+                                   setModalState(() {
+                                     _alarmTimeString =
+                                         DateFormat('HH:mm')
+                                             .format(
+                                             selectedDateTime);
+                                   });
+                                 }
+
+                               },),
+                             ),
+                             IconButton(icon:Image.asset("assets/calendarr.png" ,
+                                 width: 120, height: 120) ,onPressed: () async {
+                               final DateTime picked = await showDatePicker(
+                                   context: context,
+                                   initialDate: selectedDate,
+                                   firstDate: DateTime.now(),
+                                   lastDate: DateTime(2101));
+                               if (picked != null && picked != selectedDate)
+                                 setModalState(() {
+                                   selectedDate = picked;
+                                   print('$selectedDate');
+
+                                 });
+                             },)
+                           ],
+                         ),
+                         Row(mainAxisAlignment: MainAxisAlignment.center,
+                           children: <Widget>[
+                             Padding(
+                               padding: const EdgeInsets.only(right: 20
+                               ),
+                               child: Text(_alarmTimeString),
+                             ),
+                             Padding(
+                               padding: const EdgeInsets.only(left: 75),
+                               child: Text("${selectedDate}".substring(0,10)),
+                               //  ${selectedDate.toLocal()}".split(' ')[0]
+                             )
+                           ],
+                         ),Row(mainAxisAlignment: MainAxisAlignment.center,
+                           children: <Widget>[
+                             Padding(
+                               padding: const EdgeInsets.only(right: 25),
+                               child:  FloatingActionButton.extended(
+                                 onPressed: (){
+                                   Navigator.pop(context);
+                                 },
+                                 icon: Icon(Icons.cancel_outlined),
+                                 label: Text('الغاء الأمر'),backgroundColor: Colors.red,
+                               ),
+                             ),
+                             FloatingActionButton.extended(
+                               onPressed: (){
+                                 _onLoading();
+                                 Navigator.pop(context);
+                                    },
+                               icon: Icon(Icons.alarm),
+                               label: Text('حفظ'),
+                             )
+                           ],
+                         ),
+                       ],
+                     ),
+                   );
+               },
+             );
+
+       });}
   String  getDayName(String s)
-  {
-    var arr = List(3);
-  arr = s.split('/');
-  int _day = int.parse(arr[2]);
-   int _month = int.parse(arr[1]);
-   int _year = int.parse(arr[0]);
+    {
+      var arr = List(3);
+    arr = s.split('/');
+    int _day = int.parse(arr[2]);
+     int _month = int.parse(arr[1]);
+     int _year = int.parse(arr[0]);
     var dforma =DateTime(_year,_month,_day);
     var now = DateTime.now();
     var dna =DateFormat.EEEE().format(dforma);
     return '$dna';
   }
+
   addCardListView(){
     //final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     Future<List<Card_info>> cardListFuture = databaseHelper.getAllIds();
     cardListFuture.then((cardList) {
       setState(() {
-        debugPrint("list has change");
+        //debugPrint("list has change");
         this.cardList = cardList;
         this.count = cardList.length;
-         print(cardList.length);
+        // print(cardList.length);
 
       });
   });
@@ -378,15 +446,14 @@ class Time_listState extends State<Time_list> {
     Future<List<MedicineDays>>daysFuture = databaseHelper.getmidDayesList();
     daysFuture.then((DaysList) {
       setState(() {
-        debugPrint("list has change");
+        //debugPrint("list has change");
         this.daysList = DaysList;
         this.count2 = DaysList.length;
-        print(DaysList.elementAt(0).dayDate);
-
+       // print(DaysList.elementAt(0).dayDate);
       });
     });
     int a= daysList.length;
-    print('lengthday:$a');
+    //print('lengthday:$a');
   }
   // addTimesListView(){
   // //  final Future<Database> dbFuture = databaseHelper.initializeDatabase();
@@ -419,11 +486,12 @@ class Time_listState extends State<Time_list> {
 
   }
 
-  void _delete(BuildContext context, int id) async {
-    int result = await databaseHelper.deleteDiagon(id);
+  void _delete(BuildContext context, int id,int day) async {
+    int result = await databaseHelper.deleteDayTimes(id,day);
     if (result != 0) {
-      _showSnackBar(context, ' Deleted Successfully');
+     // _showSnackBar(context, ' Deleted Successfully');
       addCardListView();
+      addDaysListView();
     }
   }
 

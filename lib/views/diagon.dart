@@ -1,5 +1,5 @@
+import '../models/const_data.dart';
 import 'package:flutter/material.dart';
-import 'package:ssd/models/const_data.dart';
 
 class Diagonsis extends StatefulWidget {
   @override
@@ -9,8 +9,8 @@ class _DiagonsisState extends State<Diagonsis> {
 
   TextEditingController path_diag = TextEditingController();
   TextEditingController doct_name = TextEditingController();
-  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Amiri');
-  var style2 = TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Amiri');
+  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Times');
+  var style2 = TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Times');
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +33,11 @@ class _DiagonsisState extends State<Diagonsis> {
   Widget get_Body() {
     return ListView(children: <Widget>[
       Padding(
-          padding: EdgeInsets.only(bottom: 50.0),
+          padding: EdgeInsets.only(bottom: 50.0,top: 25,left: 5),
           child: ListTile(
             title: Text('التشخيص', style: style1),
-            trailing: Icon(
-              Icons.dashboard_customize,
-              size: 100,
-              color: Colors.blue[500],
-            ),
+            trailing: Image.asset("assets/doctor.png" ,
+              width: 150, height: 150,),
           )),
       Padding(
           padding: EdgeInsets.only(right: 15.0, left: 15, bottom: 15, top: 5),

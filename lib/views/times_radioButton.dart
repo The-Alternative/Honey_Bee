@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ssd/Pages/manual_entry.dart';
-import 'package:ssd/models/const_data.dart';
-import 'package:ssd/utils/notifiers.dart';
+import '../views/manual_entry.dart';
+import '../models/const_data.dart';
+import '../utils/notifiers.dart';
 
 class Radiooo extends StatefulWidget {
   @override
@@ -32,8 +32,8 @@ class RadioGroupWidget extends State<Radiooo> {
   int id = 0;
   List<TM> fList = [TM(index: 1, name: "يوميا",), TM(index: 2, name: "أسبوعيا",), TM(index: 3, name: "شهريا",),
     TM(index: 4, name: "سنوي",), TM(index: 5, name: "أيام محددة من الأسبوع",), TM(index: 6, name: "إدخال يدوي",),];
-  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Amiri');
-  var style2 = TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Amiri');
+  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Times');
+  var style2 = TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Times');
   TextEditingController times_numController = TextEditingController();
 
   Widget build(BuildContext context) {
@@ -55,7 +55,8 @@ class RadioGroupWidget extends State<Radiooo> {
             padding: EdgeInsets.only(bottom: 2.0, top: 5),
             child: ListTile(
               title: Text('المواعيد', style: style1,),
-              trailing: Icon(Icons.date_range, size: 100, color: Colors.blue[500],),
+              trailing: Image.asset("assets/calendar2.png" ,
+                  width: 150, height: 150),
             )),
         Column(
           children: fList
@@ -294,7 +295,7 @@ class RadioGroupWidget extends State<Radiooo> {
                   mainAxisSize: MainAxisSize.min,
                   children: dayes_list
                       .map((e) => CheckboxListTile(
-                            title: Text(e),
+                            title: Text(e,),
                             onChanged: (value) {
                               value
                                   ? _multipleNotifier.addItem(e)

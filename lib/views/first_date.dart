@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:ssd/models/const_data.dart';
+import '../models/const_data.dart';
 
 class First_date extends StatefulWidget {
   @override
@@ -8,8 +8,8 @@ class First_date extends StatefulWidget {
 }
 
 class _First_dateState extends State<First_date> {
-  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Amiri');
-  var style2 = TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Amiri');
+  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Times');
+  var style2 = TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Times');
   TextEditingController dateController = TextEditingController();
   TextEditingController clockController = TextEditingController();
 
@@ -35,14 +35,11 @@ class _First_dateState extends State<First_date> {
     return ListView(
       children: <Widget>[
         Padding(
-            padding: EdgeInsets.only(bottom: 50.0),
+            padding: EdgeInsets.only(bottom: 25.0,top: 25),
             child: ListTile(
               title: Text('تاريخ البدء', style: style1),
-              trailing: Icon(
-                Icons.date_range,
-                size: 100,
-                color: Colors.blue[500],
-              ),
+              trailing: Image.asset("assets/sogatsu.png" ,
+                width: 75, height: 75),
             )),
         Padding(
           padding: const EdgeInsets.all(16.0),
@@ -90,8 +87,8 @@ class _First_dateState extends State<First_date> {
                 flex: 2,
               ),
               Expanded(
-                child:
-                    Icon(Icons.date_range, size: 75, color: Colors.teal[300]),
+                child:Image.asset("assets/calendar3.png" ,
+                    width: 50, height: 50),
                 flex: 1,
               ),
             ],
@@ -130,18 +127,15 @@ class _First_dateState extends State<First_date> {
                 flex: 2,
               ),
               Expanded(
-                child: Icon(
-                  Icons.access_time_sharp,
-                  size: 75,
-                  color: Colors.teal[300],
-                ),
+                child:Image.asset("assets/clock.png" ,
+                    width: 50, height: 50),
                 flex: 1,
               )
             ],
           ),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Expanded(
               child: FlatButton(
@@ -167,7 +161,7 @@ class _First_dateState extends State<First_date> {
                   fail_moveToLastScreen(context);
                 },
               ),
-              flex: 0,
+              flex: 1,
             ),
           ],
         )

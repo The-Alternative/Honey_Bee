@@ -1,4 +1,4 @@
-import 'package:ssd/models//const_data.dart';
+import 'package:clock_app/models/const_data.dart';
 import 'package:flutter/material.dart';
 
 class SingleNotifier extends ChangeNotifier {

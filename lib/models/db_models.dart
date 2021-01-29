@@ -1,3 +1,47 @@
+class MedicineInfo {
+  int medId;
+  String medTitle;
+  String medform;
+  int diagonid;
+
+  MedicineInfo(
+      {this.medId,
+        this.medTitle,
+        this.medform, this.diagonid});
+
+  factory MedicineInfo.fromMap(Map<String, dynamic> json) => MedicineInfo(
+    medId: json["id"],
+    medTitle: json["title"],
+    medform: json["form"],
+    diagonid:json["d_id"],
+  );
+  Map<String, dynamic> toMap() => {
+    "id": medId,
+    "title": medTitle,
+    "form": medform,
+    "d_id":diagonid,
+  };
+}
+class TestDay {
+  int id;
+  int count;
+
+  TestDay(
+      {this.id,
+        this.count,
+        });
+
+  factory TestDay.fromMap(Map<String, dynamic> json) => TestDay(
+    id: json["ddd"],
+    count: json["ccc"],
+  );
+  Map<String, dynamic> toMap() => {
+    "ddd": id,
+    "ccc": count,
+
+  };
+}
+
 class Medicine {
   int _medId;
   String _medTitle;
@@ -223,7 +267,6 @@ class Diagon {
 
 class MedicineDays {
   int _dayesId;
-  int _digonId;
   int _sortn;
   int get sortn => _sortn;
   set sortn(int value) {
@@ -231,16 +274,11 @@ class MedicineDays {
   }
 
   String _dayDate;
-  MedicineDays(this._digonId, this._dayDate,this._sortn,[this._dayesId]);
+  MedicineDays(this._dayDate,this._sortn,[this._dayesId]);
   MedicineDays.WithId();
   int get dayesId => _dayesId;
   set dayesId(int value) {
     _dayesId = value;
-  }
-  int get digonId => _digonId;
-
-  set digonId(int value) {
-    _digonId = value;
   }
 
   String get dayDate => _dayDate;
@@ -253,7 +291,6 @@ class MedicineDays {
     if (_dayesId != null) {
       map['day_id'] = _dayesId;
     }
-    map['d_id'] = _digonId;
     map['sortn'] =_sortn;
     map['d_date'] = _dayDate;;
     return map;
@@ -264,7 +301,6 @@ class MedicineDays {
   // Extract a Times object from a Map object
   MedicineDays.fromMapObject(Map<String, dynamic> map) {
     this._dayesId = map['day_id'];
-    this._digonId = map['d_id'];
     this._sortn =map['sortn'];
     this._dayDate = map['d_date'];
   }
@@ -273,12 +309,20 @@ class MedicineDays {
 class MedicineTimes {
   int _timesId;
   int _dayesId;
+  int _digonId;
   String _dayTime;
   int _medicineState;
 
-  MedicineTimes(this._dayesId, this._dayTime, this._medicineState,
+  MedicineTimes(this._dayesId, this._dayTime, this._medicineState,this._digonId,
       [this._timesId]);
   MedicineTimes.WithId();
+
+  int get digonId => _digonId;
+
+  set digonId(int value) {
+    _digonId = value;
+  }
+
   String get dayTime => _dayTime;
 
   set dayTime(String value) {
@@ -306,6 +350,7 @@ class MedicineTimes {
     if (_timesId != null) {
       map['tid'] = _timesId;
     }
+    map['d_id'] = _digonId;
     map['day_id'] = _dayesId;
     map['d_time'] = _dayTime;
     map['d_t_state'] = _medicineState;
@@ -318,6 +363,7 @@ class MedicineTimes {
   MedicineTimes.fromMapObject(Map<String, dynamic> map) {
     this._timesId = map['tid'];
     this._dayesId = map['day_id'];
+    this._digonId = map['d_id'];
     this._dayTime = map['d_time'];
     this._medicineState = map['d_t_state'];
   }
@@ -386,11 +432,11 @@ class Card_info {
     this._person_name = map['p_name'];
     this._medicine = map['title'];
     this._amount = map['amount'];
-    this.timesId =map['tid'];
-    this._dayesId =map['day_id'];
+    this.timesId =map['tmid'];
+    this._dayesId =map['dayid'];
     this.day_time =map['d_time'];
     this.day_time_state =map['d_t_state'];
-    this._diagId = map["d_id"];
+    this._diagId = map["dgid"];
     this._dayDate =map['d_date'];
     this._sortn = map["sortn"];
   }

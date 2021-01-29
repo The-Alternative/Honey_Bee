@@ -1,18 +1,24 @@
 
 import 'dart:isolate';
 
-import 'package:android_alarm_manager/android_alarm_manager.dart';
+import 'utils/notifiredb.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
-import 'package:ssd/Pages/main_input.dart';
-import 'package:ssd/utils/notifiers.dart';
-import 'Pages/times_list.dart';
+import 'views/main_input.dart';
+import 'utils/notifiers.dart';
+import 'views/attachmentsMedicine.dart';
+import 'views/medicineView.dart';
+import 'views/times_list.dart';
 void printHello() {
   final DateTime now = DateTime.now();
   final int isolateId = Isolate.current.hashCode;
   print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
 }
 
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
 
 const List<Choice> choices = <Choice>[
   Choice(title: 'مواعيد', icons: Icons.notifications_active_rounded),
@@ -25,8 +31,25 @@ class Choice {
   const Choice({this.title, this.icons});
 }
 
-Future<void> main() async {
+main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
+  var initializationSettingsAndroid =
+  AndroidInitializationSettings('codex_logo');
+  var initializationSettingsIOS = IOSInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      onDidReceiveLocalNotification:
+          (int id, String title, String body, String payload) async {});
+  var initializationSettings = InitializationSettings(
+      initializationSettingsAndroid, initializationSettingsIOS);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: (String payload) async {
+        if (payload != null) {
+          debugPrint('notification payload: ' + payload);
+        }
+      });
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<SingleNotifier>(
@@ -34,7 +57,9 @@ Future<void> main() async {
       ),
       ChangeNotifierProvider<MultipleNotifier>(
         create: (_) => MultipleNotifier([]),
-      )
+      ),
+       ChangeNotifierProvider<CountryProvider>(
+         create: (context) => CountryProvider()),
     ],
     child: MyApp(),
   ));
@@ -53,7 +78,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           primaryColor: Colors.redAccent,
           primaryColorDark: Colors.red,
-          fontFamily: 'Amiri'),
+          fontFamily: 'Times'),
       home: DefaultTabController(
         length: choices.length, child: MyHomePage(title: 'Flutter  Home Page'),
       ),
@@ -88,12 +113,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: EdgeInsets.only(left: 15),
                     icon: Icon(Icons.add, size: 45,),
                     onPressed: () {
-                      //navigateToCrud();
+                      navigateToAttachmentsMedicine();
                     }),
               ],
               leading: Padding(
                 child: CircleAvatar(
-                    child: Image.asset("images/med.png",)),
+                    child: Image.asset("assets/med.png",)),
                 padding: EdgeInsets.only(top: 2, left: 8),
               ),
               titleSpacing: 4,
@@ -103,8 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     Divider(height: 0, color: Colors.white, thickness: 2,),
                     TabBar(
                       labelPadding: EdgeInsets.only(left: 30, right: 30),
-                      labelStyle: TextStyle(fontSize: 15),
-                      unselectedLabelColor: Colors.black,
+                      labelStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, fontFamily: 'Times'),
+                      unselectedLabelColor: Colors.black,indicatorColor: Colors.white ,
                       isScrollable: true,
                       tabs: choices.map<Widget>((Choice choice) {
                         return Tab(text: choice.title,);}).toList(),
@@ -120,7 +145,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ), // This trailing comma makes auto-formatting nicer for build methods.
         ));
   }
-
+  void navigateToAttachmentsMedicine() async {
+    bool result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) {
+      return AttachmentsMedicine();
+    }));
+  }
   void navigateTomain_input() async {
     bool result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return Main_input();
@@ -131,8 +161,8 @@ class _MyHomePageState extends State<MyHomePage> {
       Timesupdate.res2=true;
       if (Timesupdate.res)
         debugPrint("fff");
+      print('lengthkmonnnn${Alarmmm.alarmList.length}');
       Time_listState();
-
       // debugPrint(new update("hhh").s );
       main();
       debugPrint("update");
@@ -141,8 +171,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   TabBarView gettabbar() {
     return TabBarView(children: choices.map((Choice choice) {
-        return Padding(padding: const EdgeInsets.all(10),
-          child: ChoisePage(choice: choice,),);}).toList(),
+      return Padding(padding: const EdgeInsets.all(10),
+        child: ChoisePage(choice: choice,),);}).toList(),
     );
   }
 }
@@ -157,11 +187,15 @@ class ChoisePage extends StatelessWidget {
   }
 
   Widget ff(String s) {
+   // switch(s){case'': break;}
     if (s == 'مواعيد') {
       debugPrint("refresh");
       //NoteListState().updateListView();       //note_list.updateListView();
       return Time_list();
     } else
+    if (s == 'أسماء') {
+      return MedicineView();
+    }
       return Card(color: Colors.white,
         child: Center(
           child: Column(

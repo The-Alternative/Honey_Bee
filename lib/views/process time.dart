@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ssd/models/const_data.dart';
+import '../models/const_data.dart';
 
 class Process_time extends StatefulWidget {
   @override
@@ -10,8 +10,8 @@ class _Process_timeState extends State<Process_time> {
 
   int _radioValue = 0;
   String _selectedDay = types_list[0];
-  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Amiri');
-  var style2 = TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Amiri');
+  var style1 = TextStyle(fontSize: 23, fontWeight: FontWeight.bold, fontFamily: 'Times');
+  var style2 = TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.normal, fontFamily: 'Times');
   TextEditingController teratControl = TextEditingController();
 
   @override
@@ -27,10 +27,11 @@ class _Process_timeState extends State<Process_time> {
   Widget get_body() {
     return ListView(children: <Widget>[
         Padding(
-            padding: EdgeInsets.only(bottom: 2.0, top: 5),
+            padding: EdgeInsets.only(bottom: 2.0, top: 15),
             child: ListTile(
               title: Text('مدة العلاج', style: style1,),
-              trailing: Icon(Icons.date_range, size: 100, color: Colors.blue[500],),)),
+              trailing: Image.asset("assets/future.png" ,
+                  width: 150, height: 150,)),),
         Padding(padding: const EdgeInsets.only(top: 50, right: 15),
           child: Row(
             children: <Widget>[

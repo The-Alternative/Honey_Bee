@@ -1,12 +1,16 @@
 import 'dart:io';
+import '../models/alarm_info.dart';
+import '../utils/alarm_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ssd/Pages/times_list.dart';
-import 'package:ssd/Pages/times_radioButton.dart';
-import 'package:ssd/Pages/process time.dart';
-import 'package:ssd/models/const_data.dart';
-import 'package:ssd/models/db_models.dart';
-import 'package:ssd/utils/database_helper.dart';
+import '../views/times_list.dart';
+import '../views/times_radioButton.dart';
+import '../views/process time.dart';
+import '../main.dart';
+import '../models/const_data.dart';
+import '../models/db_models.dart';
+import '../utils/database_helper.dart';
 import 'diagon.dart';
 import 'first_date.dart';
 import 'instruction.dart';
@@ -17,9 +21,11 @@ class Main_input extends StatefulWidget {
 }
 
 class _Main_inputState extends State<Main_input> {
+  DateTime _alarmTime;
   File _image;
   TextEditingController _nameController = TextEditingController();
   DatabaseHelper _helper = DatabaseHelper();
+  AlarmHelper _alarmHelper = AlarmHelper();
   String _appBarTitle;
   Medicine _medicin = Medicine();
   Patient _patient = new Patient();
@@ -31,14 +37,28 @@ class _Main_inputState extends State<Main_input> {
   TextEditingController _medAmountController = TextEditingController();
   TextEditingController _imgDirectController = TextEditingController();
   int _day, _month, _year;
-  int _lastDay;
+  int _lastDay, _diagonId;
   int _hour;
   int _menuts,d;
   List<Medicine_clocl> _clockList;
   List<Medicine_Date> _dateList;
-  var style1 = TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Amiri');
-  var style2 = TextStyle(fontSize: 14, fontWeight: FontWeight.normal, fontFamily: 'Amiri');
-  var style4 = TextStyle(fontSize: 14, fontWeight: FontWeight.normal, fontFamily: 'Amiri', color: Colors.white);
+
+  var style1 = TextStyle(fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Times');
+  var style2 = TextStyle(fontSize: 16, fontWeight: FontWeight.normal, fontFamily: 'Times');
+  var style4 = TextStyle(fontSize: 16, fontWeight: FontWeight.normal, fontFamily: 'Times', color: Colors.white);
+  @override
+  void initState() {
+
+    _alarmTime = DateTime.now();
+    _alarmHelper.initializeDatabase().then((value) {
+      print('------database intialized');
+    });
+    if (Alarmmm.alarmList == null ) {
+      Alarmmm.alarmList= List<String>();
+    }
+    Alarmmm.alarmList.clear();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var style3 = TextStyle(color: Colors.black, fontFamily: 'Amiri');
@@ -121,111 +141,171 @@ class _Main_inputState extends State<Main_input> {
               )),
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <
               Widget>[
-            MaterialButton(
-                color: Colors.deepOrange,
-                padding:
-                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
-                child: Text(
-                  "المواعيد",
-                  style: style4,
+            SizedBox.fromSize(
+              size: Size(100, 100), // button width and height
+              child: ClipOval(
+                child: Material(
+                  color: Colors.black12, // button color
+                  child: InkWell(
+                    splashColor: Colors.green, // splash color
+                    onTap: () async { bool result = await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return Radiooo();
+                        }));
+                    if (result == true) {
+                      update_mtTitle();
+                      print(Entry.code + Entry.times_num);
+                    }}, // button pressed
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset("assets/calendar2.png" ,
+                          width: 50, height: 50,), // icon
+                        Text("المواعيد",style: style2,), // text
+                      ],
+                    ),
+                  ),
                 ),
-                onPressed: () async {
-                  bool result = await Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Radiooo();
-                  }));
-                  if (result == true) {
-                    update_mtTitle();
-                    print(Entry.code + Entry.times_num);
-                  }
-                }),
-            MaterialButton(
-                clipBehavior: Clip.hardEdge,
-                animationDuration: Duration(milliseconds: 5),
-                color: Colors.green,
-                padding:
-                    EdgeInsets.only(left: 35, right: 35, top: 15, bottom: 5),
-                child: Text(
-                  "تاريخ البدء",
-                  style: style4,
+              ),
+            )     ,
+            SizedBox.fromSize(
+              size: Size(100, 100), // button width and height
+              child: ClipOval(
+                child: Material(
+                  color: Colors.black12, // button color
+                  child: InkWell(
+                    splashColor: Colors.green, // splash color
+                    onTap: () async {  bool result = await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return First_date();
+                        }));
+                    if (result == true) {
+                      update_Firstdate();
+                      print(Entry.first_clock + Entry.first_date);
+                    }}, // button pressed
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset("assets/sogatsu.png" ,
+                          width: 50, height: 50,), // icon
+                        Text("تاريخ البدء",style: style2,), // text
+                      ],
+                    ),
+                  ),
                 ),
-                onPressed: () async {
-                  bool result = await Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                    return First_date();
-                  }));
-                  if (result == true) {
-                    update_Firstdate();
-                    print(Entry.first_clock + Entry.first_date);
-                  }
-                }),
-            MaterialButton(
-                color: Colors.blue,
-                padding:
-                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
-                child: Text(
-                  "مدة العلاج",
-                  style: style4,
+              ),
+            )     ,
+            SizedBox.fromSize(
+              size: Size(100, 100), // button width and height
+              child: ClipOval(
+                child: Material(
+                  color: Colors.black12, // button color
+                  child: InkWell(
+                    splashColor: Colors.green, // splash color
+                    onTap: () async { bool result = await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return Process_time();
+                        }));
+                    if (result == true) {
+                      updateteartTime();
+                      print(Entry.teratment_days);
+                    }}, // button pressed
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset("assets/future.png" ,
+                          width: 50, height: 50,), // icon
+                        Text("مدة العلاج",style: style2,), // text
+                      ],
+                    ),
+                  ),
                 ),
-                onPressed: () async {
-                  bool result = await Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Process_time();
-                  }));
-                  if (result == true) {
-                    updateteartTime();
-                    print(Entry.teratment_days);
-                  }
-                })
+              ),
+            )
           ]),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <
-              Widget>[
-            MaterialButton(
-                color: Colors.deepOrange,
-                padding:
-                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
-                child: Text(
-                  "التعليمات",
-                  style: style4,
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <
+                Widget>[
+              SizedBox.fromSize(
+                size: Size(100, 100), // button width and height
+                child: ClipOval(
+                  child: Material(
+                    color: Colors.black12, // button color
+                    child: InkWell(
+                      splashColor: Colors.green, // splash color
+                      onTap: () async {
+                        bool result = await Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                              return Instruction();
+                            }));
+                        if (result == true) {
+                          updateInstruction();
+                          debugPrint(Entry.instruc);
+                        }
+                      }, // button pressed
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset("assets/medical-book.png" ,
+                            width: 50, height: 50,), // icon
+                          Text("التعليمات",style: style2,), // text
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                onPressed: () async {
-                  bool result = await Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Instruction();
-                  }));
-                  if (result == true) {
-                    updateInstruction();
-                    debugPrint(Entry.instruc);
-                  }
-                }),
-            MaterialButton(
-                color: Colors.green,
-                padding:
-                    EdgeInsets.only(left: 35, right: 35, top: 15, bottom: 5),
-                child: Text(
-                  "التشخيص",
-                  style: style4,
+              )     ,
+              SizedBox.fromSize(
+                size: Size(100, 100), // button width and height
+                child: ClipOval(
+                  child: Material(
+                    color: Colors.black12, // button color
+                    child: InkWell(
+                      splashColor: Colors.green, // splash color
+                      onTap: () async {
+                        bool result = await Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                              return Diagonsis();
+                            }));
+                        if (result == true) {
+                          update_diagon();
+                          print(Entry.pain + Entry.doct_name);
+                        }
+                      }, // button pressed
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset("assets/doctor.png" ,
+                            width: 50, height: 50,), // icon
+                          Text("التشخيص",style: style2,), // text
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                onPressed: () async {
-                  bool result = await Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                    return Diagonsis();
-                  }));
-                  if (result == true) {
-                    update_diagon();
-                    print(Entry.pain + Entry.doct_name);
-                  }
-                }),
-            MaterialButton(
-                color: Colors.blue,
-                padding:
-                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
-                child: Text(
-                  "المرفقات",
-                  style: style4,
+              )     ,
+              SizedBox.fromSize(
+                size: Size(100, 100), // button width and height
+                child: ClipOval(
+                  child: Material(
+                    color: Colors.black12, // button color
+                    child: InkWell(
+                      splashColor: Colors.green, // splash color
+                      onTap: () {}, // button pressed
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset("assets/Path105.png" ,
+                            width: 50, height: 50,), // icon
+                          Text("مرفقات",style: style2,), // text
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                onPressed: () {})
-          ]),
+              )          ]),
+          ),
           Padding(
               padding:
                   EdgeInsets.only(right: 15.0, left: 15, bottom: 0, top: 15),
@@ -378,7 +458,6 @@ class _Main_inputState extends State<Main_input> {
 
 ////////////////////////////////////////////////////////////////////////////
   void _save() async {
-    int result, _diagonId, res3, res4;
     Timesupdate.res2 =true;
     _medicin.medTitle = _medTitleController.text;
     _medicin.medform = "كبسولة";
@@ -411,18 +490,21 @@ class _Main_inputState extends State<Main_input> {
 
 /////////////////////////////////////////////////////////////////////////////////
   void moveToLastScreen() {
+
+
     Navigator.pop(context, true);
   }
 ////////////////////////////
-  _cancel(int id){
+  _cancel(int diagid){
     Timesupdate.res2 =true;
     _dateList = List<Medicine_Date>();
     _clockList=List<Medicine_clocl>();
 
     _calcDaylist(int.parse(Entry.teratment_days));
-    _calcTimeList(id);
+    _calcTimeList();
 
     int l=_clockList.length;
+
    // print('_clockList :$l');
 
     // for(int i=0;i<_clockList.length;i++)
@@ -443,7 +525,7 @@ class _Main_inputState extends State<Main_input> {
   }
   ////////////////////////////////////////////////////////////////////////////
 
-  _calcTimeList(int diagon) async {
+  _calcTimeList() async {
     var arr=List(2);
     int dayId =0;
    // _clockList=  List<Medicine_clocl>();
@@ -461,9 +543,8 @@ class _Main_inputState extends State<Main_input> {
       int c = _dateList.elementAt(x).year;
       String forma ='$c'+'/' +formal(b)+'/'+formal(a);
       String forma2 = '$c'+formal(b)+formal(a);
-
       dayId =0;
-    dayId = await _helper.insertDayes(MedicineDays(diagon, forma,int.parse(forma2)));
+    dayId = await _helper.insertDayes(MedicineDays( forma,int.parse(forma2)));
      // print('new day:$dayId');
     if(dayId!=0)
      _calcTimeDay(dayId,xx);
@@ -486,7 +567,8 @@ class _Main_inputState extends State<Main_input> {
     for(int i=0;i<_clockList.length;i++)
       {    //  int q = await _helper.insert_DayTimes(MedicineTimes(dateDayId,_clockList[i].clock,1));
        String s =_clockList[i].clock;
-      print('$i'+s);
+
+       Alarmmm.alarmList.add(s);
       }
      // int q = await _helper.insert_DayTimes(MedicineTimes(dateDayId,_clockList[i].clock,1));
     //_clockList.clear();
@@ -494,8 +576,19 @@ class _Main_inputState extends State<Main_input> {
     {
       int a= _clockList[i].dayDate;
       String ss =_clockList[i].clock;
-      //print('$a :'+ss);
-       _helper.insert_DayTimes(MedicineTimes(dateDayId,ss,1));
+     print('$a :'+ss);
+      var arr = List(2);
+      ss=ss.substring(0,5);
+      arr = ss.split(':');
+     print('format'+ss);
+
+      int hour = int.parse(arr[0]);
+      int minute = int.parse(arr[1]);
+      print('clock:$hour');
+      _alarmTime=DateTime(_year,_month,_day,hour,minute);
+      print(_alarmTime);
+      onSaveAlarm();
+       _helper.insert_DayTimes(MedicineTimes(dateDayId,ss,1,_diagonId));
     }
     _clockList.clear();
      _hour = _hour-24;
@@ -532,8 +625,7 @@ class _Main_inputState extends State<Main_input> {
           calc2MadicineDateDay(j, w);
         }
       }
-      if ((_month == 2) ||
-          (_month == 4) ||
+      if ((_month == 4) ||
           (_month == 6) ||
           (_month == 9) ||
           (_month == 11)) {
@@ -589,4 +681,54 @@ class _Main_inputState extends State<Main_input> {
 
     j = 1;
   }
+
+  Future<void> onSaveAlarm() async {
+    DateTime scheduleAlarmDateTime;
+    if (_alarmTime.isAfter(DateTime.now()))
+      scheduleAlarmDateTime = _alarmTime;
+    else
+      scheduleAlarmDateTime = _alarmTime.add(Duration(days: 1));
+
+    var alarmInfo = AlarmInfo(
+      alarmDateTime: scheduleAlarmDateTime,
+      title: 'alarm',
+    );
+    int a=0;
+    a=await _alarmHelper.insertAlarm(alarmInfo) ;
+    alarmInfo.id=a;
+    scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
+  }
+
+  Future<void> deleteAlarm(int id) async {
+    _alarmHelper.delete(id);
+    //unsubscribe for notification
+    await flutterLocalNotificationsPlugin.cancel(id);
+
+  }
+  void scheduleAlarm(DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      'Channel for Alarm notification',
+      icon: 'codex_logo',
+      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+      largeIcon: DrawableResourceAndroidBitmap('codex_logo'),
+    );
+
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        sound: 'a_long_cold_sting.wav',
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true);
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(alarmInfo.id, 'honybee', alarmInfo.title,
+        scheduledNotificationDateTime, platformChannelSpecifics);
+  }
+
+}
+class Alarmmm {
+  static List<String> alarmList;
+
 }
