@@ -177,13 +177,19 @@ class _First_dateState extends State<First_date> {
 
   void ch_time(String s) {
     setState(() {
-      clockController.text = s.substring(11, 16);
+      String ss= s.substring(11, 16);
+      var arr = new List(2);
+      arr = ss.split(':');
+      clockController.text =arr[0]+":"+arr[1];
     });
   }
 
   void ch_date(String s) {
     setState(() {
-      dateController.text = s.substring(0, 10);
+      String ss= s.substring(0, 10);
+      var arr = new List(3);
+      arr = ss.split('-');
+      dateController.text =arr[0]+"/"+arr[1]+"/"+arr[2];
     });
   }
 

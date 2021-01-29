@@ -1,9 +1,18 @@
+
+import 'dart:isolate';
+
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ssd/Pages/main_input.dart';
 import 'package:ssd/utils/notifiers.dart';
 import 'Pages/times_list.dart';
+void printHello() {
+  final DateTime now = DateTime.now();
+  final int isolateId = Isolate.current.hashCode;
+  print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
+}
+
 
 const List<Choice> choices = <Choice>[
   Choice(title: 'مواعيد', icons: Icons.notifications_active_rounded),
@@ -17,6 +26,7 @@ class Choice {
 }
 
 Future<void> main() async {
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<SingleNotifier>(
@@ -28,7 +38,7 @@ Future<void> main() async {
     ],
     child: MyApp(),
   ));
-  await AndroidAlarmManager.initialize();
+
 }
 
 class MyApp extends StatelessWidget {
@@ -118,9 +128,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (result == true) {
       Timesupdate.res = true;
+      Timesupdate.res2=true;
       if (Timesupdate.res)
         debugPrint("fff");
       Time_listState();
+
       // debugPrint(new update("hhh").s );
       main();
       debugPrint("update");

@@ -33,9 +33,14 @@ class DatabaseHelper {
   String patId = 'p_id'; //primry/forign..key
 
   //////////////////////////////////////////////////
-  String midtimesTable = 'pmidtimes_table';
-  String mtId = 'id';
+  String midDayesTable = 'mDayes_table';
+  String dayesId = 'day_id';
   String day_date = 'd_date';
+  String sortNum = 'sortn';
+
+  //////////////////////////////////////////////////
+  String dayTimesTable = 'mTimes_table';
+  String timesId = 'tid';
   String day_time = 'd_time';
   String day_time_state = 'd_t_state';
 
@@ -60,10 +65,6 @@ class DatabaseHelper {
     // Get the directory path for both Android and iOS to store database.
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'notes.db';
-    //var databasesPath = await getDatabasesPath();
-    //String path = join(databasesPath, 'demo.db');
-
-    // Open/create the database at a given path
     var notesDatabase =
         await openDatabase(path, version: 1, onCreate: _createDb);
     return notesDatabase;
@@ -71,7 +72,7 @@ class DatabaseHelper {
 
   void _createDb(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE $medicinTable($medId INTEGER PRIMARY KEY AUTOINCREMENT, $medTitle TEXT, '
+        'CREATE TABLE $medicinTable($medId INTEGER PRIMARY KEY AUTOINCREMENT, $medTitle TEXT UNIQUE, '
         '$medform TEXT)');
     await db.execute(
         'CREATE TABLE $patentTable($patId INTEGER PRIMARY KEY AUTOINCREMENT, $patname TEXT UNIQUE)');
@@ -83,9 +84,67 @@ class DatabaseHelper {
         ',$medId INTEGER FORIGN KEY REFERENCES $medicinTable($medId),'
         '$patId INTEGER FORIGN KEY REFERENCES  $patentTable($patId))');
     await db.execute(
-        'CREATE TABLE $midtimesTable($mtId INTEGER PRIMARY KEY AUTOINCREMENT, $day_date TEXT,'
-        '$day_time  Text,$day_time_state INTEGER,'
+        'CREATE TABLE $midDayesTable($dayesId INTEGER PRIMARY KEY AUTOINCREMENT, $day_date TEXT UNIQUE,$sortNum int,'
         '$diagid INTEGER FORIGN KEY REFERENCES $diagonTable($diagid) )');
+    await db.execute(
+        'CREATE TABLE $dayTimesTable($timesId INTEGER PRIMARY KEY AUTOINCREMENT, $day_time TEXT,'
+        '$day_time_state int,'
+        '$dayesId INTEGER FORIGN KEY REFERENCES $midDayesTable($dayesId) )');
+  }
+
+/////////////////////////////timesday//////////////////////////////////////////////////////
+  Future<List<Map<String, dynamic>>> getDayTimesMapList() async {
+    Database db = await this.database;
+
+//		var result = await db.rawQuery('SELECT * FROM $noteTable order by $colPriority ASC');
+    var result = db.query(dayTimesTable, orderBy: '$timesId ASC');
+    return result;
+  }
+
+  Future<int> insert_DayTimes(MedicineTimes medicineTimes) async {
+    Database db = await this.database;
+    var result = await db.insert(dayTimesTable, medicineTimes.toMap());
+    return result;
+  }
+
+  Future<int> updateDayTimes(MedicineTimes medicineTimes) async {
+    var db = await this.database;
+    var result = await db.update(dayTimesTable, medicineTimes.toMap(),
+        where: '$timesId = ?', whereArgs: [medicineTimes.timesId]);
+    return result;
+  }
+
+  // Delete Operation: Delete a Note object from database
+  Future<int> deleteDayTimes(int id) async {
+    var db = await this.database;
+    int result =
+        await db.rawDelete('DELETE FROM $dayTimesTable WHERE $timesId = $id');
+    return result;
+  }
+
+  // Get number of Note objects in database
+  Future<int> getCountDayTimes() async {
+    Database db = await this.database;
+    List<Map<String, dynamic>> x =
+        await db.rawQuery('SELECT COUNT (*) from $dayTimesTable');
+    int result = Sqflite.firstIntValue(x);
+    return result;
+  }
+
+  // Get the 'Map List' [ List<Map> ] and convert it to 'Note List' [ List<Note> ]
+  Future<List<MedicineTimes>> getDayTimesList() async {
+    var medicineTimesMapList =
+        await getDayTimesMapList(); // Get 'Map List' from database
+    int count = medicineTimesMapList
+        .length; // Count the number of map entries in db table
+    List<MedicineTimes> medicineTimeList = List<MedicineTimes>();
+    // For loop to create a 'Note List' from a 'Map List'
+    for (int i = 0; i < count; i++) {
+      medicineTimeList
+          .add(MedicineTimes.fromMapObject(medicineTimesMapList[i]));
+    }
+
+    return medicineTimeList;
   }
 
 /////////////////////////////Medicine//////////////////////////
@@ -133,7 +192,6 @@ class DatabaseHelper {
         await getMedicineMapList(); // Get 'Map List' from database
     int count =
         medicineMapList.length; // Count the number of map entries in db table
-
     List<Medicine> medicineList = List<Medicine>();
     // For loop to create a 'Note List' from a 'Map List'
     for (int i = 0; i < count; i++) {
@@ -184,8 +242,10 @@ class DatabaseHelper {
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'Note List' [ List<Note> ]
   Future<List<Diagon>> getDiagonList() async {
-    var diagonMapList = await getDiagonMapList(); // Get 'Map List' from database
-    int count = diagonMapList.length; // Count the number of map entries in db table
+    var diagonMapList =
+        await getDiagonMapList(); // Get 'Map List' from database
+    int count =
+        diagonMapList.length; // Count the number of map entries in db table
     List<Diagon> diagonList = List<Diagon>();
     // For loop to create a 'Note List' from a 'Map List'
     for (int i = 0; i < count; i++) {
@@ -200,7 +260,7 @@ class DatabaseHelper {
     Database db = await this.database;
 
 //		var result = await db.rawQuery('SELECT * FROM $noteTable order by $colPriority ASC');
-    var result = await db.query(patentTable, orderBy: '$patId ASC');
+    var result = db.query(patentTable, orderBy: '$patId ASC');
     return result;
   }
 
@@ -216,7 +276,7 @@ class DatabaseHelper {
 
   Future<int> updatePatient(Patient patient) async {
     var db = await this.database;
-    var result = await db.update(patentTable, patient.toMap(),
+    var result = db.update(patentTable, patient.toMap(),
         where: '$patId = ?', whereArgs: [patient.patId]);
     return result;
   }
@@ -273,106 +333,139 @@ class DatabaseHelper {
     return rowId;
   }
 
-  /////////////////////////////////////////////////////////////times///////////////////////////////////////////////////
-  Future<List<Map<String, dynamic>>> getTimesMapList() async {
+  Future<int> getIdDay(String name) async {
+    // get a reference to the database
+    Database db = await this.database;
+
+    // get single row
+    List<String> columnsToSelect = [dayesId];
+    String whereString = '${day_date} = ?';
+    int rowId = 0;
+    List<dynamic> whereArguments = [name];
+    List<Map> result = await db.query(midDayesTable,
+        columns: columnsToSelect,
+        where: whereString,
+        whereArgs: whereArguments);
+
+    // print the results
+    rowId = Sqflite.firstIntValue(result);
+    return rowId;
+  }
+
+  /////////////////////////////////////////////////////////////midDayes///////////////////////////////////////////////////
+  Future<List<Map<String, dynamic>>> getmidDayesMapList() async {
     Database db = await this.database;
 
 //		var result = await db.rawQuery('SELECT * FROM $noteTable order by $colPriority ASC');
-    var result = await db.query(midtimesTable, orderBy: '$mtId ASC');
+    var result = db.query(midDayesTable, orderBy: '$sortNum ASC');
     return result;
   }
 
-  Future<int> insertTimes(Times times) async {
+  Future<int> insertDayes(MedicineDays days) async {
     Database db = await this.database;
-    var result = await db.insert(midtimesTable, times.toMap());
-
-    return result;
+    try {
+      var result = await db.insert(midDayesTable, days.toMap());
+      return result;
+    } catch (e) {
+      return getIdDay(days.dayDate);
+    }
   }
 
-  Future<int> updateTimes(Times times) async {
+  Future<int> updateDayes(MedicineDays days) async {
     var db = await this.database;
-    var result = await db.update(midtimesTable, times.toMap(),
-        where: '$mtId = ?', whereArgs: [times.timesId]);
+    var result = await db.update(midDayesTable, days.toMap(),
+        where: '$dayesId = ?', whereArgs: [days.dayesId]);
     return result;
   }
 
   // Delete Operation: Delete a Note object from database
-  Future<int> deleteTimes(int id) async {
+  Future<int> deleteDayes(int id) async {
     var db = await this.database;
     int result =
-        await db.rawDelete('DELETE FROM $midtimesTable WHERE $mtId = $id');
+        await db.rawDelete('DELETE FROM $midDayesTable WHERE $dayesId = $id');
     return result;
   }
 
   // Get number of Note objects in database
-  Future<int> getCountTimes() async {
+  Future<int> getCountDayes() async {
     Database db = await this.database;
     List<Map<String, dynamic>> x =
-        await db.rawQuery('SELECT COUNT (*) from $midtimesTable');
+        await db.rawQuery('SELECT COUNT (*) from $midDayesTable');
     int result = Sqflite.firstIntValue(x);
     return result;
   }
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'Note List' [ List<Note> ]
-  Future<List<Times>> getTimesList() async {
-    var timesMapList = await getTimesMapList(); // Get 'Map List' from database
-    int count =
-        timesMapList.length; // Count the number of map entries in db table
+  Future<List<MedicineDays>> getmidDayesList() async {
+    var midDayesMapList = await getmidDayesMapList(); // Get 'Map List' from database
+    int count = midDayesMapList.length; // Count the number of map entries in db table
 
-    List<Times> timesList = List<Times>();
+    List<MedicineDays> dayesList = List<MedicineDays>();
     // For loop to create a 'Note List' from a 'Map List'
     for (int i = 0; i < count; i++) {
-      timesList.add(Times.fromMapObject(timesMapList[i]));
+      dayesList.add(MedicineDays.fromMapObject(midDayesMapList[i]));
     }
-
-    return timesList;
+    return dayesList;
   }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Get the 'Map List' [ List<Map> ] and convert it to 'Note List' [ List<Note> ]
   Future<List<Map<String, dynamic>>> getCardInfoMapList(int id) async {
     Database db = await this.database;
 
 //		var result = await db.rawQuery('SELECT * FROM $noteTable order by $colPriority ASC');
     var result = await db.query(
-        'SELECT ( $patentTable.$patname ,$medicinTable.$medTitle,$medicinTable.$medAmount )FROM'' $diagonTable,$patentTable,$medicinTable'
+        'SELECT ( $patentTable.$patname ,$medicinTable.$medTitle,$medicinTable.$medAmount,'
+            '$dayTimesTable.$timesId,$diagonTable.$diagid,$midDayesTable.$dayesId,'
+            '$dayTimesTable.$day_time,$dayTimesTable.$day_time_state)FROM'
+        ' $diagonTable,$patentTable,$medicinTable,$midDayesTable,$dayTimesTable'
         ' WHERE $patentTable.$patId = $diagonTable.$patId and $medicinTable.$medId =$diagonTable.$medId'
+            ' and '
         ' AND $diagonTable.$diagid =$id ');
     return result;
   }
-  Future<List<Map<String, dynamic>>> getptname(int id) async {
 
+  Future<List<Map<String, dynamic>>> getptname(int id) async {
     Database db = await this.database;
-    List<Map> result = await db.rawQuery('SELECT $patname,$medTitle ,$diagid FROM $diagonTable,$patentTable,$medicinTable WHERE '
-        '$diagonTable.$patId = $patentTable.$patId AND $diagonTable.$medId = $medicinTable.$medId'
-        ' AND $diagid=$id');
-    String s ="";
+    List<Map> result = await db.rawQuery(
+        'SELECT $patname,$medTitle ,$diagonTable.$diagid,$medAmount,'
+            '$dayTimesTable.$timesId,$dayTimesTable.$dayesId,$day_time,$day_time_state,$day_date,$sortNum'
+            ' FROM $diagonTable,$patentTable,$medicinTable,$dayTimesTable,'
+            '$midDayesTable WHERE '
+        '$diagonTable.$patId = $patentTable.$patId AND '
+            ' $diagonTable.$medId = $medicinTable.$medId '
+        ' AND $diagonTable.$diagid =  $midDayesTable.$diagid'
+            ' and $midDayesTable.$dayesId = $dayTimesTable.$dayesId'
+
+            ' AND $dayTimesTable.$timesId = $id  order By $sortNum ASC');
+    String s = "";
 
     result.forEach((row) {
-       s =row['p_name'];
+      s = row['p_name'];
     });
     return result;
   }
-  Future<List<Card_info>> getAllIds( ) async {
-    List<Card_info> cardList=List<Card_info>();
+
+  Future<List<Card_info>> getAllIds() async {
+    List<Card_info> cardList = List<Card_info>();
     cardList.clear();
     Database db = await this.database;
-    List<Map> result = await db.rawQuery('SELECT $diagid FROM $diagonTable' );
-    List<int> ids=List<int>();
+    List<Map> result = await db.rawQuery('SELECT $timesId FROM $dayTimesTable');
+    List<int> ids = List<int>();
     // get each row in the result list and print it
     result.forEach((row) {
-      int a =row['$diagid'];
+      int a = row['$timesId'];
       ids.add(a);
     });
-    for(var i=0;i<ids.length;i++)
-      {
+    for (var i = 0; i < ids.length; i++)
+    {
       //print(ids.elementAt(i));
       var cardMapList = await getptname(ids.elementAt(i)); // Get 'Map List' from database
-     // int count = cardMapList.length; // Count the number of map entries in db table
-      Card_info cardObject = Card_info('','','');
-      cardObject=Card_info.fromMapObject(cardMapList[0]);
+      // int count = cardMapList.length; // Count the number of map entries in db table
+      Card_info cardObject = Card_info.WithId();
+      cardObject = Card_info.fromMapObject(cardMapList[0]);
       cardList.add(cardObject);
-      }
+    }
     return cardList;
   }
-
 }
