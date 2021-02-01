@@ -6,6 +6,7 @@ import 'package:childrensdiary/models/child.dart';
 import 'package:childrensdiary/views/ChildInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 
 
@@ -49,9 +50,9 @@ class ChildHealthState extends State<ChildHealth>{
     });
     birthDate= widget.child.birthDate;
     birth = DateTime.parse(birthDate);
-    age = calculateAge(birth);
-    month = calculateAgeMonth(birth);
-    dayes = calculateAgedays(birth);
+//    age = calculateAge(birth);
+//    month = calculateAgeMonth(birth);
+//    dayes = calculateAgedays(birth);
   }
 
 
@@ -70,7 +71,7 @@ class ChildHealthState extends State<ChildHealth>{
 //        ),
 
         child: Scaffold(
-          appBar:new AppBar(title: new Text('',textDirection: TextDirection.rtl,
+          appBar:new AppBar(title: new Text('',
               style: new TextStyle(color: Colors.black)),
             backgroundColor: Colors.amberAccent,
             actions: [
@@ -121,20 +122,20 @@ class ChildHealthState extends State<ChildHealth>{
                                 children: [
                                   Container(
                                     margin: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.5,top: 5,left: 5),
-                                    child: Text("${childHealths[posision].createdDate}"),
+                                    child: Text("${convertFormatOfCreatedDate(DateTime.parse(childHealths[posision].createdDate))}"),
                                   ),
                                   Padding(padding: EdgeInsets.only(bottom: 15)),
                                   Row(
                                     children: [
                                       Expanded(child: Text("")),
-                                      Text("${childHealths[posision].name}",textDirection: TextDirection.rtl),
+                                      Text("${childHealths[posision].name}"),
                                       Padding(padding: EdgeInsets.only(left: 10)),
                                     ],
                                   ),
                                   Row(
                                     children: [
                                       Expanded(child: Text("")),
-                                      Text("${childHealths[posision].note}",textDirection: TextDirection.rtl),
+                                      Text("${childHealths[posision].note}"),
                                       Padding(padding: EdgeInsets.only(left: 10)),
                                     ],
                                   ),
@@ -186,15 +187,15 @@ class ChildHealthState extends State<ChildHealth>{
                                       new Expanded(child: Text("")),
                                       Text('يوم',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                                       Padding(padding: EdgeInsets.only(left: 10.0)),
-                                      Text('$dayes',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                      Text('${calculateAgedays(DateTime.parse(widget.child.birthDate),DateTime.parse(childHealths[posision].createdDate))}',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                                       Padding(padding: EdgeInsets.only(left:15.0)),
                                       Text('أشهر',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                                       Padding(padding: EdgeInsets.only(left: 10.0)),
-                                      Text('$month',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                      Text('${calculateAgeMonth(DateTime.parse(widget.child.birthDate),DateTime.parse(childHealths[posision].createdDate))}',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                                       Padding(padding: EdgeInsets.only(left:15.0)),
                                       Text('سنوات',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                                       Padding(padding: EdgeInsets.only(left: 10.0)),
-                                      Text('$age',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                      Text('${calculateAge(DateTime.parse(widget.child.birthDate),DateTime.parse(childHealths[posision].createdDate))}',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                                       new Expanded(child: Text("")),
                                     ],
                                   ),
@@ -283,8 +284,8 @@ class ChildHealthState extends State<ChildHealth>{
         context,
         MaterialPageRoute(builder:(context) => ChildInfo(child)));
   }
-  calculateAge(DateTime birthDate) {
-    DateTime currentDate = DateTime.now();
+  calculateAge(DateTime birthDate,DateTime createdDate) {
+    DateTime currentDate = createdDate;
     int age = currentDate.year - birthDate.year;
     int month1 = currentDate.month;
     int month2 = birthDate.month;
@@ -299,11 +300,11 @@ class ChildHealthState extends State<ChildHealth>{
     }
     return age;
   }
-  calculateAgeMonth(DateTime birthDate) {
+  calculateAgeMonth(DateTime birthDate,DateTime createdDate) {
     if (birthDate != '') {
 
 
-      final now = new DateTime.now();
+      final now = createdDate;
 
       int years = now.year - birthDate.year;
       int months = now.month - birthDate.month;
@@ -326,11 +327,11 @@ class ChildHealthState extends State<ChildHealth>{
     }
     return 0;
   }
-  calculateAgedays(DateTime birthDate) {
+  calculateAgedays(DateTime birthDate,DateTime createdDate) {
     if (birthDate != '') {
 
 
-      final now = new DateTime.now();
+      final now = createdDate;
 
       int years = now.year - birthDate.year;
       int months = now.month - birthDate.month;
@@ -352,6 +353,11 @@ class ChildHealthState extends State<ChildHealth>{
       print('getTheKidsAge: date is empty');
     }
     return 0;
+  }
+
+  convertFormatOfCreatedDate(DateTime createdDate) {
+    final x = DateFormat("dd/MM/yyyy").format(createdDate);
+    return x;
   }
 
 }

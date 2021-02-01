@@ -327,166 +327,7 @@ class HabitsState extends State<Habits>{
                         )
                       ],
                     ),
-//                    Padding(padding: EdgeInsets.only(bottom: 15)),
-//                    Row(
-//                      children: [
-//                        new Expanded(child: Text("")),
-//                        new Container(
-//                          padding: EdgeInsets.only(left: 10,right: 15,top: 5,bottom:5),
-//                          decoration: BoxDecoration(color: Colors.green,
-//                            border: Border.all(
-//                                color:  Colors.green, width: 1),
-//                            borderRadius: BorderRadius.circular(5),
-//                            shape: BoxShape.rectangle,),
-//                          child: new Text("عادات إيجابية",style: TextStyle(color: Colors.white,fontSize: 18),),
-//                        ),
-//                        new Expanded(child: Text("")),
-//                      ],
-//                    ),
-//                    Stack(
-//                      children: <Widget>[
-//                        Center(
-//                          child:Container(
-//                            width: MediaQuery.of(context).size.width *0.8,
-//                            height: 300,
-//                            margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
-//                            padding: EdgeInsets.only(bottom: 10),
-//                            decoration: BoxDecoration(
-//                              border: Border.all(
-//                                  color:  Colors.green, width: 1),
-//                              borderRadius: BorderRadius.circular(5),
-//                              shape: BoxShape.rectangle,
-//                            ),
-//                            child: new ListView(
-//                              children: [
-//                                new Padding(padding: EdgeInsets.only(bottom: 10)),
-//                                new Row(
-//                                  children: [
-//                                    new Expanded(child: Text("")),
-//                                    new Text('ssssssssssss'),
-//                                    Padding(padding: EdgeInsets.only(left: 10)),
-//                                    InkWell(
-//                                      onTap: () {
-//                                        setState(() {
-//                                          _value3 = !_value3;
-//                                        });
-//                                      },
-//                                      child: Container(
-//                                        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green),
-//                                        child: Padding(
-//                                          padding: const EdgeInsets.all(0.1),
-//                                          child: _value3
-//                                              ? Icon(
-//                                            Icons.check,
-//                                            size: 30.0,
-//                                            color: Colors.white,
-//                                          )
-//                                              : Icon(
-//                                            Icons.brightness_1,
-//                                            size: 30.0,
-//                                            color: Colors.white,
-//                                          ),
-//                                        ),
-//                                      ),
-//                                    ),
-//                                    Padding(padding: EdgeInsets.only(left: 10)),
-//                                  ],
-//                                ),
-//                                new Padding(padding: EdgeInsets.only(bottom: 10)),
-//                                new Row(
-//                                  children: [
-//                                    new Expanded(child: Text("")),
-//                                    new Text('ssssssssssss'),
-//                                    Padding(padding: EdgeInsets.only(left: 10)),
-//                                    InkWell(
-//                                      onTap: () {
-//                                        setState(() {
-//                                          _value4 = !_value4;
-//                                        });
-//                                      },
-//                                      child: Container(
-//                                        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green),
-//                                        child: Padding(
-//                                          padding: const EdgeInsets.all(0.1),
-//                                          child: _value4
-//                                              ? Icon(
-//                                            Icons.check,
-//                                            size: 30.0,
-//                                            color: Colors.white,
-//                                          )
-//                                              : Icon(
-//                                            Icons.brightness_1,
-//                                            size: 30.0,
-//                                            color: Colors.white,
-//                                          ),
-//                                        ),
-//                                      ),
-//                                    ),
-//                                    Padding(padding: EdgeInsets.only(left: 10)),
-//                                  ],
-//                                ),
-//                                new Padding(padding: EdgeInsets.only(bottom: 10)),
-//                                new Row(
-//                                  children: [
-//                                    new Expanded(child: Text("")),
-//                                    new Text('ssssssssssss'),
-//                                    Padding(padding: EdgeInsets.only(left: 10)),
-//                                    InkWell(
-//                                      onTap: () {
-//                                        setState(() {
-//                                          _value5 = !_value5;
-//                                        });
-//                                      },
-//                                      child: Container(
-//                                        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green),
-//                                        child: Padding(
-//                                          padding: const EdgeInsets.all(0.1),
-//                                          child: _value5
-//                                              ? Icon(
-//                                            Icons.check,
-//                                            size: 30.0,
-//                                            color: Colors.white,
-//                                          )
-//                                              : Icon(
-//                                            Icons.brightness_1,
-//                                            size: 30.0,
-//                                            color: Colors.white,
-//                                          ),
-//                                        ),
-//                                      ),
-//                                    ),
-//                                    Padding(padding: EdgeInsets.only(left: 10)),
-//                                  ],
-//                                ),
-//                                new Padding(padding: EdgeInsets.only(bottom: 10)),
-//                                new Row(
-//                                  children: [
-//                                    new Expanded(child: Text("")),
-//                                    InkWell(
-//                                      onTap: () {
-//                                        setState(() {
-//                                          _value1 = !_value1;
-//                                        });
-//                                      },
-//                                      child: Container(
-//                                        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green),
-//                                        child: Padding(
-//                                            padding: const EdgeInsets.all(0.1),
-//                                            child: Icon(Icons.add_circle,color: Colors.white,size: 30.0,)
-//                                        ),
-//                                      ),
-//                                    ),
-//                                    Padding(padding: EdgeInsets.only(left: 10)),
-//                                  ],
-//                                ),
 //
-//                              ],
-//                            ) ,
-//                          ) ,
-//                        ),
-//
-//                      ],
-//                    ),
                     new Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height *0.05)),
                     new Center(
                       child: new Container(
@@ -508,7 +349,8 @@ class HabitsState extends State<Habits>{
 //                                Navigator.pop(context,'update');
 //                              });
 //                            }else{
-                                for(int i =0 ; i>nvalue.length ; i++){
+
+                                for(int i =0 ; i<nvalue.length ; i++){
                                   if(nvalue[i] == true){
                                     db2.saveChildHabit(ChildHabit(
                                         1,
@@ -518,7 +360,7 @@ class HabitsState extends State<Habits>{
                                     ));
                                   }
                                 }
-                                for(int i =0 ; i>pvalue.length ; i++){
+                                for(int i =0 ; i<pvalue.length ; i++){
                                   if(pvalue[i] == true){
                                     db2.saveChildHabit(ChildHabit(
                                         1,
@@ -529,7 +371,7 @@ class HabitsState extends State<Habits>{
                                   }
                                 }
 
-                                  Navigator.pop(context,'save');
+                                 Navigator.pop(context,'save');
 
 
 
@@ -556,7 +398,7 @@ class HabitsState extends State<Habits>{
     );
   }
   void _addNegativHabit(BuildContext context) async{
-    String result = await Navigator.push(
+    await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => AddNegativeHabit()));
     db.getNegaiveHabits().then((allHabits) {
@@ -564,13 +406,14 @@ class HabitsState extends State<Habits>{
         nhabits.clear();
         allHabits.forEach((habit) {
           nhabits.add(Habit.fromeMap(habit));
+          nvalue.add(false);
         });
       });
     });
   }
 
   void _addPositiveHabit(BuildContext context) async{
-    String result = await Navigator.push(
+    await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => AddPositiveHabit()));
     db.getPositiveHabits().then((allHabits) {
@@ -578,6 +421,7 @@ class HabitsState extends State<Habits>{
         phabits.clear();
         allHabits.forEach((habit) {
           phabits.add(Habit.fromeMap(habit));
+          pvalue.add(false);
         });
       });
     });

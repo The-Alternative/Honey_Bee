@@ -34,7 +34,7 @@ class AddEventState extends State<AddEvent>{
     super.initState();
     _nameController = new TextEditingController(text: "");
     _noteController = new TextEditingController(text: "");
-    formattedDate = DateFormat("dd/MM/yyyy").format(now);
+    formattedDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(now);
   }
 
 
@@ -70,6 +70,37 @@ class AddEventState extends State<AddEvent>{
 //            color: Colors.white12,
             child: new ListView(
               children: [
+                new Padding(padding: EdgeInsets.only(bottom: 50.0)),
+
+                new Center(
+                    child: new Container(
+                      width: MediaQuery.of(context).size.width *0.9,
+                      child: new TextField(
+                        controller: _nameController,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(fontSize: 16.0 , color: Colors.amberAccent,),cursorColor: Colors.amberAccent,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            borderSide: BorderSide(width: 1,color: Colors.amberAccent),
+                          ),
+                          hintText: 'عنوان الملاحظة',
+                          hintStyle: TextStyle(fontSize: 16),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            borderSide: BorderSide(width: 1,color: Colors.amberAccent),
+                          ),
+                          labelStyle: TextStyle(
+                              color: Colors.amberAccent
+                          ),
+
+                          contentPadding: EdgeInsets.only(top: 10,bottom: 10,right: 20,left: 10),
+                          fillColor: Colors.white70,
+                        ),
+                      ),
+                    )
+                ),
                 new Padding(padding: EdgeInsets.only(bottom: 50.0)),
 
                 new Center(
@@ -127,7 +158,7 @@ class AddEventState extends State<AddEvent>{
 //                              });
 //                            }else{
                             db.saveEvent(Event(
-                                "sssssss",
+                                _nameController.text,
                                 _noteController.text,
                                 1,
                                 1,

@@ -14,30 +14,30 @@ import 'package:flutter/material.dart';
 
 
 
-class ChildDevelopment extends StatefulWidget {
-  final Child child;
-  ChildDevelopment(this.child);
+class Home1 extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() {
-    return new ChildDevelopmentState();
+    return new Home1State();
   }
 
 }
 
-class ChildDevelopmentState extends State<ChildDevelopment>{
+class Home1State extends State<Home1>{
 
   List<Development> childDevelopments =new List();
-  Development list ;
-  DevelopmentController db = new DevelopmentController();
+  List<Child> children =new List();
+  Child list ;
+  ChildController db = new ChildController();
 
   @override
   void initState() {
     //  TODO: implement initState
     super.initState();
-    db.getChildDevelopments(widget.child.id).then((allChildren) {
+    db.getAllChild().then((allChildren) {
       setState(() {
-        allChildren.forEach((development) {
-          childDevelopments.add(Development.fromeMap(development));
+        allChildren.forEach((child) {
+          children.add(Child.fromeMap(child));
         });
 
       });
@@ -68,149 +68,83 @@ class ChildDevelopmentState extends State<ChildDevelopment>{
             ],
           ),
           backgroundColor: Colors.white,
-          body:new Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image:AssetImage("assets/images/background.png"), fit: BoxFit.contain,
-              ),
-            ),
-//            color: Colors.white12,
-            child: (childDevelopments.length > 0)? new ListView.builder(
-                itemCount: childDevelopments.length,
-                padding: const EdgeInsets.all(15.0),
-                itemBuilder: (context,posision){
-                  return Column(
-                    children: [
+          body:Column(
+            children: [
+              new Padding(padding: EdgeInsets.only(bottom: 50.0)),
+              new Center(
+                  child: new Container(
+                    width: MediaQuery.of(context).size.width *0.7,
+                    child: new TextField(
+                      textAlign: TextAlign.right,
 
+                      style: TextStyle(fontSize: 18.0 , color: Colors.amberAccent,),cursorColor: Colors.amberAccent,
+                      decoration: InputDecoration(
+                        labelStyle: new TextStyle(
+                          color: Colors.amberAccent,
 
-                      Stack(
-                        children: <Widget>[
-
-                          Container(
-                            width: double.infinity,
-                            height: 350,
-                            margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                            padding: EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.redAccent, width: 1),
-                              borderRadius: BorderRadius.circular(5),
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: ListView(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.5,top: 5,left: 5),
-                                  child: Text("05/12/2020"),
-                                ),
-                                Padding(padding: EdgeInsets.only(bottom: 15)),
-                                Row(
-                                  children: [
-                                    Expanded(child: Text("")),
-                                    Text("${childDevelopments[posision].name}",textDirection: TextDirection.rtl),
-                                    Padding(padding: EdgeInsets.only(left: 10)),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(child: Text("")),
-                                    Text("${childDevelopments[posision].note}",textDirection: TextDirection.rtl),
-                                    Padding(padding: EdgeInsets.only(left: 10)),
-                                  ],
-                                ),
-                                Padding(padding: EdgeInsets.only(bottom: 15)),
-                                Row(
-                                  children: [
-                                    Expanded(child: Text("")),
-                                    Image.asset("assets/images/111.png",width: 100,),
-                                    Padding(padding: EdgeInsets.only(left: 10)),
-                                    Image.asset("assets/images/helth.png",width: 100,),
-                                    Expanded(child: Text("")),
-                                  ],
-                                ),
-
-                                Padding(padding: EdgeInsets.only(bottom: 15.0)),
-                                Row(
-                                  children: [
-                                    new Expanded(child: Text("")),
-                                    Text('يوم',style: TextStyle(color: Colors.black,fontSize: 18.0)),
-                                    Padding(padding: EdgeInsets.only(left: 10.0)),
-                                    Text('20',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
-                                    Padding(padding: EdgeInsets.only(left:15.0)),
-                                    Text('أشهر',style: TextStyle(color: Colors.black,fontSize: 18.0)),
-                                    Padding(padding: EdgeInsets.only(left: 10.0)),
-                                    Text('6',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
-                                    Padding(padding: EdgeInsets.only(left:15.0)),
-                                    Text('سنوات',style: TextStyle(color: Colors.black,fontSize: 18.0)),
-                                    Padding(padding: EdgeInsets.only(left: 10.0)),
-                                    Text('5',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
-                                    new Expanded(child: Text("")),
-                                  ],
-                                ),
-                              ],
+                        ),
+                        focusedBorder:UnderlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.amberAccent, width: 1.0),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.amberAccent),
+                        ),
+                        prefixIcon: new DropdownButton<String>(
+                          underline: Container(
+                            decoration: const BoxDecoration(
+                                border: Border(bottom: BorderSide(color: Colors.transparent))
                             ),
                           ),
-                          Positioned(
-                              right:20 ,
-                              top: -5,
-                              child: Container(
-                                  margin: EdgeInsets.only(right: 5),
-                                  color: Colors.white,
-                                  child: Image.asset("assets/images/events.png",width: 50,)
-                              )),
-                        ],
+                          icon: new Icon(Icons.keyboard_arrow_down),
+                          items: <String>['${children[3].name}', '${children[1].name}','${children[2].name}'].map((String value) {
+                            return new DropdownMenuItem<String>(
+                              value: value,
+                              child:new ListView.builder(
+                                  itemCount: children.length,
+                                  padding: const EdgeInsets.all(15.0),
+                                  itemBuilder: (context,posision){
+                                    return Column(
+                                      children: [
+
+                                        Divider(height: 5.0,),
+                                        ListTile(
+                                          title: Text('${children[posision].name}'),
+                                          leading: Column(
+                                            children: [
+
+                                              CircleAvatar(
+                                                backgroundColor: Colors.amberAccent,
+                                                child: Text('${children[posision].id}',
+                                                  style:TextStyle(fontSize: 22.0,color: Colors.white), ),
+                                              )
+                                            ],
+                                          ),
+                                          onTap: () => _navigatToChildInfo(context,children[posision]),
+                                        ),
+                                      ],
+
+                                    );
+                                  }
+                              )
+                            );
+                          }).toList(),
+                          onChanged: (_) {},
+                        ),
+                        hintText: 'الاسم',
+                        hintStyle: TextStyle(color: Colors.black,fontSize: 20.0,fontWeight: FontWeight.bold),
+                        hoverColor: Colors.amberAccent,
+                        focusColor: Colors.amberAccent,
                       ),
-
-                      (posision == childDevelopments.length-1) ?  new Center(
-                        child: new Container(
-                          width: MediaQuery.of(context).size.width *0.7,
-                          child: new Row(
-                            children: [
-                              new FlatButton(
-                                  child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
-                                  onPressed: null
-                              ),
-                              new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
-                              new FlatButton(
-                                  onPressed: () {Navigator.of(context).pushNamed('/Home');},
-                                  child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
-                            ],
-                          ),
-                        ),
-                      ) :  Text(""),
-
-                    ],
-
-                  );
-                }
-            ) : new Center(
-              child: new Container(
-                width: MediaQuery.of(context).size.width *0.7,
-                child:new Column(
-                  children: [
-                    Padding(padding: EdgeInsets.only(bottom: 30),),
-                    new Center(
-                      child: Text("No Events For this child"),
+                      onSubmitted: (value) =>  Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ChildInfo(children[0]))) ,
                     ),
-                    Padding(padding: EdgeInsets.only(bottom: 30),),
-                    new Row(
-                      children: [
-
-                        new FlatButton(
-                            child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
-                            onPressed: null
-                        ),
-                        new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
-                        new FlatButton(
-                            onPressed: () {Navigator.of(context).pushNamed('/Home');},
-                            child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
-                      ],
-                    ),
-                  ],
-                ),
+                  )
               ),
-            ),
 
+
+            ],
           ),
           bottomNavigationBar:  new Icon(Icons.home,color: Colors.black12,size: 50.2),
 
@@ -218,6 +152,13 @@ class ChildDevelopmentState extends State<ChildDevelopment>{
       ),
     );
   }
+  void _navigatToChildInfo(BuildContext context,Child child) async{
+    await Navigator.push(
+        context,
+        MaterialPageRoute(builder:(context) => ChildInfo(child)));
+  }
+
 }
+
 
 

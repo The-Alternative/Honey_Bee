@@ -52,9 +52,9 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
     });
     birthDate= widget.child.birthDate;
     birth = DateTime.parse(birthDate);
-    age = calculateAge(birth);
-    month = calculateAgeMonth(birth);
-    dayes = calculateAgedays(birth);
+//    age = calculateAge(birth);
+//    month = calculateAgeMonth(birth);
+//    dayes = calculateAgedays(birth);
   }
 
   @override
@@ -113,7 +113,7 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                               children: [
                                 Container(
                                   margin: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.5,top: 5,left: 5),
-                                  child: Text("${childDevelopments[posision].createdDate}"),
+                                  child: Text("${convertFormatOfCreatedDate(DateTime.parse(childDevelopments[posision].createdDate))}"),
                                 ),
                                 Padding(padding: EdgeInsets.only(bottom: 15)),
                                 Row(
@@ -147,15 +147,15 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                                     new Expanded(child: Text("")),
                                     Text('يوم',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                                     Padding(padding: EdgeInsets.only(left: 10.0)),
-                                    Text('$dayes',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                    Text('${calculateAgedays(DateTime.parse(widget.child.birthDate),DateTime.parse(childDevelopments[posision].createdDate))}',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                                     Padding(padding: EdgeInsets.only(left:15.0)),
                                     Text('أشهر',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                                     Padding(padding: EdgeInsets.only(left: 10.0)),
-                                    Text('$month',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                    Text('${calculateAgeMonth(DateTime.parse(widget.child.birthDate),DateTime.parse(childDevelopments[posision].createdDate))}',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                                     Padding(padding: EdgeInsets.only(left:15.0)),
                                     Text('سنوات',style: TextStyle(color: Colors.black,fontSize: 18.0)),
                                     Padding(padding: EdgeInsets.only(left: 10.0)),
-                                    Text('$age',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
+                                    Text('${calculateAge(DateTime.parse(widget.child.birthDate),DateTime.parse(childDevelopments[posision].createdDate))}',style: TextStyle(color: Colors.grey,fontSize: 18.0),),
                                     new Expanded(child: Text("")),
                                   ],
                                 ),
@@ -230,8 +230,8 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
       ),
     );
   }
-  calculateAge(DateTime birthDate) {
-    DateTime currentDate = DateTime.now();
+  calculateAge(DateTime birthDate,DateTime createdDate) {
+    DateTime currentDate = createdDate;
     int age = currentDate.year - birthDate.year;
     int month1 = currentDate.month;
     int month2 = birthDate.month;
@@ -246,11 +246,11 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
     }
     return age;
   }
-  calculateAgeMonth(DateTime birthDate) {
+  calculateAgeMonth(DateTime birthDate,DateTime createdDate) {
     if (birthDate != '') {
 
 
-      final now = new DateTime.now();
+      final now = createdDate;
 
       int years = now.year - birthDate.year;
       int months = now.month - birthDate.month;
@@ -273,11 +273,11 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
     }
     return 0;
   }
-  calculateAgedays(DateTime birthDate) {
+  calculateAgedays(DateTime birthDate,DateTime createdDate) {
     if (birthDate != '') {
 
 
-      final now = new DateTime.now();
+      final now = createdDate;
 
       int years = now.year - birthDate.year;
       int months = now.month - birthDate.month;
@@ -299,6 +299,11 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
       print('getTheKidsAge: date is empty');
     }
     return 0;
+  }
+
+  convertFormatOfCreatedDate(DateTime createdDate) {
+    final x = DateFormat("dd/MM/yyyy").format(createdDate);
+    return x;
   }
 }
 

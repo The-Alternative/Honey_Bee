@@ -1,3 +1,5 @@
+import 'package:childrensdiary/controllers/childHabitController.dart';
+import 'package:childrensdiary/models/childHabit.dart';
 import 'package:childrensdiary/models/event.dart';
 import 'package:childrensdiary/views/AddEvent.dart';
 import 'package:childrensdiary/views/AddHealthNote.dart';
@@ -22,14 +24,26 @@ import 'controllers/eventController.dart';
 
 //List list1;
 void main() async{
-//  var db = new ChildController();
+//  var db = new ChildHabitController();
 //  WidgetsFlutterBinding.ensureInitialized();
-////  int childSaved = await db.saveChild(
-////    new Child('Ali', 'male',1, 'glfdmklghd', 0)
-////  );
-////  print("saved child : $childSaved");
-//  Child list=await db.getChild(5);
-//  print(list.name);
+//////  int childSaved = await db.saveChild(
+//////    new Child('Ali', 'male',1, 'glfdmklghd', 0)
+//////  );
+//////  print("saved child : $childSaved");
+//// List<ChildHabit> list=new List();
+////  db.getAllChildHabits().then((allChildNegativeHabits) {
+////
+////      allChildNegativeHabits.forEach((negative) {
+////        list.add(ChildHabit.fromeMap(negative));
+////        print(list[allChildNegativeHabits.length]);
+////      });
+////
+////    });
+//  ChildHabit list = db.getChildHabitss(1);
+
+
+
+
 //
 //  print('----------------------');
 //  var db2 = new EventController();

@@ -1,3 +1,7 @@
+import 'package:childrensdiary/controllers/childHabitController.dart';
+import 'package:childrensdiary/controllers/habitController.dart';
+import 'package:childrensdiary/models/childHabit.dart';
+import 'package:childrensdiary/models/habit.dart';
 import 'package:childrensdiary/views/AddChild.dart';
 import 'package:childrensdiary/controllers/childController.dart';
 import 'package:childrensdiary/models/child.dart';
@@ -21,6 +25,45 @@ class ChildHabits extends StatefulWidget {
 }
 
 class ChildHabitsState extends State<ChildHabits>{
+  List<ChildHabit> childHabits = new List();
+  List<Habit>  habits = new List() ;
+  List<String> nhabitsName = new List();
+  List<String> phabitsName = new List();
+  ChildHabitController db =new ChildHabitController();
+  HabitController db2 = new HabitController();
+
+  @override
+  void initState() {
+    //  TODO: implement initState
+    super.initState();
+    db.getNegativeChildHabits(widget.child.id).then((allChildNegativeHabits) {
+      setState(() {
+        allChildNegativeHabits.forEach((negative) {
+          childHabits.add(ChildHabit.fromeMap(negative));
+        });
+      });
+    });
+    db2.getAllHabits().then((value) {
+      setState(() {
+        value.forEach((neg){
+          habits.add(Habit.fromeMap(neg));
+        });
+        for(int i = 0 ; i < childHabits.length ; i++){
+          for(int j = 0 ; i < habits.length ; j++){
+            if (childHabits[i].habitId == habits[j].id){
+              if(habits[j].typeId == 1){
+                nhabitsName.add(habits[j].name);
+              }
+              if(habits[j].typeId == 2){
+                phabitsName.add(habits[j].name);
+              }
+                break;
+            }
+          }
+        }
+      });
+    });
+  }
 
 
   @override
@@ -30,13 +73,6 @@ class ChildHabitsState extends State<ChildHabits>{
     return new  MaterialApp(
       title: 'Welcome to Flutter',
       home: Container(
-//        decoration: BoxDecoration(
-//          color: Colors.black,
-//          image: DecorationImage(
-//              image:AssetImage("assets/images/222.png"), fit: BoxFit.cover,
-//          ),
-//        ),
-
         child: Scaffold(
           appBar:new AppBar(title: new Text('',textDirection: TextDirection.rtl,
               style: new TextStyle(color: Colors.black)),
@@ -49,10 +85,7 @@ class ChildHabitsState extends State<ChildHabits>{
                   new Text('يوميات الاولاد',style: new TextStyle(color: Colors.black,fontSize: 22.2,fontWeight: FontWeight.bold))
                 ],
               ),
-//              new Padding(padding: new EdgeInsets.only(left: 30.0)),
               new Image(image: AssetImage("assets/images/111.png"), width: 100.0,),
-//              new Padding(padding: new EdgeInsets.only(left: 30.0)),
-
             ],
           ),
           backgroundColor: Colors.white,
@@ -63,7 +96,6 @@ class ChildHabitsState extends State<ChildHabits>{
                   Padding(padding: EdgeInsets.only(bottom: 20)),
                   Stack(
                     children: <Widget>[
-
                       Container(
                         width: double.infinity,
                         height: 400,
@@ -94,34 +126,33 @@ class ChildHabitsState extends State<ChildHabits>{
                                   child: new Text("عادات سلبية",style: TextStyle(color: Colors.white,fontSize: 14),),
                                 ),
                                 new Padding(padding: EdgeInsets.only(left: 10))
+                              ],
+                            ),
+                            Stack(
+                              children: <Widget>[
+                                Center(
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width *0.8,
+                                    height: 150,
+                                    margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                                    padding: EdgeInsets.only(bottom: 10,top: 1),
 
+                                    child: (nhabitsName.length > 0)? ListView.builder(
+                                        itemCount:nhabitsName.length ,
+                                        itemBuilder: (context,posision){
+                                          return  new Row(
+                                                children: [
+                                                  Expanded(child: Text(""),),
+                                                  Text("${nhabitsName[posision]}",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
+                                                  Padding(padding: EdgeInsets.only(left: 10))
+                                                ],
+                                              );
+                                        }
+                                    ) : new Text("لم يتم إدخال اي عادات سلبية"),
+                                  ),
+                                )
                               ],
                             ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 15)),
                             Row(
                               children: [
                                 new Expanded(child: Text("")),
@@ -135,79 +166,31 @@ class ChildHabitsState extends State<ChildHabits>{
                                   child: new Text("عادات إيجابية",style: TextStyle(color: Colors.white,fontSize: 14),),
                                 ),
                                 new Padding(padding: EdgeInsets.only(left: 10))
+                              ],
+                            ),
+                            Stack(
+                              children: <Widget>[
+                                Center(
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width *0.8,
+                                    height: 150,
+                                    margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                                    padding: EdgeInsets.only(bottom: 10,top: 1),
 
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
-                              ],
-                            ),
-                            Padding(padding: EdgeInsets.only(bottom: 5)),
-                            Row(
-                              children: [
-                                Expanded(child: Text(""),),
-                                Text("خمول وحركة قليلة",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
-                                Padding(padding: EdgeInsets.only(left: 10))
+                                    child: (phabitsName.length > 0)? ListView.builder(
+                                        itemCount:phabitsName.length ,
+                                        itemBuilder: (context,posision){
+                                          return  new Row(
+                                            children: [
+                                              Expanded(child: Text(""),),
+                                              Text("${phabitsName[posision]}",textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold),),
+                                              Padding(padding: EdgeInsets.only(left: 10))
+                                            ],
+                                          );
+                                        }
+                                    ) : new Text("لم يتم إدخال اي عادات إيجابية"),
+                                  ),
+                                )
                               ],
                             ),
                           ],
@@ -241,13 +224,11 @@ class ChildHabitsState extends State<ChildHabits>{
                       ),
                     ),
                   )
-
                 ],
               ),
             ),
           ),
           bottomNavigationBar:  new Icon(Icons.home,color: Colors.black12,size: 50.2),
-
         ),
       ),
     );
