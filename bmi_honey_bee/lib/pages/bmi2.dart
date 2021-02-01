@@ -1,35 +1,26 @@
-
+import 'dart:ui';
 
 import 'package:bmi_honey_bee/pages/bmi1.dart';
-import 'package:bmi_honey_bee/pages/db_helper.dart';
+import 'package:bmi_honey_bee/utils/DatabaseConf.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-
-
-// class BMIModel{
-//   double bmi;
-//   bool isNormal;
-//   String Comments;
-//   BMIModel({this.bmi,this.isNormal,this.Comments,});
-// }
-
-
-
 class Bmi2 extends StatefulWidget{
-
+  String value;
+  String val;
   final bmiModel;
-
-  const Bmi2( {this.bmiModel});
+  Bmi2( {this.bmiModel,this.value, this.val});
 
   @override
-  _Bmi2State createState() => _Bmi2State();
+  _Bmi2State createState() => _Bmi2State(value: value,val: val);
 }
 
 class _Bmi2State extends State<Bmi2> {
-
+String value;
+String val;
+_Bmi2State({this.value,this.val});
 
   void _onItemTapped(int index) {
     setState(() {
@@ -38,11 +29,6 @@ class _Bmi2State extends State<Bmi2> {
   }
   @override
   Widget build(BuildContext context) {
-
-    double _heightOfUser = 100.0;
-    double _weightOfUser = 40.0;
-    double _bmi = 0;
-    BMIModel _bmiModel;
 
    return MaterialApp(
        debugShowCheckedModeBanner: false,
@@ -59,7 +45,9 @@ class _Bmi2State extends State<Bmi2> {
              ],
            ),
          ),
-         body: SingleChildScrollView(
+         body:Padding(
+    padding: EdgeInsets.only(left: 10.0,right: 10.0),
+        child: SingleChildScrollView(
            child:
             Container(
               padding: EdgeInsets.only(top: 20),
@@ -87,33 +75,43 @@ class _Bmi2State extends State<Bmi2> {
                        mainAxisAlignment: MainAxisAlignment.center,
                        children: [
                          Expanded(flex: 1,child: Container(
+                           height: 35,
                            decoration: BoxDecoration(
                              border: Border.all(width: 0.5,color: Colors.orange[100]),
                              boxShadow:[BoxShadow(color: Colors.grey[400],spreadRadius: .1,blurRadius: 1,)],
-                             borderRadius:BorderRadius.circular(5),
                              color: Colors.white,
                            ),
-                           child: Text(""),
+                           child: Center(child: Text(value)),
                          )),
 
                            SizedBox(width: 30,),
-                           Expanded(flex: 1,child: Container(decoration: BoxDecoration(border: Border.all(width: 0.5,color: Colors.orange[100]), boxShadow:[BoxShadow(color: Colors.grey[400],spreadRadius: .1,blurRadius: 1,)], borderRadius:BorderRadius.circular(5), color: Colors.white,
+                           Expanded(flex: 1,child: Container(
+                               height: 35,
+                               decoration: BoxDecoration(
+                                 border: Border.all(width: 0.5,color: Colors.orange[100]),
+                                 boxShadow:[BoxShadow(color: Colors.grey[400],spreadRadius: .1,blurRadius: 1,)],
+                                 color: Colors.white,
                              ),
-                               child:Text("")
+                               child:Center(
+                                   child: Text(val))
                            )),
                          SizedBox(width: 30,),
 
                          Expanded(flex: 1,child: Container(
+                           height: 35,
                            decoration: BoxDecoration(
                              border: Border.all(width: 0.5,color: Colors.orange[100]),
                              boxShadow:[BoxShadow(color: Colors.grey[400],spreadRadius: .1,blurRadius: 1,)],
-                             borderRadius:BorderRadius.circular(5),
+                           //  borderRadius:BorderRadius.circular(5),
                              color: Colors.white,
                            ),
 
-                           child: Text("${widget.bmiModel.bmi}")
+                           child: Center(
+                             child: Text( "${widget.bmiModel.result.toStringAsFixed(2)}"
+
                          ),
-                         )
+                           ),
+                         ),)
                        ],
                      ),
                    ),
@@ -137,49 +135,59 @@ class _Bmi2State extends State<Bmi2> {
                                  child: Column(
                                    crossAxisAlignment: CrossAxisAlignment.center,
                                      children: [
-                                       Text("نتائج القياسات الشخصية",textAlign: TextAlign.center,),
-                                       SizedBox(height: 30,),
+                                       Text("نتائج القياسات الشخصية",textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.w900),),
+
+                                       SizedBox(height: 40,),
+                                       Divider(color: Colors.yellow[700],),
 
                                        Row(
                                          children: [
                                            Padding(padding: EdgeInsets.all(5)),
-                                           Expanded(flex:2,child: Text("مؤشر كتلة الجسم الحالي",style: TextStyle(fontSize: 13),)),
+                                           Expanded(flex:2,child: Text("مؤشر كتلة الجسم الحالي",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700),)),
                                            Padding(padding: EdgeInsets.all(5)),
                                            Expanded(flex:1,
-                                            child: Text(
-                                             "${widget.bmiModel.bmi}",
-                                           )
+                                            child: Center(
+                                              child: Text("${widget.bmiModel.result.toStringAsFixed(2)}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w900),
+
+                                           ),
+                                            )
                                            ),
 
                                          ],
                                        ),
-                                       SizedBox(height: 20,),
+                                       Divider(color: Colors.yellow[700],),
+                                      // SizedBox(height: 20,),
                                        Row(
                                          children: [
                                            Padding(padding: EdgeInsets.all(5)),
-                                           Expanded(flex:2,child: Text("معدل مؤشر كتلة الجسم الصحي",style: TextStyle(fontSize: 13),)),
-                                           Expanded(flex:1,child: Text(
-                                         "${DBHelper.Average}"
+                                           Expanded(flex:2,child: Text("معدل مؤشر كتلة الجسم الصحي",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700),)),
+                                           Expanded(flex:1,child: Center(
+                                             child: Text("18.5-25 كجم/م" ,style: TextStyle(fontSize: 13),
+                                             ),
                                            ))
                                          ],
                                        ),
-                                       SizedBox(height: 20,),
+                                       Divider(color: Colors.yellow[700],),
+                                     //  SizedBox(height: 20,),
                                        Row(
                                          children: [
                                            Padding(padding: EdgeInsets.all(5)),
 
-                                           Expanded(flex:2,child: Text("الوضع الصحي",style: TextStyle(fontSize: 13),)),
+                                           Expanded(flex:2,child: Text("الوضع الصحي",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700),)),
                                            Expanded(flex:1,
-                                               child: Text("${widget.bmiModel.Comments}")
+                                               child: Center(child: Text("${widget.bmiModel.comment}",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w900),)),
                                            )
                                          ],
                                        ),
-                                       SizedBox(height: 20,),
+                                       Divider(color: Colors.yellow[700],),
+                                       //SizedBox(height: 20,),
                                        Row(
                                          children: [
                                            Padding(padding: EdgeInsets.all(5)),
-                                           Expanded(flex:2,child: Text("يفضل أن يكون وزنك بين",style: TextStyle(fontSize: 13),)),
-                                           Text(""),
+                                           Expanded(flex:2,child: Text("يفضل أن يكون وزنك بين",
+                                             style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700),)),
+                                           Expanded(flex:1,
+                                          child: Text("${widget.bmiModel.res.toStringAsFixed(2)}"+" - "+"${widget.bmiModel.reso.toStringAsFixed(2)}",style: TextStyle(fontSize: 13),)),
                                         ],
                                        ),
                                      ]
@@ -224,14 +232,12 @@ class _Bmi2State extends State<Bmi2> {
                ]
              ),
             ),
-           ),
+           ),),
          bottomNavigationBar: BottomNavigationBar(
            items:  <BottomNavigationBarItem>[
              BottomNavigationBarItem(
-                 icon: Icon(Icons.home_outlined,
-                   size: 30,
-                   color: Colors.grey,
-                 ),
+                 icon: Center(
+                     child: Image(image: AssetImage('images/hom.png'),)),
                 label: "home"
              ),
            ],

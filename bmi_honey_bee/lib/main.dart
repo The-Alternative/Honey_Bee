@@ -1,18 +1,11 @@
-
-
 import 'package:bmi_honey_bee/pages/bmi2.dart';
 import 'package:bmi_honey_bee/pages/bmi3.dart';
-import 'package:bmi_honey_bee/pages/bmi4.dart';
-import 'package:bmi_honey_bee/pages/bmi5.dart';
-// import 'package:bmi_honey_bee/size_config.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:bmi_honey_bee/pages/bmi1.dart';
 
-
-import 'home.dart';
 
 
 void main() {
@@ -21,13 +14,6 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // var mediaQueryData = MediaQuery.of(context);
-    // final screenHeight =MediaQuery.of(context).size.height;
-    // final screenWidth = MediaQuery.of(context).size.width;
-    // return LayoutBuilder(builder: (context , constraints){
-    //
-    // return OrientationBuilder(builder: (context, orientation){
-    //   SizeConfig().init(constraints, orientation);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -42,12 +28,6 @@ class MyApp extends StatelessWidget {
         },
         'Bmi3' :(context){
         return Bmi3();
-        },
-        'Bmi4' :(context){
-        return Bmi4();
-        },
-        'Bmi5':(context){
-        return Bmi5();
         },
 
       },
