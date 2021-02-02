@@ -34,11 +34,16 @@ class HabitsState extends State<Habits>{
   List<Habit> phabits =new List();
   List<bool>  nvalue = new List();
   List<bool>  pvalue = new List();
+  List<bool>  nnvalue = new List();
+  List<bool>  ppvalue = new List();
+  List<ChildHabit> childHabits = new List();
   Habit list;
   HabitController db = new HabitController();
   ChildHabitController db2 = new ChildHabitController();
   DateTime now = DateTime. now();
   String formattedDate ;
+  bool x = false;
+  bool y = false;
 
 
 
@@ -46,20 +51,65 @@ class HabitsState extends State<Habits>{
   void initState() {
     //  TODO: implement initState
     super.initState();
+    db2.getNegativeChildHabits(widget.child.id).then((allChildNegativeHabits) {
+      setState(() {
+        allChildNegativeHabits.forEach((negative) {
+          childHabits.add(ChildHabit.fromeMap(negative));
+        });
+      });
+    });
     db.getNegaiveHabits().then((allHabits) {
       setState(() {
         allHabits.forEach((habit) {
           nhabits.add(Habit.fromeMap(habit));
-          nvalue.add(false);
+//          nvalue.add(false);
         });
+        for(int i = 0 ; i <nhabits.length  ; i++){
+          for(int j = 0 ; j < childHabits.length ; j++){
+            if (nhabits[i].id == childHabits[j].habitId){
+                nvalue.add(true);
+                nnvalue.add(true);
+                x =true;
+                print("$i==$j==${nhabits[i].id}:1111111: ${childHabits[j].habitId}/////$x");
+                break;
+            }
+            print("$i==$j==${nhabits[i].id}:222222: ${childHabits[j].habitId}/$x");
+          }
+          if(!x){
+            nvalue.add(false);
+            nnvalue.add(false);
+            print("$i==${nhabits[i].id}:333333:///////$x ");
+          }
+          x= false;
+        }
+
+
       });
     });
     db.getPositiveHabits().then((allHabits) {
       setState(() {
         allHabits.forEach((habit) {
           phabits.add(Habit.fromeMap(habit));
-          pvalue.add(false);
+//          pvalue.add(false);
         });
+        for(int i = 0 ; i <phabits.length  ; i++){
+          for(int j = 0 ; j < childHabits.length ; j++){
+            if (phabits[i].id == childHabits[j].habitId){
+              pvalue.add(true);
+              ppvalue.add(true);
+              y =true;
+              print("$i==$j==${phabits[i].id}:1111111: ${childHabits[j].habitId}/////$x");
+              break;
+            }
+            print("$i==$j==${phabits[i].id}:222222: ${childHabits[j].habitId}/$x");
+          }
+          if(!y){
+            pvalue.add(false);
+            ppvalue.add(false);
+            print("$i==${phabits[i].id}:333333:///////$x ");
+          }
+          y= false;
+        }
       });
     });
     formattedDate = DateFormat("dd/MM/yyyy").format(now);
@@ -352,22 +402,27 @@ class HabitsState extends State<Habits>{
 
                                 for(int i =0 ; i<nvalue.length ; i++){
                                   if(nvalue[i] == true){
-                                    db2.saveChildHabit(ChildHabit(
-                                        1,
-                                        nhabits[i].id,
-                                        widget.child.id,
-                                        formattedDate
-                                    ));
+                                    if(nnvalue[i] == false){
+                                      db2.saveChildHabit(ChildHabit(
+                                          1,
+                                          nhabits[i].id,
+                                          widget.child.id,
+                                          formattedDate
+                                      ));
+                                    }
+
                                   }
                                 }
                                 for(int i =0 ; i<pvalue.length ; i++){
                                   if(pvalue[i] == true){
-                                    db2.saveChildHabit(ChildHabit(
-                                        1,
-                                        phabits[i].id,
-                                        widget.child.id,
-                                        formattedDate
-                                    ));
+                                    if(ppvalue[i] == false) {
+                                      db2.saveChildHabit(ChildHabit(
+                                          1,
+                                          phabits[i].id,
+                                          widget.child.id,
+                                          formattedDate
+                                      ));
+                                    }
                                   }
                                 }
 
@@ -426,6 +481,22 @@ class HabitsState extends State<Habits>{
       });
     });
   }
+//  ifHasHabit (int childId,int habitId) async{
+//    List thisChildHabits = new List();
+//    db2.getChildHabits(childId).then((allHabits) {
+//      setState(() {
+//        allHabits.forEach((childhabit) {
+//          thisChildHabits.add(ChildHabit.fromeMap(childhabit));
+//        });
+//        for(int i = 0 ; i < thisChildHabits.length ; i++){
+//          if(habitId == thisChildHabits[i].habitId){
+//            return true;
+//          }
+//        }
+//        return false;
+//      });
+//    });
+//  }
 }
 
 

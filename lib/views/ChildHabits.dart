@@ -49,7 +49,7 @@ class ChildHabitsState extends State<ChildHabits>{
           habits.add(Habit.fromeMap(neg));
         });
         for(int i = 0 ; i < childHabits.length ; i++){
-          for(int j = 0 ; i < habits.length ; j++){
+          for(int j = 0 ; j < habits.length ; j++){
             if (childHabits[i].habitId == habits[j].id){
               if(habits[j].typeId == 1){
                 nhabitsName.add(habits[j].name);

@@ -48,6 +48,15 @@ class ChildHabitController {
     );
   }
 
+   Future<int>childHabitExist (int childId,int habitId) async {
+    var dbClient = await db.honeyBee;
+    var sql = "SELECT COUNT(*) FROM $childHabitTable WHERE $cloumnChildId = $childId AND $cloumnHabitId=$habitId";
+    return Sqflite.firstIntValue(
+      await dbClient.rawQuery(sql)
+    );
+
+  }
+
   Future<List> getChildHabits (int id) async{
     var dbClient = await db.honeyBee;
     var sql ="SELECT * FROM $childHabitTable WHERE $cloumnChildId = $id";
