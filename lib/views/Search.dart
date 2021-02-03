@@ -4,8 +4,10 @@ import 'package:childrensdiary/models/child.dart';
 import 'package:childrensdiary/views/ChildDevelopment.dart';
 import 'package:childrensdiary/views/ChildEvents.dart';
 import 'package:childrensdiary/views/ChildHealth.dart';
+import 'package:childrensdiary/views/ChildInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'ChildHabits.dart';
 import 'Habits.dart';
@@ -21,6 +23,27 @@ class Search extends StatefulWidget{
 
 }
 class SearchState extends State<Search>{
+  DateTime _selectedDate;
+  TextEditingController _fromDateController;
+  TextEditingController _toDateController;
+  bool health;
+  bool event;
+  bool development;
+  bool habit;
+
+  @override
+  void initState(){
+    // TODO: implement initState
+    super.initState();
+    _fromDateController = new TextEditingController(text:"" );
+    _toDateController = new TextEditingController(text:"" );
+    health = false;
+    event = false;
+    development =false;
+    habit = false;
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +52,7 @@ class SearchState extends State<Search>{
       title: "Search",
       home: Container(
         child: Scaffold(
-          appBar:new AppBar(title: new Text('',textDirection: TextDirection.rtl,
+          appBar:new AppBar(title: new Text('',
               style: new TextStyle(color: Colors.black)),
             backgroundColor: Colors.amberAccent,
             actions: [
@@ -69,7 +92,15 @@ class SearchState extends State<Search>{
                           child: new Column(
                             children: [
                               new MaterialButton(
-                                onPressed:() => _childHabits(context) ,
+                                onPressed: () {
+                                  setState(() {
+                                    habit = !habit;
+                                    event = false;
+                                    development = false;
+                                    health = false;
+                                  });
+                                },
+//                                    () => _childHabits(context) ,
                                 color: Colors.white,
                                 child: Image.asset("assets/images/habits.png",width: 50,height: 50),
                                 shape: CircleBorder(side: BorderSide(
@@ -87,7 +118,15 @@ class SearchState extends State<Search>{
                           child: new Column(
                             children: [
                               new MaterialButton(
-                                onPressed: () => _childEvents(context),
+                                onPressed:() {
+                                  setState(() {
+                                    event = !event;
+                                    health = false;
+                                    development = false;
+                                    habit = false;
+                                  });
+                                },
+//                                    () => _childEvents(context),
                                 color: Colors.white,
                                 child: Image.asset("assets/images/events.png",width: 50,height: 50,),
                                 shape: CircleBorder(side: BorderSide(
@@ -108,7 +147,15 @@ class SearchState extends State<Search>{
                           child: new Column(
                             children: [
                               new MaterialButton(
-                                onPressed: () => _childDevelopments(context),
+                                onPressed: () {
+                                  setState(() {
+                                    development = !development;
+                                    event = false;
+                                    health = false;
+                                    habit = false;
+                                  });
+                                },
+//                                    () => _childDevelopments(context),
                                 color: Colors.white,
                                 child: Image.asset("assets/images/developments.png",width: 50,height: 50,),
                                 shape: CircleBorder(side: BorderSide(
@@ -128,7 +175,15 @@ class SearchState extends State<Search>{
                           child: new Column(
                             children: [
                               new MaterialButton(
-                                onPressed: () => _childHealths(context,widget.child) ,
+                                onPressed: () {
+                                  setState(() {
+                                    health = !health;
+                                    event = false;
+                                    development = false;
+                                    habit = false;
+                                  });
+                                },
+//                                    () => _childHealths(context,widget.child) ,
                                 color: Colors.white,
                                 child: Image.asset("assets/images/helth.png",width: 50,height: 50,),
                                 shape: CircleBorder(side: BorderSide(
@@ -147,17 +202,21 @@ class SearchState extends State<Search>{
                     ],
                   ),
                   Padding(padding: EdgeInsets.only(bottom: 15.0)),
-                  Center(
+                  new Center(
                       child: new Container(
                         width: MediaQuery.of(context).size.width *0.9,
                         child: new TextField(
+                          focusNode: AlwaysDisabledFocusNode(),
+                          controller: _fromDateController,
+                          onTap: () {
+                            _selectFromDate(context);
+                          },
                           textAlign: TextAlign.right,
-
+                          keyboardType: TextInputType.datetime ,
                           style: TextStyle(fontSize: 18.0 , color: Colors.amberAccent,),cursorColor: Colors.amberAccent,
                           decoration: InputDecoration(
                             labelStyle: new TextStyle(
-                              color: Colors.amberAccent,
-
+                                color: Colors.amberAccent
                             ),
                             focusedBorder:UnderlineInputBorder(
                               borderSide: const BorderSide(color: Colors.amberAccent, width: 1.0),
@@ -167,25 +226,27 @@ class SearchState extends State<Search>{
                                   color: Colors.amberAccent),
                             ),
                             hintText: 'من تاريخ',
-                            hintStyle: TextStyle(color: Colors.black12,fontSize: 20.0,fontWeight: FontWeight.bold),
-                            hoverColor: Colors.amberAccent,
-                            focusColor: Colors.amberAccent,
+                            hintStyle: TextStyle(color: Colors.black,fontSize: 20.0,fontWeight: FontWeight.bold),
                           ),
                         ),
                       )
                   ),
                   Padding(padding: EdgeInsets.only(bottom: 15.0)),
-                  Center(
+                  new Center(
                       child: new Container(
                         width: MediaQuery.of(context).size.width *0.9,
                         child: new TextField(
+                          focusNode: AlwaysDisabledFocusNode(),
+                          controller: _toDateController,
+                          onTap: () {
+                            _selectToDate(context);
+                          },
                           textAlign: TextAlign.right,
-
+                          keyboardType: TextInputType.datetime ,
                           style: TextStyle(fontSize: 18.0 , color: Colors.amberAccent,),cursorColor: Colors.amberAccent,
                           decoration: InputDecoration(
                             labelStyle: new TextStyle(
-                              color: Colors.amberAccent,
-
+                                color: Colors.amberAccent
                             ),
                             focusedBorder:UnderlineInputBorder(
                               borderSide: const BorderSide(color: Colors.amberAccent, width: 1.0),
@@ -195,9 +256,7 @@ class SearchState extends State<Search>{
                                   color: Colors.amberAccent),
                             ),
                             hintText: 'الى تاريخ',
-                            hintStyle: TextStyle(color: Colors.black12,fontSize: 20.0,fontWeight: FontWeight.bold),
-                            hoverColor: Colors.amberAccent,
-                            focusColor: Colors.amberAccent,
+                            hintStyle: TextStyle(color: Colors.black,fontSize: 20.0,fontWeight: FontWeight.bold),
                           ),
                         ),
                       )
@@ -210,9 +269,11 @@ class SearchState extends State<Search>{
                         children: [
                           new FlatButton(
                             child:new Text('استعراض',style: new TextStyle(fontSize: 19.0,color: Colors.black45)),
+                            onPressed:() => _navigateToSearch(context) ,
                           ),
                           new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                           new FlatButton(
+                              onPressed:() => _back(context) ,
                               child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black45),)),
                         ],
                       ),
@@ -230,27 +291,111 @@ class SearchState extends State<Search>{
       ),
     );
   }
-  void _childHabits(BuildContext context) async{
-    String result = await Navigator.push(
+  void _back(BuildContext context) async{
+    Navigator.pop(context);
+  }
+//
+//  void _childEvents(BuildContext context) async{
+//    String result = await Navigator.push(
+//        context,
+//        MaterialPageRoute(builder: (context) => ChildEvents(widget.child)));
+//  }
+
+  void _navigateToSearch(BuildContext context) async{
+    if(health){
+      await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ChildHealth(widget.child)));
+    }
+    if(habit){
+      await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ChildHabits(widget.child)));
-  }
-
-  void _childEvents(BuildContext context) async{
-    String result = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ChildEvents(widget.child)));
-  }
-
-  void _childHealths(BuildContext context,Child child) async{
-    String result = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ChildHealth(child)));
-  }
-
-  void _childDevelopments(BuildContext context) async{
-    String result = await Navigator.push(
+    }
+    if(development){
+      await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ChildDevelopments(widget.child)));
+    }
+    if(event){
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChildEvents(widget.child)));
+    }
   }
+
+//  void _childDevelopments(BuildContext context) async{
+//    String result = await Navigator.push(
+//        context,
+//        MaterialPageRoute(builder: (context) => ChildDevelopments(widget.child)));
+//  }
+  _selectFromDate(BuildContext context) async {
+    DateTime fromSelectedDate = await showDatePicker(
+        context: context,
+        initialDate: _selectedDate != null ? _selectedDate : DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2040),
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+            data: ThemeData.dark().copyWith(
+              colorScheme: ColorScheme.dark(
+                primary: Colors.white,
+                onPrimary: Colors.deepOrange,
+                surface: Colors.grey,
+                onSurface: Colors.white,
+              ),
+              dialogBackgroundColor: Colors.amberAccent,
+            ),
+            child: child,
+          );
+        });
+
+    if (fromSelectedDate != null) {
+      _selectedDate = fromSelectedDate;
+      _fromDateController
+        ..text = DateFormat("yyyy-MM-dd hh:mm:ss").format(_selectedDate)
+        ..selection = TextSelection.fromPosition(TextPosition(
+            offset: _fromDateController.text.length,
+            affinity: TextAffinity.upstream));
+
+    }
+
+  }
+
+  _selectToDate(BuildContext context) async {
+    DateTime fromSelectedDate = await showDatePicker(
+        context: context,
+        initialDate: _selectedDate != null ? _selectedDate : DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2040),
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+            data: ThemeData.dark().copyWith(
+              colorScheme: ColorScheme.dark(
+                primary: Colors.white,
+                onPrimary: Colors.deepOrange,
+                surface: Colors.grey,
+                onSurface: Colors.white,
+              ),
+              dialogBackgroundColor: Colors.amberAccent,
+            ),
+            child: child,
+          );
+        });
+
+    if (fromSelectedDate != null) {
+      _selectedDate = fromSelectedDate;
+      _toDateController
+        ..text = DateFormat("yyyy-MM-dd hh:mm:ss").format(_selectedDate)
+        ..selection = TextSelection.fromPosition(TextPosition(
+            offset: _toDateController.text.length,
+            affinity: TextAffinity.upstream));
+
+    }
+
+  }
+}
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }

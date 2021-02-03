@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'Home.dart';
+
 
 
 class AddChild extends StatefulWidget {
@@ -213,7 +215,7 @@ void initState(){
                         ),
                         new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                         new FlatButton(
-                            onPressed: () {Navigator.of(context).pushNamed('/Home');},
+                            onPressed: () => _back(context) ,
                             child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
                       ],
                     ),
@@ -227,6 +229,10 @@ void initState(){
         ),
       ),
     );
+  }
+
+  void _back(BuildContext context) async{
+    Navigator.pop(context);
   }
   _selectDate(BuildContext context) async {
     DateTime newSelectedDate = await showDatePicker(

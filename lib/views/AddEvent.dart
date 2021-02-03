@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'ChildInfo.dart';
+
 
 
 class AddEvent extends StatefulWidget {
@@ -173,7 +175,7 @@ class AddEventState extends State<AddEvent>{
                         ),
                         new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                         new FlatButton(
-                            onPressed: () {Navigator.of(context).pushNamed('/Home');},
+                            onPressed: () => _back(context) ,
                             child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
                       ],
                     ),
@@ -187,5 +189,8 @@ class AddEventState extends State<AddEvent>{
         ),
       ),
     );
+  }
+  void _back(BuildContext context) async{
+    Navigator.pop(context);
   }
 }

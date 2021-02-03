@@ -180,11 +180,11 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                             children: [
                               new FlatButton(
                                   child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
-                                  onPressed: null
+                                  onPressed: () {Navigator.pop(context);},
                               ),
                               new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                               new FlatButton(
-                                  onPressed: () {Navigator.of(context).pushNamed('/Home');},
+                                  onPressed: () {Navigator.pop(context);},
                                   child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
                             ],
                           ),
@@ -210,11 +210,11 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
 
                         new FlatButton(
                             child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
-                            onPressed: null
+                            onPressed: () {Navigator.pop(context);},
                         ),
                         new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                         new FlatButton(
-                            onPressed: () {Navigator.of(context).pushNamed('/Home');},
+                            onPressed: () {Navigator.pop(context);},
                             child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
                       ],
                     ),

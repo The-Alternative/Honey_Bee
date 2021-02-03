@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'ChildInfo.dart';
+
 
 class AddHealthNote extends StatefulWidget {
 //  final Health health;
@@ -283,7 +285,7 @@ class AddHealthNoteState extends State<AddHealthNote>{
 //                    labelText: "Last Name",
 //                  ),
 //                ),
-                new Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height *0.3)),
+                new Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height *0.1)),
                 new Center(
                   child: new Container(
                     width: MediaQuery.of(context).size.width *0.7,
@@ -320,7 +322,7 @@ class AddHealthNoteState extends State<AddHealthNote>{
                         ),
                         new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                         new FlatButton(
-                            onPressed: () {Navigator.of(context).pushNamed('/Home');},
+                            onPressed: () => _back(context) ,
                             child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
                       ],
                     ),
@@ -334,5 +336,8 @@ class AddHealthNoteState extends State<AddHealthNote>{
         ),
       ),
     );
+  }
+  void _back(BuildContext context) async{
+    Navigator.pop(context);
   }
 }

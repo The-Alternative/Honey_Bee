@@ -28,14 +28,14 @@ class ChildHabitController {
 
   Future<List> getNegativeChildHabits(int id) async{
     var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $childHabitTable WHERE $cloumnChildId=$id";
+    var sql ="SELECT * FROM $childHabitTable WHERE $cloumnChildId=$id AND $cloumnIsActive = 1";
     List result = await dbClient.rawQuery(sql);
     return result.toList();
   }
 
   Future<List> getPositiveChildHabits(int id) async{
     var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $childHabitTable WHERE $cloumnChildId=$id";
+    var sql ="SELECT * FROM $childHabitTable WHERE $cloumnChildId=$id AND $cloumnIsActive = 1";
     List result = await dbClient.rawQuery(sql);
     return result.toList();
   }
@@ -81,9 +81,18 @@ class ChildHabitController {
 
   Future<int> deleteChildHabit(ChildHabit childHabit) async{
     var dbClient = await db.honeyBee;
-    ChildHabit dchildhabit = new ChildHabit(0, childHabit.habitId, childHabit.childId, childHabit.createdDate);
-    return await dbClient.update(
-        childHabitTable, dchildhabit.toMap(),where: "$cloumnId",whereArgs: [childHabit.id]
+//    ChildHabit dchildhabit = new ChildHabit.fromeMap(
+//      {
+//        'id' : childHabit.id,
+//        'isActive' : 0,
+//        'createdDate' : childHabit.createdDate,
+//        'habitId' : childHabit.habitId,
+//        'childId' : childHabit.childId
+//      }
+
+//    );
+    return await dbClient.delete(
+        childHabitTable,where: "$cloumnId = ${childHabit.id}"
     );
   }
 

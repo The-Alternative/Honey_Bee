@@ -137,7 +137,7 @@ class AddNegativeHabitState extends State<AddNegativeHabit>{
                         ),
                         new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                         new FlatButton(
-                            onPressed: () {Navigator.of(context).pushNamed('/Home');},
+                            onPressed: () {Navigator.pop(context);},
                             child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
                       ],
                     ),

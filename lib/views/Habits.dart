@@ -26,7 +26,6 @@ class Habits extends StatefulWidget {
   State<StatefulWidget> createState() {
     return new HabitsState();
   }
-
 }
 
 class HabitsState extends State<Habits>{
@@ -37,6 +36,7 @@ class HabitsState extends State<Habits>{
   List<bool>  nnvalue = new List();
   List<bool>  ppvalue = new List();
   List<ChildHabit> childHabits = new List();
+
   Habit list;
   HabitController db = new HabitController();
   ChildHabitController db2 = new ChildHabitController();
@@ -70,26 +70,24 @@ class HabitsState extends State<Habits>{
                 nvalue.add(true);
                 nnvalue.add(true);
                 x =true;
-                print("$i==$j==${nhabits[i].id}:1111111: ${childHabits[j].habitId}/////$x");
+//                print("$i==$j==${nhabits[i].id}:1111111: ${childHabits[j].habitId}/////$x");
                 break;
             }
-            print("$i==$j==${nhabits[i].id}:222222: ${childHabits[j].habitId}/$x");
+//            print("$i==$j==${nhabits[i].id}:222222: ${childHabits[j].habitId}/$x");
           }
           if(!x){
             nvalue.add(false);
             nnvalue.add(false);
-            print("$i==${nhabits[i].id}:333333:///////$x ");
+//            print("$i==${nhabits[i].id}:333333:///////$x ");
           }
           x= false;
         }
-
-
       });
     });
-    db.getPositiveHabits().then((allHabits) {
+    db.getPositiveHabits().then((posHabits) {
       setState(() {
-        allHabits.forEach((habit) {
-          phabits.add(Habit.fromeMap(habit));
+        posHabits.forEach((phabit) {
+          phabits.add(Habit.fromeMap(phabit));
 //          pvalue.add(false);
         });
         for(int i = 0 ; i <phabits.length  ; i++){
@@ -98,15 +96,15 @@ class HabitsState extends State<Habits>{
               pvalue.add(true);
               ppvalue.add(true);
               y =true;
-              print("$i==$j==${phabits[i].id}:1111111: ${childHabits[j].habitId}/////$x");
+//              print("$i==$j==${phabits[i].id}:1111111: ${childHabits[j].habitId}/////$x");
               break;
             }
-            print("$i==$j==${phabits[i].id}:222222: ${childHabits[j].habitId}/$x");
+//            print("$i==$j==${phabits[i].id}:222222: ${childHabits[j].habitId}/$x");
           }
           if(!y){
             pvalue.add(false);
             ppvalue.add(false);
-            print("$i==${phabits[i].id}:333333:///////$x ");
+//            print("$i==${phabits[i].id}:333333:///////$x ");
           }
           y= false;
         }
@@ -114,7 +112,6 @@ class HabitsState extends State<Habits>{
     });
     formattedDate = DateFormat("dd/MM/yyyy").format(now);
   }
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -128,7 +125,6 @@ class HabitsState extends State<Habits>{
 //              image:AssetImage("assets/images/222.png"), fit: BoxFit.cover,
 //          ),
 //        ),
-
         child: Scaffold(
           appBar:new AppBar(title: new Text('',
               style: new TextStyle(color: Colors.black)),
@@ -144,7 +140,6 @@ class HabitsState extends State<Habits>{
 //              new Padding(padding: new EdgeInsets.only(left: 30.0)),
               new Image(image: AssetImage("assets/images/111.png"), width: 100.0,),
 //              new Padding(padding: new EdgeInsets.only(left: 30.0)),
-
             ],
           ),
           backgroundColor: Colors.white,
@@ -402,7 +397,9 @@ class HabitsState extends State<Habits>{
 
                                 for(int i =0 ; i<nvalue.length ; i++){
                                   if(nvalue[i] == true){
+                                    print("${nvalue[i]}");
                                     if(nnvalue[i] == false){
+                                      print("${nvalue[i]} 111111111 ${nnvalue[i]}");
                                       db2.saveChildHabit(ChildHabit(
                                           1,
                                           nhabits[i].id,
@@ -411,17 +408,31 @@ class HabitsState extends State<Habits>{
                                       ));
                                     }
 
+                                  }else{
+                                    print("${nvalue[i]} 2222222 ${nnvalue[i]}");
+                                    if(nnvalue[i] == true){
+                                      db2.deleteChildHabit(childHabits[i]);
+                                      print("${nvalue[i]} 33333333333 ${nnvalue[i]}");
+                                    }
                                   }
                                 }
-                                for(int i =0 ; i<pvalue.length ; i++){
-                                  if(pvalue[i] == true){
-                                    if(ppvalue[i] == false) {
+                                for(int j =0 ; j<pvalue.length ; j++){
+                                  if(pvalue[j] == true){
+                                    print("${pvalue[j]}");
+                                    if(ppvalue[j] == false) {
+                                      print("${pvalue[j]} 44444444 ${ppvalue[j]}");
                                       db2.saveChildHabit(ChildHabit(
                                           1,
-                                          phabits[i].id,
+                                          phabits[j].id,
                                           widget.child.id,
                                           formattedDate
                                       ));
+                                    }
+                                  }else{
+                                    print("${pvalue[j]} 5555555 ${ppvalue[j]}");
+                                    if(ppvalue[j] == true){
+                                      db2.deleteChildHabit(childHabits[j]);
+                                      print("${pvalue[j]} 6666666 ${ppvalue[j]}");
                                     }
                                   }
                                 }
@@ -434,7 +445,7 @@ class HabitsState extends State<Habits>{
                             ),
                             new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                             new FlatButton(
-                                onPressed: () {Navigator.of(context).pushNamed('/Home');},
+                                onPressed: () {Navigator.pop(context);},
                                 child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
                           ],
                         ),
