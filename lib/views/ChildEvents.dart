@@ -15,7 +15,9 @@ import 'package:intl/intl.dart';
 
 class ChildEvents extends StatefulWidget {
   final Child child;
-  ChildEvents(this.child);
+  final String from;
+  final String to;
+  ChildEvents(this.child,this.from,this.to);
   @override
   State<StatefulWidget> createState() {
     return new ChildEventsState();
@@ -26,6 +28,7 @@ class ChildEvents extends StatefulWidget {
 class ChildEventsState extends State<ChildEvents>{
 
   List<Event> childEvents =new List();
+  List<Event> allchildEvents =new List();
   Event list ;
   EventController db = new EventController();
   String birthDate = '';
@@ -41,8 +44,27 @@ class ChildEventsState extends State<ChildEvents>{
     db.getChildEvents(widget.child.id).then((allChildren) {
       setState(() {
         allChildren.forEach((event) {
-          childEvents.add(Event.fromeMap(event));
+          allchildEvents.add(Event.fromeMap(event));
         });
+        DateTime fromd = DateTime.parse(widget.from);
+        DateTime tod = DateTime.parse(widget.to);
+        for(int i = 0 ; i < allchildEvents.length ; i++){
+
+          DateTime created = DateTime.parse(allchildEvents[i].createdDate);
+          int dif1 = created.difference(fromd).inMilliseconds;
+          int dif2 = tod.difference(created).inMilliseconds;
+          if(dif1 > 0 && dif2 > 0){
+            print("111");
+            db.getChildEvent(widget.child.id, allchildEvents[i].id).then((all) {
+              setState(() {
+                all.forEach((element) {
+                  childEvents.add(Event.fromeMap(element));
+                });
+              });
+            });
+            print("222");
+          }
+        }
 
       });
 
@@ -177,11 +199,11 @@ class ChildEventsState extends State<ChildEvents>{
                               children: [
                                 new FlatButton(
                                     child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
-                                    onPressed: null
+                                    onPressed:  () => _childInfo(context),
                                 ),
                                 new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                                 new FlatButton(
-                                    onPressed: () {Navigator.pop(context);},
+                                    onPressed:  () => _childInfo(context),
                                     child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
                               ],
                             ),
@@ -301,6 +323,13 @@ class ChildEventsState extends State<ChildEvents>{
   convertFormatOfCreatedDate(DateTime createdDate) {
     final x = DateFormat("dd/MM/yyyy").format(createdDate);
     return x;
+  }
+
+  void _childInfo(BuildContext context) async{
+    await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChildInfo(widget.child)));
+
   }
 
 }

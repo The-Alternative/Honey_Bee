@@ -15,7 +15,9 @@ import 'package:intl/intl.dart';
 
 class ChildHealth extends StatefulWidget {
   final Child child;
-  ChildHealth(this.child);
+  final String from;
+  final String to;
+  ChildHealth(this.child,this.from,this.to);
   @override
   State<StatefulWidget> createState() {
     return new ChildHealthState();
@@ -26,9 +28,11 @@ class ChildHealth extends StatefulWidget {
 class ChildHealthState extends State<ChildHealth>{
 
   List<Health> childHealths =new List();
+  List<Health> allchildHealths =new List();
   Health list ;
   HealthController db = new HealthController();
   String birthDate = '';
+
   DateTime now = DateTime.now();
   int age;
   int month;
@@ -42,14 +46,34 @@ class ChildHealthState extends State<ChildHealth>{
     db.getChildHealths(widget.child.id).then((allChildren) {
       setState(() {
         allChildren.forEach((health) {
-          childHealths.add(Health.fromeMap(health));
+          allchildHealths.add(Health.fromeMap(health));
         });
+        DateTime fromd = DateTime.parse(widget.from);
+        DateTime tod = DateTime.parse(widget.to);
+        for(int i = 0 ; i < allchildHealths.length ; i++){
+
+          DateTime created = DateTime.parse(allchildHealths[i].createdDate);
+          int dif1 = created.difference(fromd).inMilliseconds;
+          int dif2 = tod.difference(created).inMilliseconds;
+          if(dif1 > 0 && dif2 > 0){
+            print("111");
+            db.getChildHealth(widget.child.id, allchildHealths[i].id).then((all) {
+              setState(() {
+                all.forEach((element) {
+                  childHealths.add(Health.fromeMap(element));
+                });
+              });
+            });
+            print("222");
+          }
+        }
 
       });
 
     });
     birthDate= widget.child.birthDate;
     birth = DateTime.parse(birthDate);
+
 //    age = calculateAge(birth);
 //    month = calculateAgeMonth(birth);
 //    dayes = calculateAgedays(birth);
@@ -219,11 +243,11 @@ class ChildHealthState extends State<ChildHealth>{
                               children: [
                                 new FlatButton(
                                     child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
-                                    onPressed: null
+                                    onPressed:  () => _childInfo(context),
                                 ),
                                 new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                                 new FlatButton(
-                                    onPressed: () {Navigator.pop(context);},
+                                    onPressed:  () => _childInfo(context),
                                     child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
                               ],
                             ),
@@ -358,6 +382,13 @@ class ChildHealthState extends State<ChildHealth>{
   convertFormatOfCreatedDate(DateTime createdDate) {
     final x = DateFormat("dd/MM/yyyy").format(createdDate);
     return x;
+  }
+
+  void _childInfo(BuildContext context) async{
+    await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChildInfo(widget.child)));
+
   }
 
 }

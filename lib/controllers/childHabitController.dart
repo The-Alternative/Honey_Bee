@@ -33,6 +33,13 @@ class ChildHabitController {
     return result.toList();
   }
 
+  Future<List> getNegativeChildHabit(int id,int childHabitId) async{
+    var dbClient = await db.honeyBee;
+    var sql ="SELECT * FROM $childHabitTable WHERE $cloumnChildId=$id AND $cloumnIsActive = 1 AND $cloumnId = $childHabitId";
+    List result = await dbClient.rawQuery(sql);
+    return result.toList();
+  }
+
   Future<List> getPositiveChildHabits(int id) async{
     var dbClient = await db.honeyBee;
     var sql ="SELECT * FROM $childHabitTable WHERE $cloumnChildId=$id AND $cloumnIsActive = 1";
@@ -64,13 +71,7 @@ class ChildHabitController {
     if(result.length == 0) return null;
     return result.toList();
   }
-//  Future<List> getChildHabitss (int id) async{
-//    var dbClient = await db.honeyBee;
-//    var sql ="SELECT * FROM $childHabitTable whe";
-//    var result = await dbClient.rawQuery(sql);
-//    if(result.length == 0) return null;
-//    return result.toList();
-//  }
+
 
   Future<int> updateChildHabit(ChildHabit childHabit) async{
     var dbClient = await db.honeyBee;

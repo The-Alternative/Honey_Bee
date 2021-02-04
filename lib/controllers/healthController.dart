@@ -1,14 +1,9 @@
-import 'package:childrensdiary/models/child.dart';
 import 'package:childrensdiary/models/health.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
 import 'dart:async';
-import 'dart:io';
 import 'package:childrensdiary/utils/databaseConfig.dart';
 
 class HealthController {
-//  static Database _honeyBee ;
   final String healthTable = 'healthTable';
   final String cloumnId = 'id';
   final String cloumnName = 'name';
@@ -21,26 +16,6 @@ class HealthController {
   final String cloumnChildId = 'childId';
   final DatabaseConfig db = new DatabaseConfig();
 
-//  Future<Database> get honeyBee async{
-//
-//      return _honeyBee;
-//    }
-//    _honeyBee = await intDb();
-//    return _honeyBee;
-//  }
-//
-//  intDb() async {
-//    Directory appDirectory = await getApplicationDocumentsDirectory();
-//    String path = join(appDirectory.path , 'honeyBee1.db');
-//    var myOwnDb = await openDatabase(path,version: 1,
-//        onCreate: _oncreate );
-//    return myOwnDb;
-//  }
-//  void _oncreate(Database db,int newVersion) async{
-//    var sql = "CREATE TABLE $healthTable ($cloumnId INTEGER PRIMARY KEY ,"
-//        "$cloumnName TEXT , $cloumnNote TEXT , $cloumnTall INTEGER , $cloumnWeight INTEGER , $cloumnTempreture INTEGER , $cloumnIsActive INTEGER , $cloumnCreatedDate INTEGER , $cloumnChildId INTEGER ,FOREIGN KEY ($cloumnChildId) REFERENCES childTable (id))";
-//    await db.execute(sql);
-//  }
 
   Future<int> saveHealth(Health health) async{
     var dbClient = await db.honeyBee;
@@ -58,6 +33,13 @@ class HealthController {
   Future<List> getChildHealths(int id) async{
     var dbClient = await db.honeyBee;
     var sql ="SELECT * FROM $healthTable Where $cloumnChildId = $id";
+    List result = await dbClient.rawQuery(sql);
+    return result.toList();
+  }
+
+  Future<List> getChildHealth(int id,int healthId) async{
+    var dbClient = await db.honeyBee;
+    var sql ="SELECT * FROM $healthTable Where $cloumnChildId = $id AND $cloumnId = $healthId";
     List result = await dbClient.rawQuery(sql);
     return result.toList();
   }

@@ -302,26 +302,34 @@ class SearchState extends State<Search>{
 //  }
 
   void _navigateToSearch(BuildContext context) async{
+    if(!(_fromDateController.text == '') && !(_toDateController.text == '')){
+
     if(health){
       await Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ChildHealth(widget.child)));
+          MaterialPageRoute(builder: (context) => ChildHealth(widget.child,_fromDateController.text,_toDateController.text)));
     }
     if(habit){
       await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ChildHabits(widget.child)));
+        MaterialPageRoute(builder: (context) => ChildHabits(widget.child,_fromDateController.text,_toDateController.text)));
     }
     if(development){
       await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ChildDevelopments(widget.child)));
+        MaterialPageRoute(builder: (context) => ChildDevelopments(widget.child,_fromDateController.text,_toDateController.text)));
     }
     if(event){
       await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ChildEvents(widget.child)));
+        MaterialPageRoute(builder: (context) => ChildEvents(widget.child,_fromDateController.text,_toDateController.text)));
+    }else{
+      _showMaterialDialogForIcons();
     }
+    }else{
+      _showMaterialDialog();
+    }
+
   }
 
 //  void _childDevelopments(BuildContext context) async{
@@ -394,6 +402,40 @@ class SearchState extends State<Search>{
     }
 
   }
+  _showMaterialDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+          title: new Text("يرجى إدخال التواريخ"),
+          content: new Text(""),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('حسنا'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ));
+  }
+
+  _showMaterialDialogForIcons() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+          title: new Text("يرجى إختيار أيقونة للبحث"),
+          content: new Text(""),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('حسنا'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ));
+  }
+
 }
 class AlwaysDisabledFocusNode extends FocusNode {
   @override

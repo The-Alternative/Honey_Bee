@@ -1,10 +1,6 @@
 import 'package:childrensdiary/controllers/developmentController.dart';
-import 'package:childrensdiary/controllers/eventController.dart';
-import 'package:childrensdiary/controllers/healthController.dart';
 import 'package:childrensdiary/models/child.dart';
 import 'package:childrensdiary/models/development.dart';
-import 'package:childrensdiary/models/event.dart';
-import 'package:childrensdiary/models/health.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +8,6 @@ import 'package:intl/intl.dart';
 
 
 class AddDevelopment extends StatefulWidget {
-//  final Health health;
   final Child child;
   AddDevelopment(this.child);
   @override
@@ -58,19 +53,11 @@ class AddDevelopmentState extends State<AddDevelopment>{
                   new Text('يوميات الاولاد',style: new TextStyle(color: Colors.black,fontSize: 22.2,fontWeight: FontWeight.bold))
                 ],
               ),
-//              new Padding(padding: new EdgeInsets.only(left: 30.0)),
               new Image(image: AssetImage("assets/images/111.png"), width: 100.0,),
-//              new Padding(padding: new EdgeInsets.only(left: 30.0)),
             ],
           ),
           backgroundColor: Colors.white,
           body: new Container(
-//            decoration: BoxDecoration(
-//              image: DecorationImage(
-//                image:AssetImage("assets/images/background.png"), fit: BoxFit.contain,
-//              ),
-//            ),
-//            color: Colors.white12,
             child: new ListView(
               children: [
                 new Padding(padding: EdgeInsets.only(bottom: 50.0)),

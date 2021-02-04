@@ -37,6 +37,13 @@ class DevelopmentController {
     return result.toList();
   }
 
+  Future<List> getChildDevelopment(int id,int developmentId) async{
+    var dbClient = await db.honeyBee;
+    var sql ="SELECT * FROM $developmentTable WHERE $cloumnChildId = $id AND $cloumnId = $developmentId";
+    List result = await dbClient.rawQuery(sql);
+    return result.toList();
+  }
+
   Future<int> getDevelopmentsCount () async{
     var dbClient = await db.honeyBee;
     var sql ="SELECT COUNT(*) FROM $developmentTable";

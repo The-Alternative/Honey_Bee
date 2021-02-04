@@ -19,25 +19,30 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home>{
-
+  TextEditingController _nameController;
   List<Child> children =new List();
   Child list ;
   ChildController db = new ChildController();
+  List<String> childrenNames = [];
+  bool isNameCorrect ;
 
 
   @override
   void initState() {
   //  TODO: implement initState
     super.initState();
+    _nameController = new TextEditingController(text: "");
     db.getAllChild().then((allChildren) {
       setState(() {
         allChildren.forEach((child) {
           children.add(Child.fromeMap(child));
         });
-
       });
-
+      for(int i =0 ; i < children.length; i++){
+        childrenNames.add(children[i].name);
+      }
     });
+    isNameCorrect = false;
   }
 
 
@@ -81,33 +86,63 @@ class HomeState extends State<Home>{
               ),
             ),
 //            color: Colors.white12,
-            child: new ListView.builder(
-                itemCount: children.length,
-                padding: const EdgeInsets.all(15.0),
-                itemBuilder: (context,posision){
-                return Column(
-                children: [
+            child:Column(
+              children: [
+                new Padding(padding: EdgeInsets.only(bottom: 50.0)),
+                new Center(
+                    child: new Container(
+                      width: MediaQuery.of(context).size.width *0.7,
+                      child: new TextField(
+                        onEditingComplete: () => _childInfo(context),
+                        textAlign: TextAlign.right,
+                        controller: _nameController,
+                        style: TextStyle(fontSize: 18.0 , color: Colors.amberAccent,),cursorColor: Colors.amberAccent,
+                        decoration: InputDecoration(
+                          labelStyle: new TextStyle(
+                            color: Colors.amberAccent,
 
-                Divider(height: 5.0,),
-                ListTile(
-                title: Text('${children[posision].name}'),
-                  leading: Column(
-                    children: [
+                          ),
+                          focusedBorder:UnderlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.amberAccent, width: 1.0),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.amberAccent),
+                          ),
+                          prefixIcon: new DropdownButton<String>(
+                            underline: Container(
+                              decoration: const BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Colors.transparent))
+                              ),
+                            ),
+                            icon: new Icon(Icons.keyboard_arrow_down),
+                            items: childrenNames.map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child:  Text('$value'),
+                              );
+                            }).toList(),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                _nameController.text = newValue;
+                              });
+                            },
+                          ),
+                          hintText: 'الاسم',
+                          hintStyle: TextStyle(color: Colors.black,fontSize: 20.0,fontWeight: FontWeight.bold),
+                          hoverColor: Colors.amberAccent,
+                          focusColor: Colors.amberAccent,
+                        ),
+//                        onSubmitted: (value) =>  Navigator.push(
+//                            context,
+//                            MaterialPageRoute(builder: (context) => ChildInfo(children[0]))) ,
+                      ),
+                    )
+                ),
 
-                      CircleAvatar(
-                        backgroundColor: Colors.amberAccent,
-                        child: Text('${children[posision].id}',
-                            style:TextStyle(fontSize: 22.0,color: Colors.white), ),
-                      )
-                    ],
-                  ),
-                  onTap: () => _navigatToChildInfo(context,children[posision]),
-                         ),
-                        ],
 
-                           );
-                       }
-                )
+              ],
+            ),
           ),
           floatingActionButton: new FloatingActionButton(
             onPressed:() => _creatNewChild(context),
@@ -138,22 +173,54 @@ class HomeState extends State<Home>{
           children.add(Child.fromeMap(child));
         });
       });
+      childrenNames.clear();
+      for(int i =0 ; i < children.length; i++){
+        childrenNames.add(children[i].name);
+      }
     });
+
   }
 
-//  void _childInfo(BuildContext context) async{
-//     await Navigator.push(
+  void _childInfo(BuildContext context) async{
+    for(int i = 0 ; i < children.length; i++){
+      if(_nameController.text == children[i].name){
+        await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChildInfo(children[i])));
+      }else{
+        isNameCorrect = true;
+      }
+    }
+    if(isNameCorrect){
+      _showMaterialDialog();
+    }
+  }
+
+//  void _navigatToChildInfo(BuildContext context,Child child) async{
+//    await Navigator.push(
 //        context,
-//        MaterialPageRoute(builder: (context) => ChildInfo(children[0])));
+//        MaterialPageRoute(builder:(context) => ChildInfo(child)));
 //  }
 
-  void _navigatToChildInfo(BuildContext context,Child child) async{
-    await Navigator.push(
-        context,
-        MaterialPageRoute(builder:(context) => ChildInfo(child)));
+  _showMaterialDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+          title: new Text("يرجى إختيار إسم "),
+          content: new Text(""),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('حسنا'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ));
   }
 
 }
+
 
 
 //Column(

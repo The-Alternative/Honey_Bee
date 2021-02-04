@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'Home.dart';
-
 
 
 class AddChild extends StatefulWidget {
@@ -25,7 +23,6 @@ class AddChildState extends State<AddChild>{
   TextEditingController _sexController;
   TextEditingController _birthDateController;
   TextEditingController _imageController;
-  TextEditingController _isActiveController;
 
 
 @override
@@ -36,8 +33,6 @@ void initState(){
   _sexController = new TextEditingController(text: widget.child.sex);
   _birthDateController = new TextEditingController(text:"${widget.child.birthDate}" );
   _imageController = new TextEditingController(text: widget.child.image);
-  _isActiveController = new TextEditingController(text:"${widget.child.isActive}" );
-//  birth = 0;
 }
 
 
@@ -58,9 +53,7 @@ void initState(){
                   new Text('يوميات الاولاد',style: new TextStyle(color: Colors.black,fontSize: 22.2,fontWeight: FontWeight.bold))
                 ],
               ),
-//              new Padding(padding: new EdgeInsets.only(left: 30.0)),
               new Image(image: AssetImage("assets/images/111.png"), width: 100.0,),
-//              new Padding(padding: new EdgeInsets.only(left: 30.0)),
             ],
           ),
           backgroundColor: Colors.white,
@@ -70,7 +63,6 @@ void initState(){
                 image:AssetImage("assets/images/background.png"), fit: BoxFit.contain,
               ),
             ),
-//            color: Colors.white12,
             child: new ListView(
               children: [
                 new Padding(padding: EdgeInsets.only(bottom: 50.0)),

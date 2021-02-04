@@ -16,7 +16,9 @@ import 'package:flutter/material.dart';
 
 class ChildHabits extends StatefulWidget {
   final Child child;
-  ChildHabits(this.child);
+  final String from;
+  final String to;
+  ChildHabits(this.child,this.from,this.to);
   @override
   State<StatefulWidget> createState() {
     return new ChildHabitsState();
@@ -26,6 +28,7 @@ class ChildHabits extends StatefulWidget {
 
 class ChildHabitsState extends State<ChildHabits>{
   List<ChildHabit> childHabits = new List();
+  List<ChildHabit> allchildHabits = new List();
   List<Habit>  habits = new List() ;
   List<String> nhabitsName = new List();
   List<String> phabitsName = new List();
@@ -39,8 +42,27 @@ class ChildHabitsState extends State<ChildHabits>{
     db.getNegativeChildHabits(widget.child.id).then((allChildNegativeHabits) {
       setState(() {
         allChildNegativeHabits.forEach((negative) {
-          childHabits.add(ChildHabit.fromeMap(negative));
+          allchildHabits.add(ChildHabit.fromeMap(negative));
         });
+        DateTime fromd = DateTime.parse(widget.from);
+        DateTime tod = DateTime.parse(widget.to);
+        for(int i = 0 ; i < allchildHabits.length ; i++){
+
+          DateTime created = DateTime.parse(allchildHabits[i].createdDate);
+          int dif1 = created.difference(fromd).inMilliseconds;
+          int dif2 = tod.difference(created).inMilliseconds;
+          if(dif1 > 0 && dif2 > 0){
+            print("111");
+            db.getNegativeChildHabit(widget.child.id, allchildHabits[i].id).then((all) {
+              setState(() {
+                all.forEach((element) {
+                  childHabits.add(ChildHabit.fromeMap(element));
+                });
+              });
+            });
+            print("222");
+          }
+        }
       });
     });
     db2.getAllHabits().then((value) {
@@ -232,6 +254,13 @@ class ChildHabitsState extends State<ChildHabits>{
         ),
       ),
     );
+  }
+
+  void _childInfo(BuildContext context) async{
+    await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChildInfo(widget.child)));
+
   }
 }
 

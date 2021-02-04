@@ -17,7 +17,9 @@ import 'package:intl/intl.dart';
 
 class ChildDevelopments extends StatefulWidget {
   final Child child;
-  ChildDevelopments(this.child);
+  final String from;
+  final String to;
+  ChildDevelopments(this.child,this.from,this.to);
   @override
   State<StatefulWidget> createState() {
     return new ChildDevelopmentsState();
@@ -28,6 +30,7 @@ class ChildDevelopments extends StatefulWidget {
 class ChildDevelopmentsState extends State<ChildDevelopments>{
 
   List<Development> childDevelopments =new List();
+  List<Development> allchildDevelopments =new List();
   Development list ;
   DevelopmentController db = new DevelopmentController();
   String birthDate = '';
@@ -44,8 +47,27 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
     db.getChildDevelopments(widget.child.id).then((allChildren) {
       setState(() {
         allChildren.forEach((development) {
-          childDevelopments.add(Development.fromeMap(development));
+          allchildDevelopments.add(Development.fromeMap(development));
         });
+        DateTime fromd = DateTime.parse(widget.from);
+        DateTime tod = DateTime.parse(widget.to);
+        for(int i = 0 ; i < allchildDevelopments.length ; i++){
+
+          DateTime created = DateTime.parse(allchildDevelopments[i].createdDate);
+          int dif1 = created.difference(fromd).inMilliseconds;
+          int dif2 = tod.difference(created).inMilliseconds;
+          if(dif1 > 0 && dif2 > 0){
+            print("111");
+            db.getChildDevelopment(widget.child.id, allchildDevelopments[i].id).then((all) {
+              setState(() {
+                all.forEach((element) {
+                  childDevelopments.add(Development.fromeMap(element));
+                });
+              });
+            });
+            print("222");
+          }
+        }
 
       });
 
@@ -180,11 +202,11 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                             children: [
                               new FlatButton(
                                   child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
-                                  onPressed: () {Navigator.pop(context);},
+                                  onPressed: () => _childInfo(context),
                               ),
                               new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                               new FlatButton(
-                                  onPressed: () {Navigator.pop(context);},
+                                  onPressed: () => _childInfo(context),
                                   child: new Text('إلغاء الأمر',style: new TextStyle(fontSize: 19.0,color: Colors.black),)),
                             ],
                           ),
@@ -210,7 +232,9 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
 
                         new FlatButton(
                             child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
-                            onPressed: () {Navigator.pop(context);},
+                            onPressed: () {
+                              print("1");
+                              Navigator.pop(context);},
                         ),
                         new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
                         new FlatButton(
@@ -304,6 +328,13 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
   convertFormatOfCreatedDate(DateTime createdDate) {
     final x = DateFormat("dd/MM/yyyy").format(createdDate);
     return x;
+  }
+
+  void _childInfo(BuildContext context) async{
+        await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChildInfo(widget.child)));
+
   }
 }
 
