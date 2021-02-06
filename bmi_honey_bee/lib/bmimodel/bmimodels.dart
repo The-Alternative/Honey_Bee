@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+
+
+import 'dart:ui';
 
 class BmiModel {
   double result;
@@ -9,5 +11,7 @@ class BmiModel {
   String value;
   String val;
 
-  BmiModel({this.result,this.isNormal,this.comment,this.res,this.reso,this.value,this.val,});
+
+  BmiModel({this.result,this.isNormal,this.comment,this.res,this.reso,this.value,this.val});
+
 }
