@@ -31,8 +31,8 @@
     }
 
     void _oncreate(Database db, int newVersion) async {
-      var childSql = "CREATE TABLE $descTable ($cloumnId INTEGER PRIMARY KEY ,"
+      var descsql = "CREATE TABLE $descTable ($cloumnId INTEGER PRIMARY KEY ,"
           "$cloumnHeight TEXT,$cloumnWeight TEXT,$cloumnBmi TEXT,$cloumnDate TEXT)";
-      await db.execute(childSql);
+      await db.execute(descsql);
     }
   }
