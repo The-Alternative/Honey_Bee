@@ -52,39 +52,39 @@ class ChildHabitsState extends State<ChildHabits>{
           int dif1 = created.difference(fromd).inMilliseconds;
           int dif2 = tod.difference(created).inMilliseconds;
           if(dif1 > 0 && dif2 > 0){
-            print("111");
             db.getNegativeChildHabit(widget.child.id, allchildHabits[i].id).then((all) {
               setState(() {
                 all.forEach((element) {
+                  print("${ChildHabit.fromeMap(element).id}");
                   childHabits.add(ChildHabit.fromeMap(element));
                 });
               });
             });
-            print("222");
           }
         }
-      });
-    });
-    db2.getAllHabits().then((value) {
-      setState(() {
-        value.forEach((neg){
-          habits.add(Habit.fromeMap(neg));
-        });
-        for(int i = 0 ; i < childHabits.length ; i++){
-          for(int j = 0 ; j < habits.length ; j++){
-            if (childHabits[i].habitId == habits[j].id){
-              if(habits[j].typeId == 1){
-                nhabitsName.add(habits[j].name);
+        db2.getAllHabits().then((value) {
+          setState(() {
+            value.forEach((neg){
+              habits.add(Habit.fromeMap(neg));
+            });
+            for(int i = 0 ; i < childHabits.length ; i++){
+              for(int j = 0 ; j < habits.length ; j++){
+                if (childHabits[i].habitId == habits[j].id){
+                  if(habits[j].typeId == 1){
+                    nhabitsName.add(habits[j].name);
+                  }
+                  if(habits[j].typeId == 2){
+                    phabitsName.add(habits[j].name);
+                  }
+                  break;
+                }
               }
-              if(habits[j].typeId == 2){
-                phabitsName.add(habits[j].name);
-              }
-                break;
             }
-          }
-        }
+          });
+        });
       });
     });
+
   }
 
 

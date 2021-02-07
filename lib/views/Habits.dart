@@ -110,7 +110,7 @@ class HabitsState extends State<Habits>{
         }
       });
     });
-    formattedDate = DateFormat("dd/MM/yyyy").format(now);
+    formattedDate = DateFormat("yyyy-MM-dd hh:mm:ss").format(now);
   }
   @override
   Widget build(BuildContext context) {
@@ -397,9 +397,7 @@ class HabitsState extends State<Habits>{
 
                                 for(int i =0 ; i<nvalue.length ; i++){
                                   if(nvalue[i] == true){
-                                    print("${nvalue[i]}");
                                     if(nnvalue[i] == false){
-                                      print("${nvalue[i]} 111111111 ${nnvalue[i]}");
                                       db2.saveChildHabit(ChildHabit(
                                           1,
                                           nhabits[i].id,
@@ -409,18 +407,14 @@ class HabitsState extends State<Habits>{
                                     }
 
                                   }else{
-                                    print("${nvalue[i]} 2222222 ${nnvalue[i]}");
                                     if(nnvalue[i] == true){
                                       db2.deleteChildHabit(childHabits[i]);
-                                      print("${nvalue[i]} 33333333333 ${nnvalue[i]}");
                                     }
                                   }
                                 }
                                 for(int j =0 ; j<pvalue.length ; j++){
                                   if(pvalue[j] == true){
-                                    print("${pvalue[j]}");
                                     if(ppvalue[j] == false) {
-                                      print("${pvalue[j]} 44444444 ${ppvalue[j]}");
                                       db2.saveChildHabit(ChildHabit(
                                           1,
                                           phabits[j].id,
@@ -429,10 +423,8 @@ class HabitsState extends State<Habits>{
                                       ));
                                     }
                                   }else{
-                                    print("${pvalue[j]} 5555555 ${ppvalue[j]}");
                                     if(ppvalue[j] == true){
                                       db2.deleteChildHabit(childHabits[j]);
-                                      print("${pvalue[j]} 6666666 ${ppvalue[j]}");
                                     }
                                   }
                                 }
