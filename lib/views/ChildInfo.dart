@@ -142,7 +142,7 @@ class ChildInfoState extends State<ChildInfo>{
                         Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width *0.4,)),
                         new Text('$name'),
                         Padding(padding: EdgeInsets.only(left: 10.0)),
-                        (sex == 'girl') ? new Icon(Icons.face,color: Colors.pinkAccent,) :new Icon(Icons.face,color: Colors.blueAccent,),
+                        (sex == 'انثى') ? new Icon(Icons.face,color: Colors.pinkAccent,) :new Icon(Icons.face,color: Colors.blueAccent,),
 
                       ],
                     ),

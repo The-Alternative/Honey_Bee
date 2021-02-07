@@ -110,7 +110,7 @@ void initState(){
                       child: new TextField(
                         controller: _sexController,
                         textAlign: TextAlign.right,
-
+                        readOnly: true,
                         style: TextStyle(fontSize: 18.0 , color: Colors.amberAccent,),cursorColor: Colors.amberAccent,
                         decoration: InputDecoration(
                           labelStyle: new TextStyle(
@@ -138,7 +138,11 @@ void initState(){
                                 child: new Text(value),
                               );
                             }).toList(),
-                            onChanged: (_) {},
+                            onChanged: (String newValue) {
+                              setState(() {
+                                _sexController.text = newValue;
+                              });
+                            },
                           ),
                         ),
                       ),
@@ -182,6 +186,7 @@ void initState(){
                         new FlatButton(
                           child:(widget.child.id != null) ? new Text('update',style:  TextStyle(fontSize: 19.0,color: Colors.black)):  Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
                           onPressed: (){
+                            if(!(_nameController.text == '') && !(_birthDateController.text == '') && !(_sexController.text == '')){
                             if(widget.child.id != null){
                               db.updateChild(Child.fromeMap({
                                 'id' : widget.child.id,
@@ -202,6 +207,8 @@ void initState(){
                                   1)).then((_) {
                                     Navigator.pop(context,'save');
                                   });
+                            }}else{
+                              _showMaterialDialog();
                             }
                           },
                         ),
@@ -256,6 +263,23 @@ void initState(){
             affinity: TextAffinity.upstream));
 
     }
+  }
+
+  _showMaterialDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+          title: new Text("يرجى ملئ كافة الحقول "),
+          content: new Text(""),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('حسنا'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ));
   }
 }
 class AlwaysDisabledFocusNode extends FocusNode {
