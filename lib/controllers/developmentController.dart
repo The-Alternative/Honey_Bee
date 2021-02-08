@@ -1,83 +1,45 @@
 import 'package:childrensdiary/models/development.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:childrensdiary/service/developmentService.dart';
 import 'dart:async';
-import 'package:childrensdiary/utils/databaseConfig.dart';
 
 class DevelopmentController {
 
-  final String developmentTable = 'developmentTable';
-  final String cloumnId = 'id';
-  final String cloumnName = 'name';
-  final String cloumnNote = 'note';
-  final String cloumnTall = 'tall';
-  final String cloumnWeight = 'weight';
-  final String cloumnTempreture = 'tempreture';
-  final String cloumnIsActive = 'isActive';
-  final String cloumnCreatedDate = 'createdDate';
-  final String cloumnChildId = 'childId';
-  final DatabaseConfig db = new DatabaseConfig();
+
+  final DevelopmentService developmentService = new DevelopmentService();
 
   Future<int> saveDevelopment(Development development) async{
-    var dbClient = await db.honeyBee;
-    int result = await dbClient.insert("$developmentTable", development.toMap());
-    return result;
+    return this.developmentService.saveDevelopment(development);
   }
 
   Future<List> getAllDevelopments() async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $developmentTable";
-    List result = await dbClient.rawQuery(sql);
-    return result.toList();
+    return this.developmentService.getAllDevelopments();
   }
 
   Future<List> getChildDevelopments(int id) async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $developmentTable WHERE $cloumnChildId = $id";
-    List result = await dbClient.rawQuery(sql);
-    return result.toList();
+    return this.developmentService.getChildDevelopments(id);
   }
 
   Future<List> getChildDevelopment(int id,int developmentId) async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $developmentTable WHERE $cloumnChildId = $id AND $cloumnId = $developmentId";
-    List result = await dbClient.rawQuery(sql);
-    return result.toList();
+    return this.developmentService.getChildDevelopment(id, developmentId);
   }
 
   Future<int> getDevelopmentsCount () async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT COUNT(*) FROM $developmentTable";
-    return Sqflite.firstIntValue(
-        await dbClient.rawQuery(sql)
-    );
+    return this.developmentService.getDevelopmentsCount();
   }
 
   Future<Development> getDevelopment (int id) async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $developmentTable WHERE $cloumnId = $id";
-    var result = await dbClient.rawQuery(sql);
-    if(result.length == 0) return null;
-    return new Development.fromeMap(result.first);
+    return this.developmentService.getDevelopment(id);
   }
 
   Future<int> updateDevelopment(Development development) async{
-    var dbClient = await db.honeyBee;
-    return await dbClient.update(
-        developmentTable, development.toMap(),where: "$cloumnId",whereArgs: [development.id]
-    );
+    return this.developmentService.updateDevelopment(development);
   }
 
   Future<int> deleteDevelopment(Development development) async{
-    var dbClient = await db.honeyBee;
-    Development ddevelopment = new Development(development.name, development.note, development.tall, development.weight, development.tempreture,
-        0, development.childId, development.createdDate);
-    return await dbClient.update(
-        developmentTable, ddevelopment.toMap(),where: "$cloumnId",whereArgs: [development.id]
-    );
+    return this.developmentService.deleteDevelopment(development);
   }
 
   close() async{
-    var dbClient = await db.honeyBee;
-    return await dbClient.close();
+    return this.developmentService.close();
   }
 }

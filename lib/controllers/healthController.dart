@@ -1,83 +1,44 @@
 import 'package:childrensdiary/models/health.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:childrensdiary/service/healthService.dart';
 import 'dart:async';
-import 'package:childrensdiary/utils/databaseConfig.dart';
 
 class HealthController {
-  final String healthTable = 'healthTable';
-  final String cloumnId = 'id';
-  final String cloumnName = 'name';
-  final String cloumnNote = 'note';
-  final String cloumnTall = 'tall';
-  final String cloumnWeight = 'weight';
-  final String cloumnTempreture = 'tempreture';
-  final String cloumnIsActive = 'isActive';
-  final String cloumnCreatedDate = 'createdDate';
-  final String cloumnChildId = 'childId';
-  final DatabaseConfig db = new DatabaseConfig();
+  final HealthService healthService = new HealthService();
 
 
   Future<int> saveHealth(Health health) async{
-    var dbClient = await db.honeyBee;
-    int result = await dbClient.insert("$healthTable", health.toMap());
-    return result;
+    return this.healthService.saveHealth(health);
   }
 
   Future<List> getAllHealth() async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $healthTable";
-    List result = await dbClient.rawQuery(sql);
-    return result.toList();
+    return this.healthService.getAllHealth();
   }
 
   Future<List> getChildHealths(int id) async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $healthTable Where $cloumnChildId = $id";
-    List result = await dbClient.rawQuery(sql);
-    return result.toList();
+    return this.healthService.getChildHealths(id);
   }
 
   Future<List> getChildHealth(int id,int healthId) async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $healthTable Where $cloumnChildId = $id AND $cloumnId = $healthId";
-    List result = await dbClient.rawQuery(sql);
-    return result.toList();
+    return this.healthService.getChildHealth(id, healthId);
   }
 
   Future<int> getHealthCount () async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT COUNT(*) FROM $healthTable";
-    return Sqflite.firstIntValue(
-        await dbClient.rawQuery(sql)
-    );
+    return this.healthService.getHealthCount();
   }
 
   Future<Health> getHealth (int id) async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $healthTable WHERE $cloumnId = $id";
-    var result = await dbClient.rawQuery(sql);
-    if(result.length == 0) return null;
-    return new Health.fromeMap(result.first);
+    return this.healthService.getHealth(id);
   }
 
-  Future<int> updateChild(Health health) async{
-    var dbClient = await db.honeyBee;
-    return await dbClient.update(
-        healthTable, health.toMap(),where: "$cloumnId",whereArgs: [health.id]
-    );
+  Future<int> updateHealth(Health health) async{
+    return this.healthService.updateHealth(health);
   }
 
   Future<int> deleteHealth(Health health) async{
-    var dbClient = await db.honeyBee;
-    Health dHealth = new Health(health.name, health.note, health.tall, health.weight, health.tempreture,
-        0, health.childId, health.createdDate);
-    return await dbClient.update(
-        healthTable, dHealth.toMap(),where: "$cloumnId",whereArgs: [health.id]
-    );
+    return this.healthService.deleteHealth(health);
   }
 
   close() async{
-    var dbClient = await db.honeyBee;
-    return await dbClient.close();
+    return this.healthService.close();
   }
 }

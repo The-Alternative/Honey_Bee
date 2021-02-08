@@ -1,78 +1,44 @@
 import 'package:childrensdiary/models/habit.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:childrensdiary/service/habitService.dart';
 import 'dart:async';
-import 'package:childrensdiary/utils/databaseConfig.dart';
 
 class HabitController {
 
-  final String habitTable = 'habitTable';
-  final String cloumnId = 'id';
-  final String cloumnName = 'name';
-  final String cloumnIsActive = 'isActive';
-  final String cloumnCreatedDate = 'createdDate';
-  final String cloumnTypeId = 'typeId';
-  final DatabaseConfig db = new DatabaseConfig();
+  final HabitService habitService = new HabitService();
 
   Future<int> savehabit(Habit habit) async{
-    var dbClient = await db.honeyBee;
-    int result = await dbClient.insert("$habitTable", habit.toMap());
-    return result;
+    return this.habitService.savehabit(habit);
   }
 
   Future<List> getAllHabits() async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $habitTable";
-    List result = await dbClient.rawQuery(sql);
-    return result.toList();
+    return this.habitService.getAllHabits();
   }
 
   Future<List> getNegaiveHabits() async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $habitTable WHERE $cloumnTypeId = 1";
-    List result = await dbClient.rawQuery(sql);
-    return result.toList();
+    return this.habitService.getNegaiveHabits();
   }
 
   Future<List> getPositiveHabits() async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $habitTable WHERE $cloumnTypeId = 2";
-    List result = await dbClient.rawQuery(sql);
-    return result.toList();
+    return this.habitService.getPositiveHabits();
   }
 
   Future<int> getHabitsCount () async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT COUNT(*) FROM $habitTable";
-    return Sqflite.firstIntValue(
-        await dbClient.rawQuery(sql)
-    );
+    return this.habitService.getHabitsCount();
   }
 
   Future<Habit> getHabit (int id) async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $habitTable WHERE $cloumnId = $id";
-    var result = await dbClient.rawQuery(sql);
-    if(result.length == 0) return null;
-    return new Habit.fromeMap(result.first);
+    return this.habitService.getHabit(id);
   }
 
   Future<int> updateHabit(Habit habit) async{
-    var dbClient = await db.honeyBee;
-    return await dbClient.update(
-        habitTable, habit.toMap(),where: "$cloumnId",whereArgs: [habit.id]
-    );
+    return this.habitService.updateHabit(habit);
   }
 
   Future<int> deleteHabit(Habit habit) async{
-    var dbClient = await db.honeyBee;
-    Habit dhabit = new Habit(habit.name, 0, habit.typeId, habit.createdDate);
-    return await dbClient.update(
-        habitTable, dhabit.toMap(),where: "$cloumnId",whereArgs: [habit.id]
-    );
+    return this.habitService.deleteHabit(habit);
   }
 
   close() async{
-    var dbClient = await db.honeyBee;
-    return await dbClient.close();
+    return this.habitService.close();
   }
 }

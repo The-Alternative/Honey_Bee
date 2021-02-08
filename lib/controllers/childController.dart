@@ -1,66 +1,36 @@
 import 'package:childrensdiary/models/child.dart';
-import 'package:childrensdiary/utils/databaseConfig.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:childrensdiary/service/childService.dart';
 import 'dart:async';
 
 class ChildController {
-  static Database _honeyBee ;
-  final String childTable = 'childTable';
-  final String cloumnId = 'id';
-  final String cloumnName = 'name';
-  final String cloumnSex = 'sex';
-  final String cloumnBirthDate = 'birthDate';
-  final String cloumnImage = 'image';
-  final String cloumnIsActive = 'isActive';
-  final DatabaseConfig db = new DatabaseConfig();
+  final ChildService childService = new ChildService() ;
 
 
   Future<int> saveChild(Child child) async{
-    var dbClient = await db.honeyBee;
-    int result = await dbClient.insert("$childTable", child.toMap());
-    return result;
+  return this.childService.saveChild(child);
   }
 
   Future<List> getAllChild() async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $childTable";
-    List result = await dbClient.rawQuery(sql);
-    return result.toList();
+    return this.childService.getAllChild();
   }
 
   Future<int> getChildCount () async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT COUNT(*) FROM $childTable";
-    return Sqflite.firstIntValue(
-      await dbClient.rawQuery(sql)
-    );
+    return this.childService.getChildCount();
   }
 
   Future<Child> getChild (int id) async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $childTable WHERE $cloumnId = $id";
-    var result = await dbClient.rawQuery(sql);
-    if(result.length == 0) return null;
-    return new Child.fromeMap(result.first);
+    return this.childService.getChild(id);
   }
 
   Future<int> updateChild(Child child) async{
-    var dbClient = await db.honeyBee;
-    return await dbClient.update(
-        childTable, child.toMap(),where: "$cloumnId",whereArgs: [child.id]
-    );
+    return this.childService.updateChild(child);
   }
 
   Future<int> deleteChild(Child child) async{
-    var dbClient = await db.honeyBee;
-    Child dChild = new Child(child.name, child.sex, child.birthDate, child.image, 0);
-    return await dbClient.update(
-        childTable, dChild.toMap(),where: "$cloumnId",whereArgs: [child.id]
-    );
+    return this.childService.deleteChild(child);
   }
 
    close() async{
-    var dbClient = await db.honeyBee;
-    return await dbClient.close();
+     return this.childService.close();
   }
 }
