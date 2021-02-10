@@ -37,6 +37,13 @@ class DevelopmentService {
     return result.toList();
   }
 
+  Future<List> searchChildDevelopments(int id,String text) async{
+    var dbClient = await db.honeyBee;
+    var sql ="SELECT * FROM $developmentTable WHERE $cloumnChildId = $id AND ($cloumnName LIKE '%$text%' OR $cloumnNote LIKE '%$text%')";
+    List result = await dbClient.rawQuery(sql);
+    return result.toList();
+  }
+
   Future<List> getChildDevelopment(int id,int developmentId) async{
     var dbClient = await db.honeyBee;
     var sql ="SELECT * FROM $developmentTable WHERE $cloumnChildId = $id AND $cloumnId = $developmentId";

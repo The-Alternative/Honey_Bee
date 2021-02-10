@@ -19,6 +19,10 @@ class EventController {
     return this.eventService.getChildEvents(id);
   }
 
+  Future<List> searchChildEvents(int id,String text) async{
+    return this.eventService.searchChildEvents(id, text);
+  }
+
   Future<List> getChildEvent(int id,int eventId) async{
     return this.eventService.getChildEvent(id, eventId);
   }

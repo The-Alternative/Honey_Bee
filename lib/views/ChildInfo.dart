@@ -6,6 +6,7 @@ import 'package:childrensdiary/views/ChildEvents.dart';
 import 'package:childrensdiary/views/ChildHabits.dart';
 import 'package:childrensdiary/views/ChildHealth.dart';
 import 'package:childrensdiary/views/Search.dart';
+import 'package:childrensdiary/views/SearchResults.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -37,6 +38,7 @@ class ChildInfoState extends State<ChildInfo>{
   int month;
   int dayes;
   DateTime birth;
+  TextEditingController _nameController;
 
 
   @override
@@ -53,6 +55,7 @@ class ChildInfoState extends State<ChildInfo>{
     age = calculateAge(birth);
     month = calculateAgeMonth(birth);
     dayes = calculateAgedays(birth);
+    _nameController = new TextEditingController(text: '');
 
   }
 
@@ -87,6 +90,8 @@ class ChildInfoState extends State<ChildInfo>{
                   TextField(
                     textAlign: TextAlign.right,
                     keyboardType: TextInputType.text,
+                    controller: _nameController,
+                    onEditingComplete: () => _search(context),
                     decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -367,6 +372,12 @@ class ChildInfoState extends State<ChildInfo>{
       print('getTheKidsAge: date is empty');
     }
     return 0;
+  }
+  void _search(BuildContext context) async{
+        await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SearchResult(widget.child,_nameController.text)));
+
   }
 
 }

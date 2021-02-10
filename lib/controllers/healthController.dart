@@ -18,6 +18,10 @@ class HealthController {
     return this.healthService.getChildHealths(id);
   }
 
+  Future<List> searchChildHealths(int id,String text) async{
+    return this.healthService.searchChildHealths(id,text);
+  }
+
   Future<List> getChildHealth(int id,int healthId) async{
     return this.healthService.getChildHealth(id, healthId);
   }

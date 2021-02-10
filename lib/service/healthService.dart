@@ -37,6 +37,13 @@ class HealthService {
     return result.toList();
   }
 
+  Future<List> searchChildHealths(int id,String text) async{
+    var dbClient = await db.honeyBee;
+    var sql ="SELECT * FROM $healthTable Where $cloumnChildId = $id AND ($cloumnName LIKE '%$text%' OR $cloumnNote LIKE '%$text%')";
+    List result = await dbClient.rawQuery(sql);
+    return result.toList();
+  }
+
   Future<List> getChildHealth(int id,int healthId) async{
     var dbClient = await db.honeyBee;
     var sql ="SELECT * FROM $healthTable Where $cloumnChildId = $id AND $cloumnId = $healthId";

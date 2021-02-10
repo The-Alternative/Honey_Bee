@@ -37,6 +37,13 @@ class EventService {
     return result.toList();
   }
 
+  Future<List> searchChildEvents(int id,String text) async{
+    var dbClient = await db.honeyBee;
+    var sql ="SELECT * FROM $eventTable WHERE $cloumnChildId = $id AND ($cloumnName LIKE '%$text%' OR $cloumnNote LIKE '%$text%')";
+    List result = await dbClient.rawQuery(sql);
+    return result.toList();
+  }
+
   Future<List> getChildEvent(int id,int eventId) async{
     var dbClient = await db.honeyBee;
     var sql ="SELECT * FROM $eventTable WHERE $cloumnChildId = $id AND $cloumnId = $eventId";

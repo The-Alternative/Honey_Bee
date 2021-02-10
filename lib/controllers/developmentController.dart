@@ -19,6 +19,10 @@ class DevelopmentController {
     return this.developmentService.getChildDevelopments(id);
   }
 
+  Future<List> searchChildDevelopments(int id,String text) async{
+    return this.developmentService.searchChildDevelopments(id, text);
+  }
+
   Future<List> getChildDevelopment(int id,int developmentId) async{
     return this.developmentService.getChildDevelopment(id, developmentId);
   }
