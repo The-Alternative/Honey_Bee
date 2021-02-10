@@ -1,55 +1,51 @@
-import 'package:bmi_honey_bee/model/descriptor.dart';
+import 'package:bmi_honey_bee/bmimodel/bmimodels.dart';
 import 'package:bmi_honey_bee/utils/Database.dart';
-import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 
 class DescController {
+
   static Database _honeyBee ;
-  final String DescTable = 'DescTable';
+
+  final String descTable = 'descTable';
   final String cloumnId = 'id';
   final String cloumnHeight = 'height';
   final String cloumnWeight = 'weight';
   final String cloumnBmi = 'bmi';
   final String cloumnDate = 'date';
+  final String columnComment = 'comment';
+
+
+
   final DatabaseConfig db = new DatabaseConfig();
 
-
-  Future<int> saveDesc(Descriptors descriptors) async{
+  Future<int> saveDesc(CardInfo cardInfo) async{
     var dbClient = await db.honeyBee;
-    int result = await dbClient.insert("$DescTable", descriptors.toMap());
+    int result = await dbClient.insert("$descTable", cardInfo.toMap());
     return result;
   }
-
-  Future<List> getAllDesc() async{
+  Future<List<CardInfo>> getAll() async {
+    List<CardInfo> _cardlist = [];
     var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $DescTable";
-    List result = await dbClient.rawQuery(sql);
-    return result.toList();
+    var result = await dbClient.query(descTable);
+    result.forEach((element) {
+      var card = CardInfo.fromMap(element);
+      _cardlist.add(card);
+    });
+
+    return _cardlist;
   }
+  //
+  // Future<int> deleteDesc(int id) async{
+  //   var dbClient = await db.honeyBee;
+  //   return await dbClient.delete(descTable,where: "$cloumnId",whereArgs: [id]
+  //   );
+  // }
 
-  Future<int> getDescCount () async{
+  Future<int> deleteobj(int id) async {
     var dbClient = await db.honeyBee;
-    var sql ="SELECT COUNT(*) FROM $DescTable";
-    return Sqflite.firstIntValue(
-        await dbClient.rawQuery(sql)
-    );
-  }
-
-  Future<Descriptors> getDesc (int id) async{
-    var dbClient = await db.honeyBee;
-    var sql ="SELECT * FROM $DescTable WHERE $cloumnId = $id";
-    var result = await dbClient.rawQuery(sql);
-    if(result.length == 0) return null;
-    return new Descriptors.fromeMap(result.first);
-  }
-
-
-  Future<int> deleteDesc(int id) async{
-    var dbClient = await db.honeyBee;
-    return await dbClient.delete(DescTable
-      ,where: "$cloumnId",whereArgs: [id]
-    );
+    int result = await dbClient.rawDelete('DELETE FROM $descTable WHERE $cloumnId = $id');
+    return result;
   }
 
   close() async{

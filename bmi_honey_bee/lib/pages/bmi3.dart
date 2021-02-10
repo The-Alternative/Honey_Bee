@@ -1,38 +1,40 @@
-
+import 'package:bmi_honey_bee/bmimodel/bmimodels.dart';
 import 'package:bmi_honey_bee/controller/desccontroller.dart';
-import 'package:bmi_honey_bee/pages/bmi1.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:bmi_honey_bee/pages/bmi3.dart';
-import 'package:bmi_honey_bee/utils/Database.dart';
-import 'package:bmi_honey_bee/model/descriptor.dart';
 
-List myDesc ;
+
 class Bmi3 extends StatefulWidget {
-
+  BmiModel bmiModel;
+  Bmi3( {this.bmiModel});
 
   @override
-  _Bmi3State createState() => _Bmi3State();
+  _Bmi3State createState() => _Bmi3State(bmiModel: bmiModel);
 }
 
 class _Bmi3State extends State<Bmi3> {
+  BmiModel bmiModel;
+
+  _Bmi3State({this.bmiModel});
+
   DescController db = new DescController();
+  Future<List<CardInfo>> _futureCardList;
+  List<CardInfo> _cardList;
+  BmiModel _bmiModel;
 
   @override
   void initState() {
     //  TODO: implement initState
     super.initState();
-    db.getAllDesc();
-    for (int i = 0; i < myDesc.length; i++) {
-      Descriptors descriptors = Descriptors.map(myDesc[i]);
-      print('height:${descriptors.height} - weight:${descriptors.weight}');
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_cardList == null) {
+      _cardList = List<CardInfo>();
+      addCardListView();
+    }
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Directionality(textDirection: TextDirection.rtl,
@@ -53,49 +55,98 @@ class _Bmi3State extends State<Bmi3> {
               ),
 
               body: new ListView.builder(
-                  itemCount: myDesc.length,
+                  itemCount: _cardList.length,
                   itemBuilder: (BuildContext context, int position) {
                     return Card(
-                      child: ListTile(
-                        title: Card(
-                          child: ListTile(
+                      child:Column(children: <Widget>[
 
-                            title: Row(
-                              children: [
-                                Expanded(flex: 1, child: Text("الوزن")),
-                                Expanded(flex: 1, child: Text("الطول")),
-                                Expanded(flex: 1, child: Text("BMI")),
-                                Expanded(flex: 1, child: Text('${Descriptors.fromeMap(myDesc[position]).date}')),
-
-                              ],
-                            ),
-
-                            subtitle: Card(
-                              child: Row(
+                        Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 1,color: Colors.amber),
+                          boxShadow:[BoxShadow(color: Colors.white,spreadRadius: .1,blurRadius: 1,
+                          )],
+                        ),
+                          child:
+                           Column(children: <Widget>[
+                            Padding(
+                            padding: const EdgeInsets.only(right: 200),
+                             child:  Row(
                                 children: [
-                                  Expanded(flex: 1, child: Text('${Descriptors
-                                      .fromeMap(myDesc[position])
-                                      .weight}')),
-                                  Expanded(flex: 1, child: Text('${Descriptors
-                                      .fromeMap(myDesc[position])
-                                      .height}')),
-                                  Expanded(flex: 1, child: Text('${Descriptors
-                                      .fromeMap(myDesc[position])
-                                      .bmi}')),
+                                  Expanded(flex:1, child: Text(_cardList[position].datt.substring(0,16),
+                                    style: TextStyle(fontSize: 15,color: Colors.grey[500]),)),
 
-                                ],
+                                ],)
                               ),
 
-                            ),
-                            trailing: GestureDetector(child:
-                            Icon(Icons.delete),
-                              onTap: () {},
-                            ),
-                          ),),),);
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(flex: 1, child: Text("الوزن",)),
+                                    Expanded(flex: 1, child: Text("الطول",)),
+                                    Expanded(flex: 1, child: Text("BMI",)),
+                                    Expanded(flex: 2, child: Text("الوضع الصحي",)),
+
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(flex: 1, child: Text(_cardList[position].wight,)),
+                                    SizedBox(width: 25,),
+                                    Expanded(flex: 1, child: Text(_cardList[position].length)),
+                                    SizedBox(width: 25,),
+                                    Expanded(flex: 1, child: Text(_cardList[position].bmi,style: TextStyle(color: color(),fontWeight: FontWeight.w900),)),
+                                    SizedBox(width: 40,),
+                                    Expanded(flex: 2, child: Text(_cardList[position].comment,style: TextStyle(color: color(),fontWeight: FontWeight.w900),)),
+
+                                    Expanded(flex: 1, child:    GestureDetector(child:
+                                    Icon(Icons.delete,),
+                                      onTap: () {
+                                        print('${_cardList[position].id}');
+                                        deleteCardListView(_cardList[position].id);
+                                      },
+                                    ))
+                                  ],
+                                ),
+                              ),
+
+                            ]),
+                          )
+                        ])
+                      ,);
                   })
           ),
 
         ));
   }
+  addCardListView() {
+    _futureCardList = db.getAll();
+    _futureCardList.then((cardList) {
+      setState(() {
+        //debugPrint("list has change");
+        this._cardList = cardList;
+      });
+    });
+  }
+  deleteCardListView(int i) {
+    db.deleteobj(i);
+    addCardListView();
+  }
 
+  Color color(){
+    if(widget.bmiModel.result >=18.5 && widget.bmiModel.result <=25){
+      return Colors.green;
+    }else if(widget.bmiModel.result > 25 && widget.bmiModel.result <=30){
+      return Colors.orange;
+    }
+    else if(widget.bmiModel.result > 30){
+      return Colors.red;
+    }
+    else if(widget.bmiModel.result < 18.5){
+      return Colors.blue;
+    }
+  }
 }

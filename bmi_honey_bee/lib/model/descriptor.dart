@@ -18,10 +18,10 @@ class Descriptors {
 
 
   int get _id => id;
-String get _height => height;
-String get _weight => weight;
-String get _bmi => bmi;
-String get _date => date;
+  String get _height => height;
+  String get _weight => weight;
+  String get _bmi => bmi;
+  String get _date => date;
 
 
   Map<String,dynamic> toMap(){
