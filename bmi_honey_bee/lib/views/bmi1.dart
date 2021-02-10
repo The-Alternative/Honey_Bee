@@ -1,14 +1,10 @@
-
-
 import 'package:bmi_honey_bee/bmimodel/bmimodels.dart';
-import 'package:bmi_honey_bee/controller/desccontroller.dart';
-import 'package:bmi_honey_bee/model/descriptor.dart';
-import 'package:bmi_honey_bee/utils/Database.dart';
-
+import 'package:bmi_honey_bee/controllers/desccontroller.dart';
+import 'package:bmi_honey_bee/views/bmi2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:bmi_honey_bee/pages/bmi2.dart';
+
 
 
 class Bmi1 extends StatefulWidget  {

@@ -1,5 +1,5 @@
 import 'package:bmi_honey_bee/bmimodel/bmimodels.dart';
-import 'package:bmi_honey_bee/controller/desccontroller.dart';
+import 'package:bmi_honey_bee/controllers/desccontroller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
