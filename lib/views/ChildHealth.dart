@@ -61,56 +61,45 @@ class ChildHealthState extends State<ChildHealth>{
           int dif1 = created.difference(fromd).inMilliseconds;
           int dif2 = tod.difference(created).inMilliseconds;
           if(dif1 > 0 && dif2 > 0){
-            print("111");
             db.getChildHealth(widget.child.id, allchildHealths[i].id).then((all) {
               setState(() {
                 all.forEach((element) {
                   childHealths.add(Health.fromeMap(element));
                 });
-                print("666");
-                print("${childHealths.length}");
                 // for(int i = 0 ; i < childHealths.length ; i ++){
                 //   print("66611111");
                 //   x.add(List());
                 //   print("6662222222");
                 // }
-                for(int i = 0 ; i < childHealths.length ; i ++){
-                  print("88888888888966699999999");
+                for(int j = 0 ; j < childHealths.length ; j ++){
+                  print('111');
                   x.add(List());
-                  print("88888888888");
+                  print('22222');
                   db2.getItemMedias(1, childHealths[i].id).then((value) {
-                    print("9999999");
+                    print('33333');
                     setState(() {
-                      print("101010");
+                      print('444444');
                       value.forEach((media) {
-                        print("333");
-                        x[i].add(Media.fromeMap(media));
-                        print("444");
-                        print(x[i][0].mediaUrl);
+                        print('55555');
+                        if(!(i>j)){
+                          print('66666');
+                          x[j].add(Media.fromeMap(media));
+                          print('7777777');
+                        }
+                        print('88888');
                         xx = i;
+                        print('999999');
                       });
                     });
                   });
                 }
               });
-              print("77777");
-              print("${childHealths.length}");
             });
-            print("555");
-            print("//////////////////////");
-            print("${childHealths.length}");
-
-            print("222");
-            print("${childHealths.length}");
           }
         }
-
-      });
-      print("969696");
-      print("${childHealths.length}");
+      }
+      );
     });
-    print("4846654");
-    print("${childHealths.length}");
     birthDate= widget.child.birthDate;
     birth = DateTime.parse(birthDate);
 
@@ -124,7 +113,7 @@ class ChildHealthState extends State<ChildHealth>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    if(xx == childHealths.length-1){
+    // if(xx == childHealths.length-1){
     return new  MaterialApp(
       title: 'Welcome to Flutter',
       home: Container(
@@ -204,17 +193,28 @@ class ChildHealthState extends State<ChildHealth>{
                                       Padding(padding: EdgeInsets.only(left: 10)),
                                     ],
                                   ),
-                                  Padding(padding: EdgeInsets.only(bottom: 15)),
-                                  Row(
-                                    children: [
-                                      Expanded(child: Text("")),
-                                      Image.file(File(x[posision][0].mediaUrl),width: 100,height: 100,),
-                                      Padding(padding: EdgeInsets.only(left: 10)),
-                                      Image.file(File(x[posision][1].mediaUrl),width: 100,height: 100),
-                                      Expanded(child: Text("")),
-                                    ],
+                                  // Row(
+                                  //   children: [
+                                  //     Expanded(child: Text("")),
+                                  //     Image.file(File(x[posision][0].mediaUrl),width: 100,height: 100,),
+                                  //     Padding(padding: EdgeInsets.only(left: 10)),
+                                  //     Image.file(File(x[posision][1].mediaUrl),width: 100,height: 100),
+                                  //     Expanded(child: Text("")),
+                                  //   ],
+                                  // ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical: 20.0),
+                                    height: 100.0,
+                                    child:x[posision].length > 0 ? ListView.builder(
+                                      itemCount: x[posision].length,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context,position){
+                                        return Image.file(File(x[posision][position].mediaUrl),width: 100,height: 100);
+                                      }
+                                    ):Center(
+                                      child: Text("لايوجد مرفقات"),
+                                    ),
                                   ),
-                                  Padding(padding: EdgeInsets.only(bottom: 15)),
                                   new Row(
                                     children: [
                                       new Expanded(child: Text("")),
@@ -334,16 +334,23 @@ class ChildHealthState extends State<ChildHealth>{
 
         ),
       ),
-    );}else{
-return  new MaterialApp(
-  title: "please wait",
-  home: new Container(
-    child: Center(
-      child: Text("please Wait"),
-    ),
-  ),
-);
-    }
+    );
+//     ;}else{
+//  return FutureBuilder(
+//
+//     builder: (ctx, snapshot) {
+//       var value =  '0';
+//
+//       return Text(
+//         value,
+//         style: TextStyle(
+//             fontSize: 30,
+//             fontWeight: FontWeight.bold
+//         ),
+//       );
+//     }
+// );;
+//     }
   }
 
 

@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:childrensdiary/controllers/developmentController.dart';
+import 'package:childrensdiary/controllers/mediaController.dart';
 import 'package:childrensdiary/models/development.dart';
 import 'package:childrensdiary/models/child.dart';
+import 'package:childrensdiary/models/media.dart';
 import 'package:childrensdiary/views/ChildInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,14 +31,17 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
 
   List<Development> childDevelopments =new List();
   List<Development> allchildDevelopments =new List();
+  List<List<Media>> x = new List();
   Development list ;
   DevelopmentController db = new DevelopmentController();
+  MediaController db2 = new MediaController();
   String birthDate = '';
   DateTime now = DateTime.now();
   int age;
   int month;
   int dayes;
   DateTime birth;
+  int xx;
 
   @override
   void initState() {
@@ -59,6 +66,28 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                 all.forEach((element) {
                   childDevelopments.add(Development.fromeMap(element));
                 });
+                for(int j = 0 ; j < childDevelopments.length ; j ++){
+                  print('111');
+                  x.add(List());
+                  print('22222');
+                  db2.getItemMedias(2, childDevelopments[i].id).then((value) {
+                    print('33333');
+                    setState(() {
+                      print('444444');
+                      value.forEach((media) {
+                        print('55555');
+                        if(!(i>j)){
+                          print('66666');
+                          x[j].add(Media.fromeMap(media));
+                          print('7777777');
+                        }
+                        print('88888');
+                        xx = i;
+                        print('999999');
+                      });
+                    });
+                  });
+                }
               });
             });
             print("222");
@@ -149,14 +178,27 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                                   ],
                                 ),
                                 Padding(padding: EdgeInsets.only(bottom: 15)),
-                                Row(
-                                  children: [
-                                    Expanded(child: Text("")),
-                                    Image.asset("assets/images/111.png",width: 100,),
-                                    Padding(padding: EdgeInsets.only(left: 10)),
-                                    Image.asset("assets/images/helth.png",width: 100,),
-                                    Expanded(child: Text("")),
-                                  ],
+                                // Row(
+                                //   children: [
+                                //     Expanded(child: Text("")),
+                                //     Image.asset("assets/images/111.png",width: 100,),
+                                //     Padding(padding: EdgeInsets.only(left: 10)),
+                                //     Image.asset("assets/images/helth.png",width: 100,),
+                                //     Expanded(child: Text("")),
+                                //   ],
+                                // ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(vertical: 20.0),
+                                  height: 100.0,
+                                  child:x[posision].length > 0 ? ListView.builder(
+                                      itemCount: x[posision].length,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context,position){
+                                        return Image.file(File(x[posision][position].mediaUrl),width: 100,height: 100);
+                                      }
+                                  ):Center(
+                                    child: Text("لايوجد مرفقات"),
+                                  ),
                                 ),
 
                                 Padding(padding: EdgeInsets.only(bottom: 15.0)),
