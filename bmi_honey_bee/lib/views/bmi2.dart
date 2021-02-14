@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:bmi_honey_bee/bmimodel/bmimodels.dart';
+import 'package:bmi_honey_bee/models/bmimodels.dart';
 import 'package:bmi_honey_bee/views/bmi1.dart';
 import 'package:bmi_honey_bee/views/bmi3.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,11 +52,12 @@ class _Bmi2State extends State<Bmi2> {
                 ),
               ),
 
-              body: ListView(children: <Widget>[Container(
+              body: ListView(children: <Widget>[
+                Container(
                 alignment:Alignment.center,
                 color: Colors.grey[200],
                 padding: EdgeInsets.only(top: 40),
-                height:MediaQuery.of(context).size.height,
+                height:540,
                 width:MediaQuery.of(context).size.width,
                 child: Column(
                   children: [
@@ -160,7 +161,7 @@ class _Bmi2State extends State<Bmi2> {
                                               Padding(padding: EdgeInsets.all(5)),
                                               Expanded(flex:2,child: Text("مؤشر كتلة الجسم الحالي",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700),)),
                                               Padding(padding: EdgeInsets.all(5)),
-                                              Expanded(flex:2,
+                                              Expanded(flex:1,
                                                   child: Center(
                                                     child: Text("${widget.bmiModel.result.toStringAsFixed(2)}",
                                                         style: TextStyle(fontSize: 13,fontWeight: FontWeight.w900,
@@ -180,10 +181,10 @@ class _Bmi2State extends State<Bmi2> {
                                               Padding(padding: EdgeInsets.all(5)),
                                               Expanded(flex:2,child: Text("معدل مؤشر كتلة الجسم الصحي",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700),)),
 
-                                              Expanded(flex:1,child: Center(
-                                                child: Text("25-18.5 كجم/م" ,style: TextStyle(fontSize: 13),
+                                              Expanded(flex:1,
+                                                child: Text(" 25 - 18.5 كجم/م" ,style: TextStyle(fontSize: 13),
                                                 ),
-                                              ))
+                                              )
                                             ],
                                           ),
                                           SizedBox(height: 10,),
@@ -195,7 +196,7 @@ class _Bmi2State extends State<Bmi2> {
 
                                               Expanded(flex:2,child: Text("الوضع الصحي",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700),)),
                                               SizedBox(width: 10,),
-                                              Expanded(flex:2,
+                                              Expanded(flex:1,
                                                 child: Center(
 
                                                     child: Text("${bmiModel.comment}",
@@ -217,15 +218,14 @@ class _Bmi2State extends State<Bmi2> {
                                               Padding(padding: EdgeInsets.all(5)),
                                               Expanded(flex:2,child: Text("يفضل أن يكون وزنك بين",
                                                 style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700),)),
-
+                                              Padding(padding: EdgeInsets.only(right: 48)),
                                               Expanded(flex:2,
 
-                                                child: Center(
-                                                  child: Text("${bmiModel.reso.toStringAsFixed(2)}  كغ"+" - "+"${bmiModel.res.toStringAsFixed(2)}  كغ ",
+
+                                                  child: Text("${bmiModel.reso.toStringAsFixed(2)} كغ"+" - "+"${bmiModel.res.toStringAsFixed(2)}  كغ ",
                                                     style: TextStyle(fontSize: 13,
                                                     ),),
                                                 ),
-                                              )
                                             ],
                                           ),
                                         ]
@@ -239,17 +239,33 @@ class _Bmi2State extends State<Bmi2> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 30,),
+                    SizedBox(height: 10,),
+                    Text("هل تود الاضافة الى سجل  BMI ؟"),
 
-                    FlatButton(
-                      child: Text("موافق",style: TextStyle(color: Colors.white),),
-                      color: Colors.blue[700],
-                      onPressed: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => Bmi3(bmiModel: bmiModel,)));
-                      },
+                    Row(
+                      children: [
+                        Padding(padding: EdgeInsets.only(right: 65,),),
+                        FlatButton(
+                          child: Text("الغاء الأمر",style: TextStyle(color: Colors.white),),
+                          color: Colors.blue[700],
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                        ),
+                        SizedBox(width: 50,),
+                        FlatButton(
+                          child: Text("موافق",style: TextStyle(color: Colors.white),),
+                          color: Colors.blue[700],
+                          onPressed: (){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Bmi3(bmiModel: bmiModel)));
+                          },
+                        ),
 
 
+                      ],
                     )
+
+
                   ],
                 ),
 

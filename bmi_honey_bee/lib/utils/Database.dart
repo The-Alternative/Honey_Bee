@@ -14,7 +14,6 @@ class DatabaseConfig {
   final String cloumnBmi = 'bmi';
   final String cloumnDate = 'date';
   final String columnComment = 'comment';
- 
 
   Future<Database> get honeyBee async {
     if (_honeyBee != null) {
@@ -34,7 +33,7 @@ class DatabaseConfig {
 
   void _oncreate(Database db, int newVersion) async {
     var descsql = "CREATE TABLE $descTable ($cloumnId INTEGER PRIMARY KEY ,"
-        "$cloumnHeight TEXT,$cloumnWeight TEXT,$cloumnBmi TEXT,$cloumnDate TEXT,$columnComment TEXT,)";
+        "$cloumnHeight TEXT,$cloumnWeight TEXT,$cloumnBmi TEXT,$cloumnDate TEXT,$columnComment TEXT)";
     await db.execute(descsql);
   }
 }

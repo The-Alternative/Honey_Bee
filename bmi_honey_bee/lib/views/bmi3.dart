@@ -1,4 +1,4 @@
-import 'package:bmi_honey_bee/bmimodel/bmimodels.dart';
+import 'package:bmi_honey_bee/models/bmimodels.dart';
 import 'package:bmi_honey_bee/controllers/desccontroller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,10 +69,10 @@ class _Bmi3State extends State<Bmi3> {
                           child:
                            Column(children: <Widget>[
                             Padding(
-                            padding: const EdgeInsets.only(right: 200),
+                            padding: const EdgeInsets.only(right: 260),
                              child:  Row(
                                 children: [
-                                  Expanded(flex:1, child: Text(_cardList[position].datt.substring(0,16),
+                                  Expanded(flex:1, child: Text(_cardList[position].datt.substring(0,10),
                                     style: TextStyle(fontSize: 15,color: Colors.grey[500]),)),
 
                                 ],)
@@ -98,12 +98,19 @@ class _Bmi3State extends State<Bmi3> {
                                     SizedBox(width: 25,),
                                     Expanded(flex: 1, child: Text(_cardList[position].length)),
                                     SizedBox(width: 25,),
-                                    Expanded(flex: 1, child: Text(_cardList[position].bmi,style: TextStyle(color: color(),fontWeight: FontWeight.w900),)),
+                                    Expanded(flex: 1, child: Text(_cardList[position].bmi,
+                                      style: TextStyle(
+                                          color: color(),
+                                          fontWeight: FontWeight.w900),)),
                                     SizedBox(width: 40,),
-                                    Expanded(flex: 2, child: Text(_cardList[position].comment,style: TextStyle(color: color(),fontWeight: FontWeight.w900),)),
+                                    Expanded(flex: 2, child: Text(_cardList[position].comment,
+                                      style: TextStyle(
+                                          color: color(),
+                                          fontWeight: FontWeight.w900
+                                      ),)),
 
-                                    Expanded(flex: 1, child:    GestureDetector(child:
-                                    Icon(Icons.delete,),
+                                    Expanded(flex: 1, child:GestureDetector(child:
+                                    Icon(Icons.delete,color: Colors.black38,),
                                       onTap: () {
                                         print('${_cardList[position].id}');
                                         deleteCardListView(_cardList[position].id);
@@ -126,7 +133,6 @@ class _Bmi3State extends State<Bmi3> {
     _futureCardList = db.getAll();
     _futureCardList.then((cardList) {
       setState(() {
-        //debugPrint("list has change");
         this._cardList = cardList;
       });
     });

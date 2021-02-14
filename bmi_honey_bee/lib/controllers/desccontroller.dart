@@ -1,4 +1,4 @@
-import 'package:bmi_honey_bee/bmimodel/bmimodels.dart';
+import 'package:bmi_honey_bee/models/bmimodels.dart';
 import 'package:bmi_honey_bee/utils/Database.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
@@ -35,12 +35,6 @@ class DescController {
 
     return _cardlist;
   }
-  //
-  // Future<int> deleteDesc(int id) async{
-  //   var dbClient = await db.honeyBee;
-  //   return await dbClient.delete(descTable,where: "$cloumnId",whereArgs: [id]
-  //   );
-  // }
 
   Future<int> deleteobj(int id) async {
     var dbClient = await db.honeyBee;
