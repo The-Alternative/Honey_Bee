@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:childrensdiary/controllers/healthController.dart';
@@ -36,12 +37,12 @@ class ChildHealthState extends State<ChildHealth>{
   HealthController db = new HealthController();
   MediaController db2 = new MediaController();
   String birthDate = '';
-
   DateTime now = DateTime.now();
   int age;
   int month;
   int dayes;
   DateTime birth;
+  int xx;
 
   @override
   void initState() {
@@ -74,7 +75,7 @@ class ChildHealthState extends State<ChildHealth>{
                 //   print("6662222222");
                 // }
                 for(int i = 0 ; i < childHealths.length ; i ++){
-                  print("88888888888999999999");
+                  print("88888888888966699999999");
                   x.add(List());
                   print("88888888888");
                   db2.getItemMedias(1, childHealths[i].id).then((value) {
@@ -86,6 +87,7 @@ class ChildHealthState extends State<ChildHealth>{
                         x[i].add(Media.fromeMap(media));
                         print("444");
                         print(x[i][0].mediaUrl);
+                        xx = i;
                       });
                     });
                   });
@@ -118,10 +120,11 @@ class ChildHealthState extends State<ChildHealth>{
   }
 
 
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print('0000000000000000');
+    if(xx == childHealths.length-1){
     return new  MaterialApp(
       title: 'Welcome to Flutter',
       home: Container(
@@ -331,7 +334,16 @@ class ChildHealthState extends State<ChildHealth>{
 
         ),
       ),
-    );
+    );}else{
+return  new MaterialApp(
+  title: "please wait",
+  home: new Container(
+    child: Center(
+      child: Text("please Wait"),
+    ),
+  ),
+);
+    }
   }
 
 
