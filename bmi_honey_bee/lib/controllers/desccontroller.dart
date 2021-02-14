@@ -1,49 +1,22 @@
 import 'package:bmi_honey_bee/models/bmimodels.dart';
-import 'package:bmi_honey_bee/utils/Database.dart';
-import 'package:sqflite/sqflite.dart';
+// import 'package:bmi_honey_bee/controllers/desccontroller.dart';
+import 'package:bmi_honey_bee/service/descservice.dart';
 import 'dart:async';
 
 class DescController {
-
-  static Database _honeyBee ;
-
-  final String descTable = 'descTable';
-  final String cloumnId = 'id';
-  final String cloumnHeight = 'height';
-  final String cloumnWeight = 'weight';
-  final String cloumnBmi = 'bmi';
-  final String cloumnDate = 'date';
-  final String columnComment = 'comment';
-
-
-
-  final DatabaseConfig db = new DatabaseConfig();
+  final DescService descService = new DescService();
 
   Future<int> saveDesc(CardInfo cardInfo) async{
-    var dbClient = await db.honeyBee;
-    int result = await dbClient.insert("$descTable", cardInfo.toMap());
-    return result;
+    return this.descService.saveDesc(cardInfo);
   }
-  Future<List<CardInfo>> getAll() async {
-    List<CardInfo> _cardlist = [];
-    var dbClient = await db.honeyBee;
-    var result = await dbClient.query(descTable);
-    result.forEach((element) {
-      var card = CardInfo.fromMap(element);
-      _cardlist.add(card);
-    });
-
-    return _cardlist;
+  Future<List<CardInfo>> getAll() async{
+    return this.descService.getAll();
   }
 
-  Future<int> deleteobj(int id) async {
-    var dbClient = await db.honeyBee;
-    int result = await dbClient.rawDelete('DELETE FROM $descTable WHERE $cloumnId = $id');
-    return result;
+  Future<int> deleteobj(int i) async{
+    return this.descService.deleteobj(i);
   }
-
   close() async{
-    var dbClient = await db.honeyBee;
-    return await dbClient.close();
+    return this.descService.close();
   }
 }
