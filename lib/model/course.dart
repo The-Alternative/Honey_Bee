@@ -1,37 +1,30 @@
 class Course {
-  int _id;
-  String _namecourse;
-  String _nameteachar;
-  String _email;
-  int _teacharnumber;
+  int id;
+  String namecourse;
+  String nameteachar;
+  String email;
+  int teacharnumber;
 
-  Course(dynamic obj) {
-    _id = obj['id'];
-    _namecourse = obj['namecourse'];
-    _nameteachar = obj['nameteachar'];
-    _email = obj['email'];
-    _teacharnumber = obj['teacharnumber'];
-  }
+  Course(
+      {this.id,
+      this.namecourse,
+      this.nameteachar,
+      this.email,
+      this.teacharnumber});
 
-  Course.fromMap(Map<String, dynamic> data) {
-    _id = data['id'];
-    _namecourse = data['namecourse'];
-    _nameteachar = data['nameteachar'];
-    _email = data['email'];
-    _teacharnumber = data['teacharnumber'];
-  }
+  factory Course.fromMap(Map<String, dynamic> json) => Course(
+        id: json["id"],
+        namecourse: json["namecourse"],
+        nameteachar: json["nameteachar"],
+        email: json["email"],
+        teacharnumber: json["teacharnumber"],
+      );
 
   Map<String, dynamic> toMap() => {
-        'id': _id,
-        'namecourse': _namecourse,
-        'nameteachar': _nameteachar,
-        'email': _email,
-        'teacharnumber': _teacharnumber
+        "id": id,
+        "namecourse": namecourse,
+        "nameteachar": nameteachar,
+        "email": email,
+        "teacharnumber": teacharnumber,
       };
-
-  int get id => _id;
-  String get namecourse => _namecourse;
-  String get nameteachar => _nameteachar;
-  String get email => _email;
-  int get teacharnumber => _teacharnumber;
 }

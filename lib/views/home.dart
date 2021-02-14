@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:honeybee_study/dbhelper.dart';
-import 'package:honeybee_study/model/course.dart';
-import 'package:honeybee_study/pages/assignments.dart';
-import 'package:honeybee_study/pages/newcourse.dart';
+import 'package:honeybee_study/views/assignments.dart';
+import 'package:honeybee_study/views/newcourse.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,13 +9,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  DbHelper helper;
-  @override
-  void initState() {
-    super.initState();
-    helper = DbHelper();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,47 +61,6 @@ class _HomeState extends State<Home> {
             ),
             body: TabBarView(
               children: [
-                FutureBuilder(
-                  future: helper.allCourses(),
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: Image(
-                          width: 280,
-                          height: 280,
-                          image: AssetImage(
-                            "images/center.png",
-                          ),
-                          alignment: Alignment.center,
-                        ),
-                      );
-                    } else {
-                      return Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, i) {
-                              Course course = Course.fromMap(snapshot.data[i]);
-                              return Card(
-                                margin: EdgeInsets.symmetric(vertical: 8),
-                                child: ListTile(
-                                  title: Text(course.namecourse),
-                                  subtitle: Text(course.nameteachar),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.delete),
-                                    onPressed: () {
-                                      setState(() {
-                                        helper.delete(course.id);
-                                      });
-                                    },
-                                  ),
-                                ),
-                              );
-                            }),
-                      );
-                    }
-                  },
-                ),
                 new Center(
                   child: Image(
                     width: 280,

@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:honeybee_study/dbhelper.dart';
 import 'package:honeybee_study/model/course.dart';
-import 'package:honeybee_study/pages/home.dart';
+import 'package:honeybee_study/utils/databaseconfig.dart';
+import 'package:honeybee_study/views/home.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sqflite/sqflite.dart';
 
 class Newcourse extends StatefulWidget {
   @override
@@ -14,12 +15,13 @@ class Newcourse extends StatefulWidget {
 class _NewcourseState extends State<Newcourse> {
   String namecourse, nameteachar, email;
   int teacharnumber;
-  DbHelper helper;
+
+  DatabaseConfig helper;
 
   @override
   void initState() {
     super.initState();
-    helper = DbHelper();
+    helper = DatabaseConfig();
   }
 
   PickedFile _imageFile;
@@ -102,7 +104,7 @@ class _NewcourseState extends State<Newcourse> {
                   TextFormField(
                     cursorColor: Colors.amber[400],
                     textAlign: TextAlign.right,
-                    cursorHeight: 25,
+                    cursorHeight: 2,
                     decoration: InputDecoration(
                       hintText: 'البريد الألكتروني',
                     ),
@@ -142,15 +144,7 @@ class _NewcourseState extends State<Newcourse> {
                                   TextStyle(color: Colors.black, fontSize: 16),
                             ),
                             onPressed: () {
-                              Course course = Course({
-                                'namecourse': namecourse,
-                                'nameteachar': nameteachar,
-                                'email': email,
-                                'teacharnumber': teacharnumber
-                              });
-                              helper.creatCourse(course);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Home()));
+                              Navigator.of(context).pop();
                             },
                           ),
                           SizedBox(
