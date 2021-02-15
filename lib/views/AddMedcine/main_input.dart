@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:clock_app/constants/const_data.dart';
-import 'package:clock_app/controller/diagonController.dart';
-import 'package:clock_app/controller/medicineController.dart';
-import 'package:clock_app/controller/medicineDayController.dart';
-import 'package:clock_app/controller/patientController.dart';
-import 'package:clock_app/controller/timesDayesController.dart';
+import 'package:clock_app/controllers/diagonController.dart';
+import 'package:clock_app/controllers/medicineController.dart';
+import 'package:clock_app/controllers/medicineDayController.dart';
+import 'package:clock_app/controllers/patientController.dart';
+import 'package:clock_app/controllers/timesDayesController.dart';
 import 'package:clock_app/models/Diagon.dart';
 import 'package:clock_app/models/Medicine.dart';
 import 'package:clock_app/models/MedicineTimes.dart';

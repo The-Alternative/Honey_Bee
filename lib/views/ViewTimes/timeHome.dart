@@ -1,8 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:clock_app/controller/cardinfoController.dart';
-import 'package:clock_app/controller/medicineDayController.dart';
-import 'package:clock_app/controller/patientController.dart';
-import 'package:clock_app/controller/timesDayesController.dart';
+import 'package:clock_app/controllers/cardinfoController.dart';
+import 'package:clock_app/controllers/medicineDayController.dart';
+import 'package:clock_app/controllers/patientController.dart';
+import 'package:clock_app/controllers/timesDayesController.dart';
 import 'package:clock_app/models/MedicineInfo.dart';
 import 'package:clock_app/models/Patient.dart';
 import 'package:clock_app/models/medicineDays.dart';

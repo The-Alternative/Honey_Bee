@@ -1,5 +1,5 @@
-import 'package:clock_app/controller/medicineController.dart';
-import 'package:clock_app/controller/patientController.dart';
+import 'package:clock_app/controllers/medicineController.dart';
+import 'package:clock_app/controllers/patientController.dart';
 import 'package:clock_app/models/MedicineInfo.dart';
 import 'package:clock_app/models/Patient.dart';
 import 'package:flutter/material.dart';
