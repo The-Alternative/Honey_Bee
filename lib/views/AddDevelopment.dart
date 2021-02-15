@@ -148,6 +148,7 @@ class AddDevelopmentState extends State<AddDevelopment>{
                         new FlatButton(
                           child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
                           onPressed: () async {
+                            if(!(_nameController.text == '') && !(_noteController.text == '')){
 //                            if(widget.health.id != null){
 //                              db.updateChild(Health.fromeMap({
 //                                'id' : widget.health.id,
@@ -177,7 +178,9 @@ class AddDevelopmentState extends State<AddDevelopment>{
                             }
                               Navigator.pop(context,'save');
 
-
+                            }else{
+                              _showMaterialDialog();
+                            }
                           },
                         ),
                         new Padding(padding: EdgeInsets.only(right: MediaQuery.of(context).size.width *0.15 )),
@@ -196,6 +199,22 @@ class AddDevelopmentState extends State<AddDevelopment>{
         ),
       ),
     );
+  }
+  _showMaterialDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+          title: new Text("يرجى ملئ كافة الحقول "),
+          content: new Text(""),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('حسنا'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ));
   }
   Future getImageFromCamera() async {
 

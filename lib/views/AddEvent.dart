@@ -160,6 +160,7 @@ class AddEventState extends State<AddEvent>{
                         new FlatButton(
                           child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
                           onPressed: () async{
+                            if(!(_nameController.text == '') && !(_noteController.text == '')) {
 //                            if(widget.health.id != null){
 //                              db.updateChild(Health.fromeMap({
 //                                'id' : widget.health.id,
@@ -172,23 +173,26 @@ class AddEventState extends State<AddEvent>{
 //                                Navigator.pop(context,'update');
 //                              });
 //                            }else{
-                           id = await db.saveEvent(Event(
-                                _nameController.text,
-                                _noteController.text,
-                                1,
-                                1,
-                                1,
-                                1,
-                                widget.child.id,
-                                formattedDate));
-                           print(imagesPath.length);
-                           if(imagesPath.length > 0 ){
-                             for(int i = 0 ; i < imagesPath.length ; i++){
-                               db2.saveMedia(Media(imagesPath[i], 3, id, formattedDate));
-                             }
-                           }
-                              Navigator.pop(context,'save');
-
+                              id = await db.saveEvent(Event(
+                                  _nameController.text,
+                                  _noteController.text,
+                                  1,
+                                  1,
+                                  1,
+                                  1,
+                                  widget.child.id,
+                                  formattedDate));
+                              print(imagesPath.length);
+                              if (imagesPath.length > 0) {
+                                for (int i = 0; i < imagesPath.length; i++) {
+                                  db2.saveMedia(Media(
+                                      imagesPath[i], 3, id, formattedDate));
+                                }
+                              }
+                              Navigator.pop(context, 'save');
+                            }else{
+                              _showMaterialDialog();
+                            }
 
                           },
                         ),
@@ -211,6 +215,22 @@ class AddEventState extends State<AddEvent>{
   }
   void _back(BuildContext context) async{
     Navigator.pop(context);
+  }
+  _showMaterialDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+          title: new Text("يرجى ملئ كافة الحقول "),
+          content: new Text(""),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('حسنا'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ));
   }
 
   Future getImageFromCamera() async {

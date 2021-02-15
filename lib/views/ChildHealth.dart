@@ -177,12 +177,21 @@ class ChildHealthState extends State<ChildHealth>{
                                       Padding(padding: EdgeInsets.only(left: 10)),
                                     ],
                                   ),
-                                  Row(
-                                    children: [
-                                      Expanded(child: Text("")),
-                                      Text("${childHealths[posision].note}"),
-                                      Padding(padding: EdgeInsets.only(left: 10)),
-                                    ],
+                                  // Row(
+                                  //   children: [
+                                  //     Expanded(child: Text("")),
+                                  //     Text("${childHealths[posision].note}"),
+                                  //     Padding(padding: EdgeInsets.only(left: 10)),
+                                  //   ],
+                                  // ),
+                                  new Container (
+                                    padding: const EdgeInsets.all(16.0),
+                                    width: MediaQuery.of(context).size.width*0.8,
+                                    child: new Column (
+                                      children: <Widget>[
+                                        Text("${childHealths[posision].note}",textAlign: TextAlign.right),
+                                      ],
+                                    ),
                                   ),
                                   // Row(
                                   //   children: [
@@ -262,11 +271,10 @@ class ChildHealthState extends State<ChildHealth>{
                             Positioned(
                                 right:20 ,
                                 top: -5,
-                                child: Container(
-                                    margin: EdgeInsets.only(right: 5),
-                                    color: Colors.white,
-                                    child: Image.asset("assets/images/helth.png",width: 50,)
-                                )),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child:Image.asset("assets/images/helth.png",width: 50,) ,
+                                ),),
                           ],
                         ),
                         (posision == childHealths.length-1) ?  new Center(

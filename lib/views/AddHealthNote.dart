@@ -304,6 +304,8 @@ class AddHealthNoteState extends State<AddHealthNote>{
                         new FlatButton(
                           child:new Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
                           onPressed: () async {
+                            if(!(_tallController.text == '') && !(_weightController.text== '') && !(_tempretureController.text == '') && !(_nameController.text == '') && !(_noteController.text == '')){
+                              if((_tallController.text.length < 4) && (_weightController.text.length < 4) && (_tempretureController.text.length < 3)){
 //                            if(widget.health.id != null){
 //                              db.updateChild(Health.fromeMap({
 //                                'id' : widget.health.id,
@@ -332,6 +334,11 @@ class AddHealthNoteState extends State<AddHealthNote>{
                                  }
                                }
                                  Navigator.pop(context,'save');
+                            }else{
+                              _showMaterialDialog2();
+                            }}else{
+                              _showMaterialDialog();
+                            }
 
 
 
@@ -356,6 +363,38 @@ class AddHealthNoteState extends State<AddHealthNote>{
   }
   void _back(BuildContext context) async{
     Navigator.pop(context);
+  }
+  _showMaterialDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+          title: new Text("يرجى ملئ كافة الحقول "),
+          content: new Text(""),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('حسنا'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ));
+  }
+  _showMaterialDialog2() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+          title: new Text("يرجى التاكد من قيم الحقول "),
+          content: new Text("لا يمكن ان تكون حقول الطول والوزن اكثر من ثلاث خانات وحقل الحرارة اكثر من خانتين"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('حسنا'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ));
   }
   Future getImageFromCamera() async {
 

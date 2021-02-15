@@ -206,7 +206,7 @@ class SearchResultState extends State<SearchResult>{
                                 ],
                               );
                               }
-                          ):Text("noooooo"),
+                          ):Text("لايوجد ملاحظات صحية تطابق نتيجة البحث",textAlign: TextAlign.center,),
                         ),
                       ),
                     ],
@@ -256,7 +256,7 @@ class SearchResultState extends State<SearchResult>{
                                   ],
                                 );
                               }
-                          ):Text("noooooo"),
+                          ):Text("لايوجد أحداث هامة تطابق نتيجة البحث",textAlign: TextAlign.center,),
                         ),
                       ),
                     ],
@@ -307,7 +307,7 @@ class SearchResultState extends State<SearchResult>{
                                   ],
                                 );
                               }
-                          ):Text("noooooo"),
+                          ):Text("لايوجد تطورات تطابق نتيجة البحث",textAlign: TextAlign.center,),
                         ),
                       ),
                     ],
@@ -455,6 +455,8 @@ class SearchResultState extends State<SearchResult>{
               Stack(
                 children: <Widget>[
                   Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                    padding: EdgeInsets.only(bottom: 10),
                     width: double.infinity,
                     height: 400,
                     decoration: BoxDecoration(
@@ -476,12 +478,21 @@ class SearchResultState extends State<SearchResult>{
                             Padding(padding: EdgeInsets.only(left: 10)),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Expanded(child: Text("")),
-                            Text("${health.note}"),
-                            Padding(padding: EdgeInsets.only(left: 10)),
-                          ],
+                        // Row(
+                        //   children: [
+                        //     Expanded(child: Text("")),
+                        //     Text("${health.note}"),
+                        //     Padding(padding: EdgeInsets.only(left: 10)),
+                        //   ],
+                        // ),
+                        new Container (
+                          padding: const EdgeInsets.all(16.0),
+                          width: MediaQuery.of(context).size.width*0.8,
+                          child: new Column (
+                            children: <Widget>[
+                              Text("${health.note}",textAlign: TextAlign.right),
+                            ],
+                          ),
                         ),
                         // Row(
                         //   children: [
@@ -559,13 +570,13 @@ class SearchResultState extends State<SearchResult>{
                     ),
                   ),
                   Positioned(
-                      right:20 ,
-                      top: -5,
-                      child: Container(
-                          margin: EdgeInsets.only(right: 5),
-                          color: Colors.white,
-                          child: Image.asset("assets/images/helth.png",width: 50,)
-                      )),
+                    right:20 ,
+                    top: -5,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child:Image.asset("assets/images/helth.png",width: 50,) ,
+                    ),),
+
                 ],
               ),
 
@@ -594,6 +605,8 @@ class SearchResultState extends State<SearchResult>{
               Stack(
                 children: <Widget>[
                   Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                    padding: EdgeInsets.only(bottom: 10),
                     width: double.infinity,
                     height: 400,
                     decoration: BoxDecoration(
@@ -615,12 +628,21 @@ class SearchResultState extends State<SearchResult>{
                             Padding(padding: EdgeInsets.only(left: 10)),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Expanded(child: Text("")),
-                            Text("${event.note}"),
-                            Padding(padding: EdgeInsets.only(left: 10)),
-                          ],
+                        // Row(
+                        //   children: [
+                        //     Expanded(child: Text("")),
+                        //     Text("${event.note}"),
+                        //     Padding(padding: EdgeInsets.only(left: 10)),
+                        //   ],
+                        // ),
+                        new Container (
+                          padding: const EdgeInsets.all(16.0),
+                          width: MediaQuery.of(context).size.width*0.8,
+                          child: new Column (
+                            children: <Widget>[
+                              Text("${event.note}",textAlign: TextAlign.right),
+                            ],
+                          ),
                         ),
                         Padding(padding: EdgeInsets.only(bottom: 15)),
                         // Row(
@@ -668,13 +690,13 @@ class SearchResultState extends State<SearchResult>{
                     ),
                   ),
                   Positioned(
-                      right:20 ,
-                      top: -5,
-                      child: Container(
-                          margin: EdgeInsets.only(right: 5),
-                          color: Colors.white,
-                          child: Image.asset("assets/images/events.png",width: 50,)
-                      )),
+                    right:20 ,
+                    top: -5,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child:Image.asset("assets/images/events.png",width: 50,) ,
+                    ),),
+
                 ],
               ),
 
@@ -704,6 +726,8 @@ class SearchResultState extends State<SearchResult>{
               Stack(
                 children: <Widget>[
                   Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                    padding: EdgeInsets.only(bottom: 10),
                     width: double.infinity,
                     height: 400,
                     decoration: BoxDecoration(
@@ -725,12 +749,21 @@ class SearchResultState extends State<SearchResult>{
                             Padding(padding: EdgeInsets.only(left: 10)),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Expanded(child: Text("")),
-                            Text("${development.note}"),
-                            Padding(padding: EdgeInsets.only(left: 10)),
-                          ],
+                        // Row(
+                        //   children: [
+                        //     Expanded(child: Text("")),
+                        //     Text("${development.note}"),
+                        //     Padding(padding: EdgeInsets.only(left: 10)),
+                        //   ],
+                        // ),
+                        new Container (
+                          padding: const EdgeInsets.all(16.0),
+                          width: MediaQuery.of(context).size.width*0.8,
+                          child: new Column (
+                            children: <Widget>[
+                              Text("${development.note}",textAlign: TextAlign.right),
+                            ],
+                          ),
                         ),
                         Padding(padding: EdgeInsets.only(bottom: 15)),
                         // Row(
@@ -778,13 +811,12 @@ class SearchResultState extends State<SearchResult>{
                     ),
                   ),
                   Positioned(
-                      right:20 ,
-                      top: -5,
-                      child: Container(
-                          margin: EdgeInsets.only(right: 5),
-                          color: Colors.white,
-                          child: Image.asset("assets/images/developments.png",width: 50,)
-                      )),
+                    right:20 ,
+                    top: -5,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child:Image.asset("assets/images/developments.png",width: 50,) ,
+                    ),),
                 ],
               ),
 

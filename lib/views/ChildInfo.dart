@@ -131,7 +131,7 @@ class ChildInfoState extends State<ChildInfo>{
                       color: Colors.white,
                       textColor: Colors.grey,
                       child: image == ''
-                          ? Text('تحميل صورة')
+                          ? Text('تعديل')
                           : ClipRRect(
                         borderRadius: BorderRadius.circular(200),
                         child:Image.file(imageFile,width: 150,height: 150,) ,

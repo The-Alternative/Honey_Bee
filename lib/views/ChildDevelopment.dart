@@ -67,6 +67,7 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                   childDevelopments.add(Development.fromeMap(element));
                 });
                 for(int j = 0 ; j < childDevelopments.length ; j ++){
+                  x.add(List());
                   db2.getItemMedias(2, childDevelopments[i].id).then((value) {
                     setState(() {
                       value.forEach((media) {
@@ -160,12 +161,21 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                                     Padding(padding: EdgeInsets.only(left: 10)),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Expanded(child: Text("")),
-                                    Text("${childDevelopments[posision].note}"),
-                                    Padding(padding: EdgeInsets.only(left: 10)),
-                                  ],
+                                // Row(
+                                //   children: [
+                                //     Expanded(child: Text("")),
+                                //     Text("${childDevelopments[posision].note}"),
+                                //     Padding(padding: EdgeInsets.only(left: 10)),
+                                //   ],
+                                // ),
+                                new Container (
+                                  padding: const EdgeInsets.all(16.0),
+                                  width: MediaQuery.of(context).size.width*0.8,
+                                  child: new Column (
+                                    children: <Widget>[
+                                      Text("${childDevelopments[posision].note}",textAlign: TextAlign.right),
+                                    ],
+                                  ),
                                 ),
                                 Padding(padding: EdgeInsets.only(bottom: 15)),
                                 // Row(
@@ -213,13 +223,13 @@ class ChildDevelopmentsState extends State<ChildDevelopments>{
                             ),
                           ),
                           Positioned(
-                              right:20 ,
-                              top: -5,
-                              child: Container(
-                                  margin: EdgeInsets.only(right: 5),
-                                  color: Colors.white,
-                                  child: Image.asset("assets/images/developments.png",width: 50,)
-                              )),
+                            right:20 ,
+                            top: -5,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child:Image.asset("assets/images/developments.png",width: 50,) ,
+                            ),),
+
                         ],
                       ),
 

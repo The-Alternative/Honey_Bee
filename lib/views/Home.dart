@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:childrensdiary/views/AddChild.dart';
 import 'package:childrensdiary/controllers/childController.dart';
 import 'package:childrensdiary/models/child.dart';
@@ -24,7 +26,9 @@ class HomeState extends State<Home>{
   Child list ;
   ChildController db = new ChildController();
   List<String> childrenNames = [];
+  List<String> childrenImages = [];
   bool isNameCorrect ;
+  String imagePath = '';
 
 
   @override
@@ -39,6 +43,7 @@ class HomeState extends State<Home>{
         });
       });
       for(int i =0 ; i < children.length; i++){
+        childrenImages.add(children[i].image);
         childrenNames.add(children[i].name);
       }
     });
@@ -116,15 +121,19 @@ class HomeState extends State<Home>{
                               ),
                             ),
                             icon: new Icon(Icons.keyboard_arrow_down),
-                            items: childrenNames.map((String value) {
+                            items: childrenImages.map((String value) {
                               return new DropdownMenuItem<String>(
                                 value: value,
-                                child:  Text('$value'),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(200),
+                                  child:Image.file(File(value),width: 50,height: 50,) ,
+                                ),
                               );
                             }).toList(),
                             onChanged: (String newValue) {
                               setState(() {
-                                _nameController.text = newValue;
+                                imagePath = newValue;
+                                _getChildName(context,imagePath);
                               });
                             },
                           ),
@@ -139,6 +148,7 @@ class HomeState extends State<Home>{
                       ),
                     )
                 ),
+
 
 
               ],
@@ -194,7 +204,9 @@ class HomeState extends State<Home>{
         });
       });
       childrenNames.clear();
+      childrenImages.clear();
       for(int i =0 ; i < children.length; i++){
+        childrenImages.add(children[i].image);
         childrenNames.add(children[i].name);
       }
     });
@@ -214,6 +226,14 @@ class HomeState extends State<Home>{
     if(isNameCorrect){
       _showMaterialDialog();
     }
+  }
+  void _getChildName(BuildContext context,String image) {
+    for(int i = 0 ; i < childrenImages.length; i++){
+      if(image == childrenImages[i]){
+        _nameController.text = childrenNames[i];
+      }
+    }
+
   }
 
 //  void _navigatToChildInfo(BuildContext context,Child child) async{

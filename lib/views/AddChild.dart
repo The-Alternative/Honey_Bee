@@ -198,7 +198,7 @@ class AddChildState extends State<AddChild>{
                     child: new Row(
                       children: [
                         new FlatButton(
-                          child:(widget.child.id != null) ? new Text('update',style:  TextStyle(fontSize: 19.0,color: Colors.black)):  Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
+                          child:(widget.child.id != null) ? new Text('تعديل',style:  TextStyle(fontSize: 19.0,color: Colors.black)):  Text('موافق',style: new TextStyle(fontSize: 19.0,color: Colors.black)),
                           onPressed: (){
                             if(!(_nameController.text == '') && !(_birthDateController.text == '') && !(_sexController.text == '')){
                               if(widget.child.id != null){

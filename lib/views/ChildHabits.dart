@@ -219,13 +219,13 @@ class ChildHabitsState extends State<ChildHabits>{
                         ),
                       ),
                       Positioned(
-                          right:20 ,
-                          top: -5,
-                          child: Container(
-                              margin: EdgeInsets.only(right: 5),
-                              color: Colors.white,
-                              child: Image.asset("assets/images/habits.png",width: 50,)
-                          )),
+                        right:20 ,
+                        top: -5,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child:Image.asset("assets/images/habits.png",width: 50,) ,
+                        ),),
+
                     ],
                   ),
                   new Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height *0.05)),
