@@ -84,7 +84,9 @@ class _AssignmentsState extends State<Assignments> {
                           ),
                           child: FlatButton(
                             child: null,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
                           ),
                         ),
                       ),

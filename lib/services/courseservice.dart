@@ -1,4 +1,4 @@
-import 'package:honeybee_study/model/course.dart';
+import 'package:honeybee_study/models/course.dart';
 import 'package:honeybee_study/utils/databaseconfig.dart';
 import 'package:sqflite/sqflite.dart';
 

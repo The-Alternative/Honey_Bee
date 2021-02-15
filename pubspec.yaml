@@ -58,6 +58,9 @@ flutter:
     - images/presentation.png
     - images/surface1.png
     - images/uplode.png
+    - images/date.png
+    - images/Ocloc.png
+    - images/calendar(1).png
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

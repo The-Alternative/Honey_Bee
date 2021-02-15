@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:honeybee_study/controllers/coursecontroller.dart';
-import 'package:honeybee_study/model/course.dart';
+import 'package:honeybee_study/models/course.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Newcourse extends StatefulWidget {
@@ -148,6 +148,7 @@ class _NewcourseState extends State<Newcourse> {
                                 teacharnumber: 'teacharnumber',
                               );
                               helper.saveCourse(course);
+                              print(course);
                               Navigator.of(context).pop();
                             },
                           ),
