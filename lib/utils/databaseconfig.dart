@@ -12,6 +12,7 @@ class DatabaseConfig {
   final String columnnameteachar = 'nameteachar';
   final String columnemail = 'email';
   final String columnteacharnumber = 'teacharnumber';
+  final String columnimage = 'image';
 
   Future<Database> get honeyBee async {
     if (_honeyBee != null) {
@@ -29,8 +30,8 @@ class DatabaseConfig {
   }
 
   void _oncreate(Database db, int newVersion) async {
-    var sql =
-        "CREATE TABLE $courses($columnid INTEGER PRIMARY KEY, $columnnamecourse TEXT ,$columnnameteachar TEXT , $columnemail TEXT , $columnteacharnumber TEXT)";
-    await db.execute(sql);
+    var coursesql =
+        "CREATE TABLE $courses($columnid INTEGER PRIMARY KEY, $columnnamecourse TEXT ,$columnnameteachar TEXT , $columnemail TEXT , $columnteacharnumber TEXT , $columnimage TEXT)";
+    await db.execute(coursesql);
   }
 }

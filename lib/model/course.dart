@@ -3,7 +3,7 @@ class Course {
   String namecourse;
   String nameteachar;
   String email;
-  int teacharnumber;
+  String teacharnumber;
 
   Course(
       {this.id,

@@ -1,11 +1,9 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:honeybee_study/controllers/coursecontroller.dart';
 import 'package:honeybee_study/model/course.dart';
-import 'package:honeybee_study/utils/databaseconfig.dart';
-import 'package:honeybee_study/views/home.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sqflite/sqflite.dart';
 
 class Newcourse extends StatefulWidget {
   @override
@@ -13,16 +11,9 @@ class Newcourse extends StatefulWidget {
 }
 
 class _NewcourseState extends State<Newcourse> {
-  String namecourse, nameteachar, email;
-  int teacharnumber;
-
-  DatabaseConfig helper;
-
-  @override
-  void initState() {
-    super.initState();
-    helper = DatabaseConfig();
-  }
+  String namecourse, nameteachar, email, image;
+  String teacharnumber;
+  CourseController helper = new CourseController();
 
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
@@ -65,6 +56,12 @@ class _NewcourseState extends State<Newcourse> {
               child: Column(
                 children: [
                   Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("images/center.png"),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
                     child: imageProfile(),
                   ),
                   SizedBox(
@@ -125,7 +122,7 @@ class _NewcourseState extends State<Newcourse> {
                     decoration: InputDecoration(hintText: 'رقم الموبايل'),
                     onChanged: (value) {
                       setState(() {
-                        teacharnumber = int.parse(value);
+                        teacharnumber = value;
                       });
                     },
                   ),
@@ -144,6 +141,13 @@ class _NewcourseState extends State<Newcourse> {
                                   TextStyle(color: Colors.black, fontSize: 16),
                             ),
                             onPressed: () {
+                              Course course = Course(
+                                namecourse: 'namecourse',
+                                nameteachar: 'nameteachar',
+                                email: 'email',
+                                teacharnumber: 'teacharnumber',
+                              );
+                              helper.saveCourse(course);
                               Navigator.of(context).pop();
                             },
                           ),

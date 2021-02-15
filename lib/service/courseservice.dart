@@ -10,24 +10,19 @@ class CourseService {
   final String columnnameteachar = 'nameteachar';
   final String columnemail = 'email';
   final String columnteacharnumber = 'teacharnumber';
-
   final DatabaseConfig db = new DatabaseConfig();
 
-  Future<int> savecourse(Course course) async {
+  Future<int> saveCourse(Course course) async {
     var dbClient = await db.honeyBee;
     int result = await dbClient.insert("$courses", course.toMap());
     return result;
   }
 
-  Future<List<Course>> getAll() async {
-    List<Course> _courselist = [];
+  Future<List> getAllcourse() async {
     var dbClient = await db.honeyBee;
-    var result = await dbClient.query(courses);
-    result.forEach((element) {
-      var course = Course.fromMap(element);
-      _courselist.add(course);
-    });
-    return _courselist;
+    var sql = "SELECT * FROM $courses";
+    List result = await dbClient.rawQuery(sql);
+    return result.toList();
   }
 
   Future<int> updateCourse(Course course) async {

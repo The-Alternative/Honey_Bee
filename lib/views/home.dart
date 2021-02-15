@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:honeybee_study/controllers/coursecontroller.dart';
+import 'package:honeybee_study/model/course.dart';
 import 'package:honeybee_study/views/assignments.dart';
 import 'package:honeybee_study/views/newcourse.dart';
 
@@ -9,6 +11,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  CourseController helper = new CourseController();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -61,6 +65,46 @@ class _HomeState extends State<Home> {
             ),
             body: TabBarView(
               children: [
+                FutureBuilder(
+                  future: helper.getAllcourse(),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: Image(
+                          width: 280,
+                          height: 280,
+                          image: AssetImage(
+                            "images/center.png",
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, i) {
+                              Course course = Course.fromMap(snapshot.data[i]);
+                              return Card(
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                                child: ListTile(
+                                  title: Text(course.namecourse),
+                                  trailing: IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () {
+                                      setState(() {
+                                        helper.deleteCourse(course);
+                                      });
+                                    },
+                                  ),
+                                ),
+                              );
+                            }),
+                      );
+                    }
+                  },
+                ),
                 new Center(
                   child: Image(
                     width: 280,
