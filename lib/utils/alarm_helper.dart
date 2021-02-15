@@ -51,9 +51,11 @@ class AlarmHelper {
 
   Future<int> insertAlarm(AlarmInfo alarmInfo) async {
     var db = await this.database;
-    var result = await db.insert(tableAlarm, alarmInfo.toMap());
+    int result = await db.insert(tableAlarm, alarmInfo.toMap());
+    print('result : $result');
     return result;
   }
+
   Future<List<AlarmInfo>> getAlarms() async {
     List<AlarmInfo> _alarms = [];
 

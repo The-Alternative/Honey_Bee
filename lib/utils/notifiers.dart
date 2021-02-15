@@ -1,4 +1,4 @@
-import 'package:clock_app/models/const_data.dart';
+import 'file:///D:/New%20folder%20(2)/flutter_alarm_clock-master/lib/constants/const_data.dart';
 import 'package:flutter/material.dart';
 
 class SingleNotifier extends ChangeNotifier {

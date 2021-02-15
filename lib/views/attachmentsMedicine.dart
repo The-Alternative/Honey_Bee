@@ -1,7 +1,13 @@
 import 'dart:io';
+import 'package:clock_app/controller/diagonController.dart';
+import 'package:clock_app/controller/medicineController.dart';
+import 'package:clock_app/controller/patientController.dart';
+import 'package:clock_app/models/Diagon.dart';
+import 'package:clock_app/models/Medicine.dart';
+import 'package:clock_app/models/Patient.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../views/times_list.dart';
+import 'ViewTimes/times_list.dart';
 import '../models/db_models.dart';
 import '../utils/database_helper.dart';
 
@@ -14,9 +20,11 @@ class _AttachmentsMedicineState extends State<AttachmentsMedicine> {
   DateTime _alarmTime;
   File _image;
   TextEditingController _nameController = TextEditingController();
-  DatabaseHelper _helper = DatabaseHelper();
+  DiagonController _diagonController =DiagonController();
+  MedicineController _medicineController = MedicineController();
+  PatientController _patientController =PatientController();
   Medicine _medicin = Medicine();
-  Patient _patient = new Patient();
+  Patient _patient = new Patient.Without();
   Diagon _diagonObject = Diagon();
    int _diagonId;
   TextEditingController _patnameController = TextEditingController();
@@ -188,9 +196,9 @@ class _AttachmentsMedicineState extends State<AttachmentsMedicine> {
     _medicin.medform = "كبسولة";
     _patient.patName = _patnameController.text;
     _diagonObject.notice = _noticeController.text;
-    _diagonObject.medId = await _helper.insert_medicine(_medicin);
-    _diagonObject.patId = await _helper.insertPatient(_patient); //id
-    _diagonId = await _helper.insertDiagon(_diagonObject);
+    _diagonObject.medId = await _medicineController.insert(_medicin);
+    _diagonObject.patId = await _patientController.insertPatient(_patient); //id
+    _diagonId = await _diagonController.insertDiagon(_diagonObject);
 
     moveToLastScreen();
 

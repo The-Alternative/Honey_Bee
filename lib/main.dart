@@ -1,28 +1,30 @@
 
 import 'dart:isolate';
-
+import 'package:clock_app/views/ViewMedecineRecord/home.dart';
 import 'utils/notifiredb.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
-import 'views/main_input.dart';
+import 'views/AddMedcine/main_input.dart';
 import 'utils/notifiers.dart';
+import 'views/ViewTimes/timeHome.dart';
 import 'views/attachmentsMedicine.dart';
-import 'views/medicineView.dart';
-import 'views/times_list.dart';
+import 'views/View Medicine/medicineView.dart';
+import 'views/ViewTimes/times_list.dart';
 void printHello() {
   final DateTime now = DateTime.now();
   final int isolateId = Isolate.current.hashCode;
-  print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
+  // print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
 }
 
+bool result =false;
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
 
 const List<Choice> choices = <Choice>[
   Choice(title: 'مواعيد', icons: Icons.notifications_active_rounded),
-  Choice(title: 'أسماء', icons: Icons.notes,),
+  Choice(title: 'اسماء', icons: Icons.notes,),
   Choice(title: 'سجل الدواء', icons: Icons.eleven_mp),];
 
 class Choice {
@@ -58,8 +60,8 @@ main() async {
       ChangeNotifierProvider<MultipleNotifier>(
         create: (_) => MultipleNotifier([]),
       ),
-       ChangeNotifierProvider<CountryProvider>(
-         create: (context) => CountryProvider()),
+      ChangeNotifierProvider<CountryProvider>(
+          create: (context) => CountryProvider()),
     ],
     child: MyApp(),
   ));
@@ -98,12 +100,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    final Widget addButton =FloatingActionButton(
+      onPressed: () {
+        navigateTomain_input();
+      },
+      tooltip: 'Add Note',
+      child: Icon(Icons.add),
+    );
+
     return Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
           appBar: AppBar(
               title: const Text(
-                "الأدوية ",
+                "الأدوية",
                 style: TextStyle(color: Colors.black, fontSize: 25),
               ),
               backgroundColor: Colors.amber[400],
@@ -136,17 +146,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ]))),
           body: gettabbar(),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              navigateTomain_input();
-            },
-            tooltip: 'Add Note',
-            child: Icon(Icons.add),
-          ), // This trailing comma makes auto-formatting nicer for build methods.
+          floatingActionButton:addButton, // This trailing comma makes auto-formatting nicer for build methods.
         ));
   }
   void navigateToAttachmentsMedicine() async {
-    bool result = await Navigator.push(
+    result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) {
       return AttachmentsMedicine();
     }));
@@ -159,12 +163,16 @@ class _MyHomePageState extends State<MyHomePage> {
     if (result == true) {
       Timesupdate.res = true;
       Timesupdate.res2=true;
-      if (Timesupdate.res)
+      if (Timesupdate.res){
         debugPrint("fff");
-      print('lengthkmonnnn${Alarmmm.alarmList.length}');
-      Time_listState();
-      // debugPrint(new update("hhh").s );
-      main();
+        // print('lengthkmonnnn${Alarmmm.alarmList.length}');
+        //Time_listState();
+        setState(() {
+          debugPrint('jjjkjksjdkdjskdskd');
+
+          return Time_listState();
+
+        });}
       debugPrint("update");
     }
   }
@@ -187,29 +195,27 @@ class ChoisePage extends StatelessWidget {
   }
 
   Widget ff(String s) {
-   // switch(s){case'': break;}
+    // switch(s){case'': break;}
     if (s == 'مواعيد') {
       debugPrint("refresh");
       //NoteListState().updateListView();       //note_list.updateListView();
-      return Time_list();
+      return TimesHome();
     } else
-    if (s == 'أسماء') {
+    if (s == 'اسماء') {
       return MedicineView();
+    }else
+    if (s == 'سجل الدواء') {
+      return Home();
     }
-      return Card(color: Colors.white,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Icon(choice.icons, size: 150.0, color: Colors.pink,),
-              Text(choice.title, style: TextStyle(color: Colors.black),),
-              Divider(height: 1,), //Directionality(textDirection: TextDecoration.rtl, child: null)
-              // dd(choice.title,context),
-            ],
-          ),
-        ),
-      );
-    ;
-  }
-}
+
+    return Card(color: Colors.white,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Icon(choice.icons, size: 150.0, color: Colors.pink,),
+            Text(choice.title, style: TextStyle(color: Colors.black),),
+            Divider(height: 1,), //Directionality(textDirection: TextDecoration.rtl, child: null)
+            // dd(choice.title,context),
+          ],),),);}}

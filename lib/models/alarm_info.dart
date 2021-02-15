@@ -27,3 +27,9 @@ class AlarmInfo {
         "gradientColorIndex": gradientColorIndex,
       };
 }
+
+class alarmObject {
+  int diagonId;
+  DateTime alarmDate;
+  alarmObject({this.diagonId, this.alarmDate});
+}
