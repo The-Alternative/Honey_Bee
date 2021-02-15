@@ -23,8 +23,6 @@ class _Bmi2State extends State<Bmi2> {
   _Bmi2State({this.bmiModel});
 
 
-
-
   void _onItemTapped(int index) {
     setState(() {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => Bmi1()));
@@ -118,7 +116,7 @@ class _Bmi2State extends State<Bmi2> {
                           Expanded(flex: 1,child: Container(
                             height: 35,
                             decoration: BoxDecoration(
-                              border: Border.all(width: 0.5,color: Colors.orange[100]),
+                              border: Border.all(width: 0.5,color: Colors.amber),
                               boxShadow:[BoxShadow(color: Colors.grey[400],spreadRadius: .1,blurRadius: 1,)],
                               color: Colors.white,
                             ),
@@ -139,7 +137,7 @@ class _Bmi2State extends State<Bmi2> {
                         height: 304,width: 320,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          boxShadow:[ BoxShadow(color: Colors.orange[100],spreadRadius: .1,)],
+                          boxShadow:[ BoxShadow(color: Colors.amber,spreadRadius: .1,)],
                         ),
                         child: Container(
                           height: MediaQuery.of(context).size.height,
@@ -154,7 +152,7 @@ class _Bmi2State extends State<Bmi2> {
                                           Text("نتائج القياسات الشخصية",textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.w900),),
 
                                           SizedBox(height: 10,),
-                                          Divider(color: Colors.yellow[700],),
+                                          Divider(color: Colors.amber,),
                                           SizedBox(height: 10,),
                                           Row(
                                             children: [
@@ -164,7 +162,7 @@ class _Bmi2State extends State<Bmi2> {
                                               Expanded(flex:1,
                                                   child: Center(
                                                     child: Text("${widget.bmiModel.result.toStringAsFixed(2)}",
-                                                        style: TextStyle(fontSize: 13,fontWeight: FontWeight.w900,
+                                                        style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700,
                                                           color: color(),)
 
                                                     ),
@@ -174,7 +172,7 @@ class _Bmi2State extends State<Bmi2> {
                                             ],
                                           ),
                                           SizedBox(height: 10,),
-                                          Divider(color: Colors.yellow[700],),
+                                          Divider(color: Colors.amber,),
                                           SizedBox(height: 10,),
                                           Row(
                                             children: [
@@ -182,13 +180,13 @@ class _Bmi2State extends State<Bmi2> {
                                               Expanded(flex:2,child: Text("معدل مؤشر كتلة الجسم الصحي",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700),)),
 
                                               Expanded(flex:1,
-                                                child: Text(" 25 - 18.5 كجم/م" ,style: TextStyle(fontSize: 13),
+                                                child: Text(" 25 - 18.5 كجم/م" ,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700),
                                                 ),
                                               )
                                             ],
                                           ),
                                           SizedBox(height: 10,),
-                                          Divider(color: Colors.yellow[700],),
+                                          Divider(color: Colors.amber,),
                                           SizedBox(height: 10,),
                                           Row(
                                             children: [
@@ -198,11 +196,9 @@ class _Bmi2State extends State<Bmi2> {
                                               SizedBox(width: 10,),
                                               Expanded(flex:1,
                                                 child: Center(
-
                                                     child: Text("${bmiModel.comment}",
-
                                                       style: TextStyle(fontSize: 13,
-                                                        fontWeight: FontWeight.w900,
+                                                        fontWeight: FontWeight.w700,
                                                         color: color(),
                                                       ),
                                                     )
@@ -211,7 +207,7 @@ class _Bmi2State extends State<Bmi2> {
                                             ],
                                           ),
                                           SizedBox(height: 10,),
-                                          Divider(color: Colors.yellow[700],),
+                                          Divider(color: Colors.amber,),
                                           SizedBox(height: 10,),
                                           Row(
                                             children: [
@@ -223,7 +219,7 @@ class _Bmi2State extends State<Bmi2> {
 
 
                                                   child: Text("${bmiModel.reso.toStringAsFixed(2)} كغ"+" - "+"${bmiModel.res.toStringAsFixed(2)}  كغ ",
-                                                    style: TextStyle(fontSize: 13,
+                                                    style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700
                                                     ),),
                                                 ),
                                             ],
@@ -239,23 +235,24 @@ class _Bmi2State extends State<Bmi2> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 20,),
+                    Text("هل تود الاضافة الى سجل  BMI ؟",style: TextStyle(fontWeight: FontWeight.w900),),
                     SizedBox(height: 10,),
-                    Text("هل تود الاضافة الى سجل  BMI ؟"),
 
                     Row(
                       children: [
                         Padding(padding: EdgeInsets.only(right: 65,),),
                         FlatButton(
-                          child: Text("الغاء الأمر",style: TextStyle(color: Colors.white),),
-                          color: Colors.blue[700],
+                          child: Text("الغاء الأمر",style: TextStyle(color: Colors.black),),
+                          // color: Colors.blue[700],
                           onPressed: (){
                             Navigator.pop(context);
                           },
                         ),
                         SizedBox(width: 50,),
                         FlatButton(
-                          child: Text("موافق",style: TextStyle(color: Colors.white),),
-                          color: Colors.blue[700],
+                          child: Text("موافق",style: TextStyle(color: Colors.black),),
+                          // color: Colors.blue[700],
                           onPressed: (){
                             Navigator.of(context).push(MaterialPageRoute(builder: (context) => Bmi3(bmiModel: bmiModel)));
                           },

@@ -1,8 +1,11 @@
+
+
 import 'package:bmi_honey_bee/models/bmimodels.dart';
 import 'package:bmi_honey_bee/controllers/desccontroller.dart';
 import 'package:bmi_honey_bee/views/bmi2.dart';
 import 'package:bmi_honey_bee/views/bmi3.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:form_validator/form_validator.dart';
@@ -16,28 +19,30 @@ class Bmi1 extends StatefulWidget  {
 
 }
 class _Bmi1State extends State<Bmi1> {
- final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
- void validate(){
-   if(_formKey.currentState.validate()){
-     print("validate");
-   }else{
-     print("not validate");
-   }
- }
- String validateheight(value){
-     if(value.isEmpty){
-       return "أدخل الطول";
-     }else{
-       return null;
-     }
- }
- String validateweight(value){
-   if(value.isEmpty){
-     return "أدخل الوزن";
-   }else{
-     return null;
-   }
- }
+
+  var _formKey = GlobalKey<FormState>();
+  // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+ // void validate(){
+ //   if(_formKey.currentState.validate()){
+ //     print("validate");
+ //   }else{
+ //     print("not validate");
+ //   }
+ // }
+ // String validateheight(value){
+ //     if(value.isEmpty){
+ //       return "أدخل الطول";
+ //     }else{
+ //       return null;
+ //     }
+ // }
+ // String validateweight(value){
+ //   if(value.isEmpty){
+ //     return "أدخل الوزن";
+ //   }else{
+ //     return null;
+ //   }
+ // }
 
 
   DescController db = new DescController();
@@ -91,14 +96,18 @@ class _Bmi1State extends State<Bmi1> {
 
             ),
 
-            body:ListView(
+            body:    Container(
+    // height: MediaQuery.of(context).size.height,
+    color: Colors.grey[200],
+            child:
+            ListView(
               children: <Widget>[
-              Container(
-                height: 600,
-                color: Colors.grey[200],
+              // Container(
+              //  // height: MediaQuery.of(context).size.height,
+              //   color: Colors.grey[200],
 
 
-                child: Center(
+               Center(
                   child: Container(
                     height: 350,
                     width: MediaQuery.of(context).size.width,
@@ -109,8 +118,7 @@ class _Bmi1State extends State<Bmi1> {
                         children: [
                           SizedBox(height: 20,),
                           Form(
-
-                            // key: _formKey,
+                            key: _formKey,
                             child: Column(
 
                               children: [
@@ -120,31 +128,30 @@ class _Bmi1State extends State<Bmi1> {
                                   children: [
                                  Padding(padding: EdgeInsets.all(10)),
                                   Expanded(flex:1,
-                                      child: Text("أدخل الطول:",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w900),)),
+                                      child: Text("أدخل الطول:",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black87),)),
                                   SizedBox(width: 10,),
                                     Expanded(
                                     child: Padding(padding: EdgeInsets.only( left: 0, right: 0),
-                                        child: Container(
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(width: 1,color: Colors.amber),
-                                            boxShadow:[BoxShadow(color: Colors.grey[400],spreadRadius: .1,blurRadius: 1,
-                                            )],
-                                            color: Colors.white,
-                                          ),
                                           child: TextFormField(
                                               controller:_heightController,
                                               keyboardType: TextInputType.number,
-                                           validator: validateheight,
+                                            validator: (value) {
+                                              if (value.isEmpty) {
+                                                return 'أدخل الطول';
+                                              }
+                                              return null;
+                                            },
                                             decoration: InputDecoration(
-                                              //contentPadding: EdgeInsets.all(14),
-                                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.amber)),
-                                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.amber),
-                                              ),
+                                              border: OutlineInputBorder(
+                                                  borderSide: BorderSide(style: BorderStyle.solid)),
+                                              contentPadding: EdgeInsets.only(right: 25,bottom: 10),
+                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.amber)),
+                                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.amber,
+                                                  style:BorderStyle.solid)),
                                             ),
                                             ),
                                         ),
-                                        )),
+                                        ),
                                   Padding(padding: EdgeInsets.all(10)),
                                   SizedBox(width: 10,),
                                   Expanded(flex:1,child: Text("سم",style: TextStyle(fontSize: 16),))
@@ -157,37 +164,35 @@ class _Bmi1State extends State<Bmi1> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Padding(padding: EdgeInsets.all(10)),
-                                    Expanded(flex:1,child: Text(" أدخل الوزن:", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w900,),)),
+                                    Expanded(flex:1,child: Text(" أدخل الوزن:", style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black87),)),
                                     SizedBox(width: 10,),
 
                                     Expanded(
                                       child: Padding(
-                                          padding: const EdgeInsets.only( left: 0, right: 0),
-                                            child: Container(
-                                             height: 40,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(width: 1,color: Colors.amber),
-                                                boxShadow:[BoxShadow(color: Colors.grey[400],spreadRadius: .1,blurRadius: 1,
-                                                )
-                                                ],
-                                                color: Colors.white,
-                                              ),
+                                          padding: const EdgeInsets.only(left: 0, right: 0),
                                               child: TextFormField(
                                                 controller:_weightController,
                                                 keyboardType: TextInputType.number,
-                                               validator:validateweight ,
+
+                                                validator: (value) {
+                                                  if (value.isEmpty) {
+                                                    return 'أدخل الوزن';
+                                                  }
+                                                  return null;
+                                                },
+
                                                 decoration: InputDecoration(
-                                                // contentPadding: EdgeInsets.all(14),
-                                                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.amber)),
-                                                  enabledBorder: UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Colors.yellow[600]),
-                                                  ),
+                                                    border: OutlineInputBorder(
+                                                        borderSide: BorderSide(style: BorderStyle.solid)),
+                                                  contentPadding: EdgeInsets.only(right: 25,bottom: 10),
+                                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.amber)),
+                                                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.amber,
+                                                      style:BorderStyle.solid)),
                                                 ),
 
                                                 ),
                                             )),
-                                            ),
+                                            // ),
 
                                     Padding(padding: EdgeInsets.all(10)),
                                     SizedBox(width: 10,),
@@ -202,29 +207,37 @@ class _Bmi1State extends State<Bmi1> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       FlatButton(
-                                        child: Text("السجل",style: TextStyle(color: Colors.white),),
-                                        color: Colors.blue[700],
+                                          child: Text("احسب",style: TextStyle(fontSize: 15,color: Colors.black87,fontWeight: FontWeight.bold),),
+                                          onPressed: () async {
 
-                                        onPressed: (){
-                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Bmi3(bmiModel: _bmiModel)));
-                                        },
+                                            final isValid = _formKey.currentState.validate();
+                                            if (!isValid) {
+                                              return;
+                                            }
+                                            _formKey.currentState.save();
+
+                                            calculateBMI();
+                                            result = await Navigator.push(context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) {
+                                                          return Bmi2(bmiModel: _bmiModel);
+                                                        })
+                                                        );
+
+                                          }
                                       ),
                                       SizedBox(width: 30,),
                                       FlatButton(
-                                        child: Text("احسب",style: TextStyle(fontSize: 15,color: Colors.white),),
-                                        color: Colors.blue[700],
-                                        onPressed: () async {
-                                         // validate();
-                                          calculateBMI();
-                                          result = await Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return Bmi2(
-                                                        bmiModel: _bmiModel);
-                                                  }));
+                                        child: Text("السجل",style: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold),),
+                                        color: Colors.white,
 
-                                        }
+                                        onPressed: (){
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Bmi3(bmiModel: _bmiModel)));
+                                          
+                                        },
                                       ),
+
+
                                     ],
                                   ),
                                 ),
@@ -239,9 +252,9 @@ class _Bmi1State extends State<Bmi1> {
                       ),
                     ),
                   ),
-                ),),
+                ),
             ],)),),
-    );
+    ));
   }
   void calculateBMI() async {
 
@@ -281,8 +294,7 @@ class _Bmi1State extends State<Bmi1> {
           length:_bmiModel.length ,
           wight:_bmiModel.wight ,
           bmi:sbmi,
-          datt:now.toString()
-              .substring(0,19),
+          datt:now.toString().substring(0,19),
           comment:_bmiModel.comment,
         ));
         print(a);

@@ -62,8 +62,9 @@ class _Bmi3State extends State<Bmi3> {
 
                         Container(
                         decoration: BoxDecoration(
-                          border: Border.all(width: 1,color: Colors.amber),
-                          boxShadow:[BoxShadow(color: Colors.white,spreadRadius: .1,blurRadius: 1,
+                          color:Colors.white,
+                          boxShadow:[
+                            BoxShadow(color: Colors.grey[500],spreadRadius: .1,blurRadius: 1,offset: Offset(1,1),
                           )],
                         ),
                           child:

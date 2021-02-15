@@ -32,9 +32,8 @@ class CardInfo {
     wight:json["weight"],
     datt:json["date"],
     comment: json["comment"],
-
-
   );
+
   Map<String, dynamic> toMap() => {
     "id": id,
     "bmi": bmi,
@@ -42,6 +41,5 @@ class CardInfo {
     "weight":wight,
     "date":datt,
     "comment":comment,
-
   };
 }
