@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:childrensdiary/controllers/developmentController.dart';
 import 'package:childrensdiary/controllers/eventController.dart';
 import 'package:childrensdiary/controllers/healthController.dart';
+import 'package:childrensdiary/controllers/mediaController.dart';
 import 'package:childrensdiary/models/development.dart';
 import 'package:childrensdiary/models/event.dart';
 import 'package:childrensdiary/models/health.dart';
+import 'package:childrensdiary/models/media.dart';
 import 'package:childrensdiary/views/AddChild.dart';
 import 'package:childrensdiary/controllers/childController.dart';
 import 'package:childrensdiary/models/child.dart';
@@ -33,8 +37,13 @@ class SearchResultState extends State<SearchResult>{
   List<Health> childHealths =new List();
   List<Event> childEvents =new List();
   List<Development> childDevelopments =new List();
+  List<List<Media>> healthMedia = new List();
+  List<List<Media>> devMedia = new List();
+  List<List<Media>> eventMedia = new List();
+
 //  Health list ;
   HealthController db = new HealthController();
+  MediaController mediaDb = new MediaController();
   EventController eventdb = new EventController();
   DevelopmentController devdb = new DevelopmentController();
   String birthDate = '';
@@ -54,7 +63,16 @@ class SearchResultState extends State<SearchResult>{
         allChildren.forEach((health) {
           childHealths.add(Health.fromeMap(health));
         });
-        print("111");
+        for(int j = 0 ; j < childHealths.length ; j ++){
+          healthMedia.add(List());
+          mediaDb.getItemMedias(1, childHealths[j].id).then((hmedia) {
+            setState(() {
+              hmedia.forEach((hemedia) {
+                healthMedia[j].add(Media.fromeMap(hemedia));
+              });
+            });
+          });
+        }
       });
     });
     eventdb.searchChildEvents(widget.child.id,widget.text).then((allEvents) {
@@ -62,7 +80,16 @@ class SearchResultState extends State<SearchResult>{
         allEvents.forEach((event) {
           childEvents.add(Event.fromeMap(event));
         });
-        print("222");
+        for(int j = 0 ; j < childEvents.length ; j ++){
+          eventMedia.add(List());
+          mediaDb.getItemMedias(3, childEvents[j].id).then((evalue) {
+            setState(() {
+              evalue.forEach((evmedia) {
+                eventMedia[j].add(Media.fromeMap(evmedia));
+              });
+            });
+          });
+        }
       });
     });
     devdb.searchChildDevelopments(widget.child.id,widget.text).then((allDevelopments) {
@@ -70,7 +97,16 @@ class SearchResultState extends State<SearchResult>{
         allDevelopments.forEach((development) {
           childDevelopments.add(Development.fromeMap(development));
         });
-        print("333");
+        for(int j = 0 ; j < childDevelopments.length ; j ++){
+          devMedia.add(List());
+          mediaDb.getItemMedias(2, childDevelopments[j].id).then((dvalue) {
+            setState(() {
+              dvalue.forEach((devmedia) {
+                devMedia[j].add(Media.fromeMap(devmedia));
+              });
+            });
+          });
+        }
       });
     });
     birthDate= widget.child.birthDate;
@@ -164,7 +200,7 @@ class SearchResultState extends State<SearchResult>{
                                   ListTile(
                                     title: Text("${childHealths[posision].name}"),
                                     subtitle: Text("${childHealths[posision].note}"),
-                                    onTap: () => _showHealthDialog(childHealths[posision]),
+                                    onTap: () => _showHealthDialog(childHealths[posision],healthMedia[posision]),
 
                                   ),
                                 ],
@@ -214,7 +250,7 @@ class SearchResultState extends State<SearchResult>{
                                     ListTile(
                                       title: Text("${childEvents[posision].name}"),
                                       subtitle: Text("${childEvents[posision].note}"),
-                                      onTap: () => _showEventDialog(childEvents[posision]),
+                                      onTap: () => _showEventDialog(childEvents[posision],eventMedia[posision]),
 
                                     ),
                                   ],
@@ -265,7 +301,7 @@ class SearchResultState extends State<SearchResult>{
                                       title: Text("${childDevelopments[posision].name}"),
                                       subtitle: Text("${childDevelopments[posision].note}"),
                                       hoverColor: Colors.redAccent,
-                                      onTap: () => _showDevelopmentDialog(childDevelopments[posision]),
+                                      onTap: () => _showDevelopmentDialog(childDevelopments[posision],devMedia[posision]),
 
                                     ),
                                   ],
@@ -407,7 +443,7 @@ class SearchResultState extends State<SearchResult>{
 
   }
 
-  _showHealthDialog(Health health) {
+  _showHealthDialog(Health health,List<Media> healthMedia) {
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -420,7 +456,7 @@ class SearchResultState extends State<SearchResult>{
                 children: <Widget>[
                   Container(
                     width: double.infinity,
-                    height: 350,
+                    height: 400,
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: Colors.redAccent, width: 1),
@@ -447,15 +483,27 @@ class SearchResultState extends State<SearchResult>{
                             Padding(padding: EdgeInsets.only(left: 10)),
                           ],
                         ),
-                        Padding(padding: EdgeInsets.only(bottom: 15)),
-                        Row(
-                          children: [
-                            Expanded(child: Text("")),
-                            Image.asset("assets/images/111.png",width: 100,),
-                            Padding(padding: EdgeInsets.only(left: 10)),
-                            Image.asset("assets/images/helth.png",width: 100,),
-                            Expanded(child: Text("")),
-                          ],
+                        // Row(
+                        //   children: [
+                        //     Expanded(child: Text("")),
+                        //     Image.asset("assets/images/111.png",width: 100,),
+                        //     Padding(padding: EdgeInsets.only(left: 10)),
+                        //     Image.asset("assets/images/helth.png",width: 100,),
+                        //     Expanded(child: Text("")),
+                        //   ],
+                        // ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 20.0),
+                          height: 100.0,
+                          child:healthMedia.length > 0 ? ListView.builder(
+                              itemCount: healthMedia.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context,position){
+                                return Image.file(File(healthMedia[position].mediaUrl),width: 100,height: 100);
+                              }
+                          ):Center(
+                            child: Text("لايوجد مرفقات"),
+                          ),
                         ),
                         new Row(
                           children: [
@@ -506,6 +554,7 @@ class SearchResultState extends State<SearchResult>{
                             new Expanded(child: Text("")),
                           ],
                         ),
+                        Padding(padding: EdgeInsets.only(bottom: 15.0)),
                       ],
                     ),
                   ),
@@ -533,7 +582,7 @@ class SearchResultState extends State<SearchResult>{
           ],
         ));
   }
-  _showEventDialog(Event event) {
+  _showEventDialog(Event event,List<Media> eveMedia) {
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -546,7 +595,7 @@ class SearchResultState extends State<SearchResult>{
                 children: <Widget>[
                   Container(
                     width: double.infinity,
-                    height: 350,
+                    height: 400,
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: Colors.blueAccent, width: 1),
@@ -574,14 +623,27 @@ class SearchResultState extends State<SearchResult>{
                           ],
                         ),
                         Padding(padding: EdgeInsets.only(bottom: 15)),
-                        Row(
-                          children: [
-                            Expanded(child: Text("")),
-                            Image.asset("assets/images/111.png",width: 100,),
-                            Padding(padding: EdgeInsets.only(left: 10)),
-                            Image.asset("assets/images/helth.png",width: 100,),
-                            Expanded(child: Text("")),
-                          ],
+                        // Row(
+                        //   children: [
+                        //     Expanded(child: Text("")),
+                        //     Image.asset("assets/images/111.png",width: 100,),
+                        //     Padding(padding: EdgeInsets.only(left: 10)),
+                        //     Image.asset("assets/images/helth.png",width: 100,),
+                        //     Expanded(child: Text("")),
+                        //   ],
+                        // ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 20.0),
+                          height: 100.0,
+                          child:eveMedia.length > 0 ? ListView.builder(
+                              itemCount: eveMedia.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context,position){
+                                return Image.file(File(eveMedia[position].mediaUrl),width: 100,height: 100);
+                              }
+                          ):Center(
+                            child: Text("لايوجد مرفقات"),
+                          ),
                         ),
 
                         Padding(padding: EdgeInsets.only(bottom: 15.0)),
@@ -630,7 +692,7 @@ class SearchResultState extends State<SearchResult>{
         ));
   }
 
-  _showDevelopmentDialog(Development development) {
+  _showDevelopmentDialog(Development development,List<Media> deveMedia) {
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -643,7 +705,7 @@ class SearchResultState extends State<SearchResult>{
                 children: <Widget>[
                   Container(
                     width: double.infinity,
-                    height: 350,
+                    height: 400,
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: Colors.greenAccent, width: 1),
@@ -671,14 +733,27 @@ class SearchResultState extends State<SearchResult>{
                           ],
                         ),
                         Padding(padding: EdgeInsets.only(bottom: 15)),
-                        Row(
-                          children: [
-                            Expanded(child: Text("")),
-                            Image.asset("assets/images/111.png",width: 100,),
-                            Padding(padding: EdgeInsets.only(left: 10)),
-                            Image.asset("assets/images/helth.png",width: 100,),
-                            Expanded(child: Text("")),
-                          ],
+                        // Row(
+                        //   children: [
+                        //     Expanded(child: Text("")),
+                        //     Image.asset("assets/images/111.png",width: 100,),
+                        //     Padding(padding: EdgeInsets.only(left: 10)),
+                        //     Image.asset("assets/images/helth.png",width: 100,),
+                        //     Expanded(child: Text("")),
+                        //   ],
+                        // ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 20.0),
+                          height: 100.0,
+                          child:deveMedia.length > 0 ? ListView.builder(
+                              itemCount: deveMedia.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context,position){
+                                return Image.file(File(deveMedia[position].mediaUrl),width: 100,height: 100);
+                              }
+                          ):Center(
+                            child: Text("لايوجد مرفقات"),
+                          ),
                         ),
 
                         Padding(padding: EdgeInsets.only(bottom: 15.0)),

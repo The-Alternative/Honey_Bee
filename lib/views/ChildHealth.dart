@@ -72,23 +72,14 @@ class ChildHealthState extends State<ChildHealth>{
                 //   print("6662222222");
                 // }
                 for(int j = 0 ; j < childHealths.length ; j ++){
-                  print('111');
                   x.add(List());
-                  print('22222');
                   db2.getItemMedias(1, childHealths[i].id).then((value) {
-                    print('33333');
                     setState(() {
-                      print('444444');
                       value.forEach((media) {
-                        print('55555');
                         if(!(i>j)){
-                          print('66666');
                           x[j].add(Media.fromeMap(media));
-                          print('7777777');
                         }
-                        print('88888');
                         xx = i;
-                        print('999999');
                       });
                     });
                   });
