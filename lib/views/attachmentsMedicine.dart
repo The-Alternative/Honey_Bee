@@ -8,8 +8,6 @@ import 'package:clock_app/models/Patient.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'ViewTimes/times_list.dart';
-import '../models/db_models.dart';
-import '../utils/database_helper.dart';
 
 class AttachmentsMedicine extends StatefulWidget {
   @override

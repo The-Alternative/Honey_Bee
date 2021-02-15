@@ -2,8 +2,6 @@ import 'package:clock_app/controller/medicineController.dart';
 import 'package:clock_app/controller/patientController.dart';
 import 'package:clock_app/models/MedicineInfo.dart';
 import 'package:clock_app/models/Patient.dart';
-import 'package:clock_app/models/db_models.dart';
-import 'package:clock_app/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 
 class MedicineView extends StatefulWidget {

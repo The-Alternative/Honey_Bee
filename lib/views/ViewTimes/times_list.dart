@@ -9,11 +9,6 @@ import 'package:clock_app/models/Patient.dart';
 import 'package:clock_app/models/medicineDays.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
-import '../../alarm_helper.dart';
-import '../../models/db_models.dart';
-import '../../utils/database_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -28,8 +23,6 @@ class Time_listState extends State<Time_list> {
   DateTime selectedDate = DateTime.now();
   String _selectedName;
   File _savedImage;
-  AlarmHelper _alarmHelper = AlarmHelper();
-
   final picker = ImagePicker();
   Future<List<Patient>> _PatientList;
   List<Patient> _currentPatientList;
@@ -79,7 +72,6 @@ MedicineViewController _medicineViewController=MedicineViewController();
   @override
   void initState() {
 
-    _alarmHelper.initializeDatabase().then((value) {});
     super.initState();
   }
 
