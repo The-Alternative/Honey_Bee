@@ -13,6 +13,7 @@ class Newcourse extends StatefulWidget {
 class _NewcourseState extends State<Newcourse> {
   String namecourse, nameteachar, email, image;
   String teacharnumber;
+
   CourseController helper = new CourseController();
 
   PickedFile _imageFile;
@@ -71,7 +72,11 @@ class _NewcourseState extends State<Newcourse> {
                     cursorColor: Colors.amber[400],
                     cursorHeight: 25,
                     textAlign: TextAlign.right,
-                    decoration: InputDecoration(hintText: 'اسم المقرر'),
+                    decoration: InputDecoration(
+                      hintText: 'اسم المقرر',
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.amber[400])),
+                    ),
                     onChanged: (value) {
                       setState(() {
                         namecourse = value;
@@ -88,6 +93,8 @@ class _NewcourseState extends State<Newcourse> {
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Colors.amber[400]),
                       hintText: 'اسم المدرس',
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.amber[400])),
                     ),
                     onChanged: (value) {
                       setState(() {
@@ -104,6 +111,8 @@ class _NewcourseState extends State<Newcourse> {
                     cursorHeight: 2,
                     decoration: InputDecoration(
                       hintText: 'البريد الألكتروني',
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.amber[400])),
                     ),
                     onChanged: (value) {
                       setState(() {
@@ -119,7 +128,11 @@ class _NewcourseState extends State<Newcourse> {
                     cursorColor: Colors.amber[400],
                     textAlign: TextAlign.right,
                     cursorHeight: 25,
-                    decoration: InputDecoration(hintText: 'رقم الموبايل'),
+                    decoration: InputDecoration(
+                      hintText: 'رقم الموبايل',
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.amber[400])),
+                    ),
                     onChanged: (value) {
                       setState(() {
                         teacharnumber = value;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:honeybee_study/views/lactuardate.dart';
 
 class Assignments extends StatefulWidget {
   @override
@@ -85,7 +86,8 @@ class _AssignmentsState extends State<Assignments> {
                           child: FlatButton(
                             child: null,
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => LactuarDate()));
                             },
                           ),
                         ),
@@ -98,13 +100,17 @@ class _AssignmentsState extends State<Assignments> {
                   Row(
                     children: [
                       SizedBox(
-                        width: 15,
+                        width: 10,
                       ),
-                      Text('برنامج دراسي'),
+                      Text(
+                        'برنامج دراسي',
+                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      ),
                       SizedBox(
-                        width: 75,
+                        width: 65,
                       ),
-                      Text('مواعيد المحاضرات'),
+                      Text('مواعيد المحاضرات',
+                          style: TextStyle(color: Colors.black, fontSize: 16)),
                     ],
                   ),
                   SizedBox(
@@ -165,11 +171,17 @@ class _AssignmentsState extends State<Assignments> {
                       SizedBox(
                         width: 30,
                       ),
-                      Text('وظائف'),
-                      SizedBox(
-                        width: 130,
+                      Text(
+                        'وظائف',
+                        style: TextStyle(color: Colors.black, fontSize: 16),
                       ),
-                      Text('امتحان'),
+                      SizedBox(
+                        width: 127,
+                      ),
+                      Text(
+                        'امتحان',
+                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      ),
                     ],
                   ),
                 ],
