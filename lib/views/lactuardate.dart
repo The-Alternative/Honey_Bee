@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/material/dropdown.dart';
+import 'package:honeybee_study/views/lactuarappointments.dart';
 
 class LactuarDate extends StatefulWidget {
   @override
@@ -151,7 +151,11 @@ class _LactuarDateState extends State<LactuarDate> {
                             ),
                             child: FlatButton(
                               child: null,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        LactuarAppointments()));
+                              },
                             ),
                           ),
                         ),
