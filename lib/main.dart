@@ -1,4 +1,19 @@
 
+import 'package:childrensdiary/views/Home.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+//import 'package:image_picker/image_picker.dart';
+
+
+void main() async{
+
+  runApp(new MaterialApp(
+    home:new Home(),
+  ));
+}
+
+
+
 import 'dart:isolate';
 import 'package:clock_app/views/ViewMedecineRecord/home.dart';
 import 'Welcome/home.dart';
@@ -88,4 +103,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 

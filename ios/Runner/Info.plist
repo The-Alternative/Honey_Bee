@@ -10,6 +10,10 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+
+	<key>CFBundleName</key>
+	<string>childrensdiary</string>
+
 	  <key>NSPhotoLibraryUsageDescription</key>
       <string>permission needed - photo library</string>
         <key>NSCameraUsageDescription</key>
@@ -18,6 +22,7 @@
         <string>permission needed - microphone</string>
 	<key>CFBundleName</key>
 	<string>clock_app</string>
+
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -45,8 +50,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
 	<key>UIStatusBarHidden</key>
 	<true/>
+
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>
