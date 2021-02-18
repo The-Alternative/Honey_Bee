@@ -236,7 +236,7 @@ class _LactuarDateState extends State<LactuarDate> {
                         ),
                         Icon(
                           Icons.alarm,
-                          size: 35,
+                          size: 30,
                           color: Colors.amber[400],
                         ),
                       ],
